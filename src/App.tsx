@@ -30,8 +30,6 @@ function App() {
     <div className="App">
       <QueryClientProvider client={queryClient}>
         <ClinicList />
-     
-      
       </QueryClientProvider>
     </div>
   );

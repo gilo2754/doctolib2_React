@@ -6,31 +6,12 @@ import BookItem from "../book/Book";
 import ClinicItem from "./Clinic";
 import LoadingWrapper from "../loading-wrapper/LoadingWrapper";
 
-interface ButtonProps {
-  displayNumber: number;
-  onClick: (val: number) => void;
-  active: boolean;
-}
-
-const NumberButton: React.FC<ButtonProps> = (props: ButtonProps) => {
-  return (
-    <button
-      className={`numberButton ${props.active ? "active" : ""}`}
-      onClick={() => props.onClick(props.displayNumber)}
-    >
-      {props.displayNumber}
-    </button>
-  );
-};
-
 const ClinicList: React.FC = () => {
   const { isLoading, error, data } = useQuery("clinics", () =>
     fetch("http://localhost:8081/api/v1/clinic").then((response) =>
       response.json()
     )
   );
-  const [selectedNumberOfClinics, setSelectedNumberOfClinics] = useState<number>();
-  const displayNumbers = [0, 1, 3];
 
   return (
     <Box
@@ -57,28 +38,11 @@ const ClinicList: React.FC = () => {
             ))}
           {data && (
             <>
-              <Box sx={{ mt: 2 }}>
-                {displayNumbers.map((num) => (
-                  <NumberButton
-                    displayNumber={num}
-                    onClick={(val: number) => setSelectedNumberOfClinics(val)}
-                    active={num === selectedNumberOfClinics}
-                  />
-                ))}
-                <button
-                  className="numberButton"
-                  onClick={() => setSelectedNumberOfClinics(undefined)}
-                >
-                  ⇠
-                </button>
-              </Box>
-              <Box sx={{ mt: 4 }}>
                 {(data as Clinic[])
-                  .slice(0, selectedNumberOfClinics)
+                  .slice(0, 8)
                   .map((clinic, index) => (
                     <ClinicItem clinic={clinic} key={index} />
                   ))}
-              </Box>
             </>
           )}
         </>
