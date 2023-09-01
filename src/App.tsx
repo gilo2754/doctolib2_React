@@ -2,6 +2,9 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import "./App.css";
 import BookList from "./components/book/BookList";
 import ClinicList from "./components/clinic/ClinicList";
+import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
+import CreateAppointment from "./components/appointments/CreateAppointment";
+
 export interface Book {
   title: string;
   subtitle: string;
@@ -23,16 +26,31 @@ export interface Clinic {
     closingTime: string;
   }
 
-const queryClient = new QueryClient();
+  const queryClient = new QueryClient();
 
-function App() {
-  return (
-    <div className="App">
-      <QueryClientProvider client={queryClient}>
-        <ClinicList />
-      </QueryClientProvider>
-    </div>
-  );
-}
+  function App() {
+    return (
+      <div className="App">
+        <Router>
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Clinic List</Link>
+              </li>
+            </ul>
+          </nav>
+  
+          <QueryClientProvider client={queryClient}>
+          <Routes>
 
-export default App;
+            <Route path="/" Component={ClinicList} />
+            <Route path="/create-appointment/:date" Component={CreateAppointment} />
+            </Routes>
+
+          </QueryClientProvider>
+        </Router>
+      </div>
+    );
+  }
+  
+  export default App;

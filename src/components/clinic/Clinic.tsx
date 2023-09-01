@@ -1,6 +1,6 @@
 import { Box, Card, CardContent, Typography, Button } from "@mui/material";
 import { Clinic } from "../../App";
-import AppointmentForm from "../appointments/AppointmentForm";
+import AppointmentForm from "../appointments/AvailableAppointments";
 import "./clinic.css";
 
 interface Props {
