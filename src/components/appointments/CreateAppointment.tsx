@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 interface Clinic {
   clinic_id: number;
@@ -25,6 +26,7 @@ const CreateAppointment: React.FC = () => {
   const [patientId, setPatientId] = useState<number>(1);
   const [doctorId, setDoctorId] = useState<number>(4);
 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -44,6 +46,7 @@ const CreateAppointment: React.FC = () => {
       console.error("Error creating appointment:", error);
     }
   };
+  const { datePlaceholder } = useParams();
 
   return (
     <div>
@@ -61,7 +64,16 @@ const CreateAppointment: React.FC = () => {
         <br />
         <button type="submit">Create Appointment</button>
       </form>
+       
+       <br />
+
+       <div>
+      <h2>Create Appointment</h2>
+      <p>Date: {datePlaceholder}. TODO: show the data from the selected Appointment here</p>
+      {/* Resto del formulario para crear la cita */}
     </div>
+    </div>
+    
   );
 };
 
