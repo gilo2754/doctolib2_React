@@ -5,6 +5,7 @@ import ClinicList from "./components/clinic/ClinicList";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import CreateAppointment from "./components/appointments/CreateAppointment";
 import MyAppointmentList from "./components/appointments/MyAppointmentList";
+import Account from "./components/user/Account";
 
 export interface Book {
   title: string;
@@ -41,6 +42,9 @@ export interface Clinic {
               <li>                
                 <Link to="/appointments">My appointments</Link>
               </li>
+              <li>                
+                <Link to="/account">My account</Link>
+              </li>
             </ul>
           </nav>
   
@@ -49,6 +53,7 @@ export interface Clinic {
 
             <Route path="/" Component={ClinicList} />
             <Route path="/appointments" Component={MyAppointmentList} />
+            <Route path="/account" Component={Account} />
             <Route path="/create-appointment/:date" Component={CreateAppointment} />
             </Routes>
 
