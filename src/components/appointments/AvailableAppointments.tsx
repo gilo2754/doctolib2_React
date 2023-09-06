@@ -34,7 +34,7 @@ const timePlaceholder = "10:00:00";
         ) : (
           <ul>
             {availableAppointments.map((appointment, index) => (
-              <li  key={appointment.id}><button class="small-button" key={index} onClick={() => handleDateClick(appointment)}>
+              <li  key={index}><button className="small-button" key={index} onClick={() => handleDateClick(appointment)}>
                 <Link to={`/create-appointment/${datePlaceholder}`}>
               {datePlaceholder} 
             </Link>
