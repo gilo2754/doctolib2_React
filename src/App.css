@@ -58,3 +58,58 @@ button {
 .numberButton:hover {
   background-color: #e0f7fa;
 }
+
+.sidebar {
+  width: 250px;
+  height: 100%;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+li:hover {
+  font-weight: bold;
+}
+
+/* App.css */
+/* App.css */
+
+/* Utiliza Flexbox para la estructura general de la aplicación */
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Ajusta la altura a la altura de la ventana */
+}
+
+/* Utiliza Flexbox para el contenido y el sidebar */
+.container {
+  display: flex;
+  flex: 1; /* El contenido y el sidebar se expanden para llenar el espacio disponible */
+}
+
+/* Estilos del Sidebar */
+.Sidebar {
+  flex: 1; /* Ocupa el 20% del espacio disponible */
+  background-color: #f0f0f0;
+  padding: 20px; /* Espaciado adicional dentro del Sidebar (personalizable) */
+}
+
+/* Estilos del contenido centrado */
+.centered-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centrar verticalmente */
+  align-items: center; /* Centrar horizontalmente */
+  flex: 3; /* Ocupa el 75% del espacio disponible */
+  padding: 20px; /* Espaciado adicional dentro del Content (personalizable) */
+}

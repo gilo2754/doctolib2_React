@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import CreateAppointment from "./components/appointments/CreateAppointment";
 import MyAppointmentList from "./components/appointments/MyAppointmentList";
 import Account from "./components/user/Account";
+import Sidebar from "./components/menu/Sidebar";
+import Content from "./components/content/Content";
 
 export interface Book {
   title: string;
@@ -33,33 +35,15 @@ export interface Clinic {
   function App() {
     return (
       <div className="App">
-        <Router>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">Clinic List</Link>
-              </li>
-              <li>                
-                <Link to="/appointments">My appointments</Link>
-              </li>
-              <li>                
-                <Link to="/account">My account</Link>
-              </li>
-            </ul>
-          </nav>
-  
-          <QueryClientProvider client={queryClient}>
-          <Routes>
-
-            <Route path="/" Component={ClinicList} />
-            <Route path="/appointments" Component={MyAppointmentList} />
-            <Route path="/account" Component={Account} />
-            <Route path="/create-appointment/:date" Component={CreateAppointment} />
-            </Routes>
-
-          </QueryClientProvider>
-        </Router>
-      </div>
+      <Router>
+      <div className="container">
+        <Sidebar />
+        <QueryClientProvider client={queryClient}>
+          <Content/>
+        </QueryClientProvider>
+        </div>
+      </Router>
+    </div>
     );
   }
   
