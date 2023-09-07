@@ -1,6 +1,7 @@
 // Content.tsx
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
+import ClinicAppointments from '../admin-clinic/ClinicAppointments';
 import CreateAppointment from '../appointments/CreateAppointment';
 import MyAppointmentList from '../appointments/MyAppointmentList';
 import ClinicList from '../clinic/ClinicList';
@@ -14,7 +15,8 @@ function Content() {
           <Route path="/" element={<ClinicList />} />
           <Route path="/appointments" element={<MyAppointmentList />} />
           <Route path="/account" element={<Account />} />
-          <Route path="/create-appointment/:date" element={<CreateAppointment />} />
+          <Route path="/create-appointment/:date" element={<CreateAppointment />}/>
+          <Route path="/clinic-appointments" element={<ClinicAppointments />} />           
         </Routes>
       </div>
     </div>

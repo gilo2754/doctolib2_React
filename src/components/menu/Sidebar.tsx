@@ -6,6 +6,9 @@ function Sidebar() {
     <nav className="sidebar">
         <div className="centered-content">
       <ul>
+        <li>                
+          <Link to="/account">My account</Link>
+        </li>
         <li>
           <Link to="/">Clinic List</Link>
         </li>
@@ -13,7 +16,7 @@ function Sidebar() {
           <Link to="/appointments">My appointments</Link>
         </li>
         <li>                
-          <Link to="/account">My account</Link>
+          <Link to="/clinic-appointments">Appointments from the clinic</Link>
         </li>
       </ul>
       </div>
