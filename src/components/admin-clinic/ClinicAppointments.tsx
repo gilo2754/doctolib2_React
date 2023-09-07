@@ -55,7 +55,7 @@ const ClinicAppointments: React.FC = () => {
 
   return (
     <div>
-      <h2>Citas Clínicas de la Clínica San Juan</h2>
+      <h2>Citas Clínicas de la clinica "x"</h2>
       {loading ? (
         <p>Cargando...</p>
       ) : error ? (

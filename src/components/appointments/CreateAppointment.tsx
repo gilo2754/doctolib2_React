@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
@@ -15,20 +15,39 @@ interface Appointment {
   clinic: Clinic;
   patient: User;
   doctor: User;
-  startTime: string;
-  endTime: string;
+  startTime: Date;
+  endTime: Date;
 }
 
 const CreateAppointment: React.FC = () => {
-  const [startTime, setStartTime] = useState<string>("");
-  const [endTime, setEndTime] = useState<string>("");
+  const [startTime, setStartTime] = useState<Date | null>(null);
+  const [endTime, setEndTime] = useState<Date | null>(null);
   const [clinicId, setClinicId] = useState<number>(1);
   const [patientId, setPatientId] = useState<number>(1);
   const [doctorId, setDoctorId] = useState<number>(4);
 
+  const { selectedDate } = useParams();
+
+  useEffect(() => {
+    if (selectedDate) {
+      const parsedDate = new Date(selectedDate);
+      if (!isNaN(parsedDate.getTime())) {
+        setStartTime(parsedDate);
+
+        // Calculate endTime by adding 30 minutes to startTime
+        const calculatedEndTime = new Date(parsedDate.getTime() + 30 * 60 * 1000);
+        setEndTime(calculatedEndTime);
+      }
+    }
+  }, [selectedDate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!startTime || !endTime) {
+      console.error("Start time or end time is not valid.");
+      return;
+    }
 
     const newAppointment: Appointment = {
       appointment_status: "PENDING",
@@ -40,13 +59,15 @@ const CreateAppointment: React.FC = () => {
     };
 
     try {
-      const response = await axios.post("http://localhost:8081/api/v1/appointment/add", newAppointment);
+      const response = await axios.post(
+        "http://localhost:8081/api/v1/appointment/create",
+        newAppointment
+      );
       console.log("Appointment created:", response.data);
     } catch (error) {
       console.error("Error creating appointment:", error);
     }
   };
-  const { datePlaceholder } = useParams();
 
   return (
     <div>
@@ -54,26 +75,31 @@ const CreateAppointment: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <label>
           Start Time:
-          <input type="datetime-local" value={startTime} onChange={(e) => setStartTime(e.target.value)} required />
+          <input
+            type="datetime-local"
+            value={startTime?.toISOString().substring(0, 16) || ""}
+            onChange={(e) =>
+              setStartTime(new Date(e.target.value.replace("T", " ")))
+            }
+            required
+          />
         </label>
         <br />
         <label>
           End Time:
-          <input type="datetime-local" value={endTime} onChange={(e) => setEndTime(e.target.value)} required />
+          <input
+            type="datetime-local"
+            value={endTime?.toISOString().substring(0, 16) || ""}
+            onChange={(e) =>
+              setEndTime(new Date(e.target.value.replace("T", " ")))
+            }
+            required
+          />
         </label>
         <br />
         <button type="submit">Create Appointment</button>
       </form>
-       
-       <br />
-
-       <div>
-      <h2>Create Appointment</h2>
-      <p>Date: {datePlaceholder}. TODO: show the data from the selected Appointment here</p>
-      {/* Resto del formulario para crear la cita */}
     </div>
-    </div>
-    
   );
 };
 

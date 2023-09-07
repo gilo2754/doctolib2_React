@@ -9,7 +9,7 @@ interface AppointmentFormProps {
 const AvailableAppointments: React.FC<AppointmentFormProps> = ({ onSubmit }) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-  const handleDateClick = (date: string) => {
+  const handleDateClick = (date: Date) => {
     setSelectedDate(date);
     console.log(date)
   };
@@ -22,8 +22,7 @@ const AvailableAppointments: React.FC<AppointmentFormProps> = ({ onSubmit }) => 
     "Viernes 8 de septiembre 2023 - 9:00 AM",
   ];
 
-const datePlaceholder = "2023-03-18T10:00:00";
-const timePlaceholder = "10:00:00";
+const datePlaceholder = "2023-03-18T10:30:00";
 
   return (
     <div>

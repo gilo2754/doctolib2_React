@@ -16,7 +16,7 @@ function Sidebar() {
           <Link to="/appointments">My appointments</Link>
         </li>
         <li>                
-          <Link to="/clinic-appointments">Appointments from the clinic</Link>
+          <Link to="/clinic-appointments">Administración de citas [solo visible para Doctores]</Link>
         </li>
       </ul>
       </div>

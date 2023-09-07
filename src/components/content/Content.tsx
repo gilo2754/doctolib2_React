@@ -15,7 +15,7 @@ function Content() {
           <Route path="/" element={<ClinicList />} />
           <Route path="/appointments" element={<MyAppointmentList />} />
           <Route path="/account" element={<Account />} />
-          <Route path="/create-appointment/:date" element={<CreateAppointment />}/>
+          <Route path="/create-appointment/:selectedDate" element={<CreateAppointment />}/>
           <Route path="/clinic-appointments" element={<ClinicAppointments />} />           
         </Routes>
       </div>
