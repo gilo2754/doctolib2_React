@@ -7,16 +7,16 @@ function Sidebar() {
         <div className="centered-content">
       <ul>
         <li>                
-          <Link to="/account">My account</Link>
+          <Link to="/account">Account</Link>
         </li>
         <li>
-          <Link to="/">Clinic List</Link>
+          <Link to="/">Clinics</Link>
         </li>
         <li>                
-          <Link to="/appointments">My appointments</Link>
+          <Link to="/appointments">Own appointments</Link>
         </li>
         <li>                
-          <Link to="/clinic-appointments">Administración de citas [solo visible para Doctores]</Link>
+          <Link to="/clinic-appointments">Administration for appointments [solo visible para Doctores]</Link>
         </li>
       </ul>
       </div>
