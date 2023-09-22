@@ -1,27 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-
-interface Clinic {
-  clinic_id: number;
-}
-
-interface User {
-  user_id: number;
-}
-
-interface Appointment {
-  appointment_status: string;
-  clinic: Clinic;
-  patient: User;
-  doctor: User;
-  startTime: Date;
-  endTime: Date;
-}
+import Appointment from "./appointment";
 
 const CreateAppointment: React.FC = () => {
-  const [startTime, setStartTime] = useState<Date | null>(null);
-  const [endTime, setEndTime] = useState<Date | null>(null);
+  const [startTime, setStartTime] = useState<string>("");
+  const [endTime, setEndTime] = useState<string>("");
   const [clinicId, setClinicId] = useState<number>(1);
   const [patientId, setPatientId] = useState<number>(1);
   const [doctorId, setDoctorId] = useState<number>(4);
@@ -30,14 +14,13 @@ const CreateAppointment: React.FC = () => {
 
   useEffect(() => {
     if (selectedDate) {
-      const parsedDate = new Date(selectedDate);
-      if (!isNaN(parsedDate.getTime())) {
-        setStartTime(parsedDate);
+      // Mantén la fecha en el formato que recibes de la API
+      setStartTime(selectedDate);
 
-        // Calculate endTime by adding 30 minutes to startTime
-        const calculatedEndTime = new Date(parsedDate.getTime() + 30 * 60 * 1000);
-        setEndTime(calculatedEndTime);
-      }
+      // Calcula endTime agregando 30 minutos a startTime
+      const startTimeDate = new Date(selectedDate);
+      startTimeDate.setMinutes(startTimeDate.getMinutes() + 30);
+      setEndTime(startTimeDate.toISOString().substring(0, 16));
     }
   }, [selectedDate]);
 
@@ -77,10 +60,8 @@ const CreateAppointment: React.FC = () => {
           Start Time:
           <input
             type="datetime-local"
-            value={startTime?.toISOString().substring(0, 16) || ""}
-            onChange={(e) =>
-              setStartTime(new Date(e.target.value.replace("T", " ")))
-            }
+            value={startTime}
+            onChange={(e) => setStartTime(e.target.value)}
             required
           />
         </label>
@@ -89,10 +70,8 @@ const CreateAppointment: React.FC = () => {
           End Time:
           <input
             type="datetime-local"
-            value={endTime?.toISOString().substring(0, 16) || ""}
-            onChange={(e) =>
-              setEndTime(new Date(e.target.value.replace("T", " ")))
-            }
+            value={endTime}
+            onChange={(e) => setEndTime(e.target.value)}
             required
           />
         </label>

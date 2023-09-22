@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Modal from 'react-modal'; // Importa react-modal
 import Clinic from '../clinic/Clinic';
-
-// Interface for Appointment
-interface Appointment {
-  appointment_id: number;
-  clinic: string; // Assuming you have a Clinic interface defined
-  patient: string; // Assuming you have a Patient interface defined
-  doctor: string; // Assuming you have a Doctor interface defined
-  startTime: string; // Use string or Date type based on API response
-  endTime: string; // Use string or Date type based on API response
-  appointment_status: string;
-}
+import Appointment from './appointment';
+import './MyAppointmentsList.css';
 
 const MyAppointmentsList: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [appointmentToCancel, setAppointmentToCancel] = useState<Appointment | null>(null);
 
   useEffect(() => {
     fetchAppointments();
@@ -29,21 +23,41 @@ const MyAppointmentsList: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const openModal = (appointment: Appointment) => {
+    setAppointmentToCancel(appointment);
+    setIsModalOpen(true);
+  };
 
-    const modifiedAppointment: Appointment = {
-      ...appointment, appointment_status: "CANCELLED"
-    };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
-    try {
-      const response = await axios.post(
-        "http://localhost:8081/api/v1/appointment/modify",
-        modifiedAppointment
-      );
-      console.log("Appointment was changed:", response.data);
-    } catch (error) {
-      console.error("Error changing values of appointment:", error);
+  const handleCancel = async () => {
+    if (appointmentToCancel) {
+      try {
+        const modifiedAppointment: Partial<Appointment> = {
+          appointment_id: appointmentToCancel.appointment_id,
+          appointment_status: "CANCELLED_BY_PATIENT",
+          clinic: { clinic_id: appointmentToCancel.clinic.clinic_id },
+          // TODO: Obtén el ID del usuario del paciente de alguna manera (puede ser a través de la autenticación)
+          patient: { user_id: 1 },
+          doctor: { user_id: appointmentToCancel.doctor.user_id },
+          endTime: appointmentToCancel.endTime,
+          startTime: appointmentToCancel.startTime,
+        };
+
+        const response = await axios.put(
+          "http://localhost:8081/api/v1/appointment/update",
+          modifiedAppointment
+        );
+
+        console.log("Appointment was changed:", response.data);
+        closeModal();
+        // Refresh the list of appointments after cancellation
+        fetchAppointments();
+      } catch (error) {
+        console.error("Error changing values of appointment:", error);
+      }
     }
   };
 
@@ -52,20 +66,32 @@ const MyAppointmentsList: React.FC = () => {
       <h1>Mis próximas citas</h1>
       <ul>
         {appointments.map(appointment => (
-        <form onSubmit={handleSubmit(appointment)}>
-
           <li key={appointment.appointment_id}>
             <p>Appointment ID: {appointment.appointment_id}</p>
-            <p>Clinic: "appointment.clinic/To be defined"</p>
+            <p>Clinic: {appointment.clinic.clinic_id}</p>
             <p>Start Time: {appointment.startTime}</p>
             <p>End Time: {appointment.endTime}</p>
             <p>Status: {appointment.appointment_status}</p>
-            <button type="submit">Cancel</button>
+            {appointment.appointment_status !== "CANCELLED_BY_DOCTOR" && appointment.appointment_status !== "CANCELLED_BY_PATIENT" && (
+              <button onClick={() => openModal(appointment)}>Cancel</button>
+            )}
           </li>
-          </form>
-
         ))}
       </ul>
+
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        className="modal-container"
+        overlayClassName="modal-overlay"
+      >
+        <div className="modal-content">
+          <h2>Confirmar cancelación</h2>
+          <p>¿Estás seguro de que deseas cancelar esta cita?</p>
+          <button onClick={handleCancel}>Sí, Cancelar</button>
+          <button onClick={closeModal}>Conservar cita</button>
+        </div>
+      </Modal>
     </div>
   );
 };
