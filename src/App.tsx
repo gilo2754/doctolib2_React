@@ -1,11 +1,6 @@
 import { QueryClient, QueryClientProvider } from "react-query";
 import "./App.css";
-import BookList from "./components/book/BookList";
-import ClinicList from "./components/clinic/ClinicList";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
-import CreateAppointment from "./components/appointments/CreateAppointment";
-import MyAppointmentList from "./components/appointments/MyAppointmentList";
-import Account from "./components/user/Account";
 import Sidebar from "./components/menu/Sidebar";
 import Content from "./components/content/Content";
 
