@@ -5,6 +5,8 @@ import Clinic from '../clinic/Clinic';
 import Appointment from './appointment';
 import './MyAppointmentsList.css';
 
+Modal.setAppElement('#root'); // Set the app element here
+
 const MyAppointmentsList: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

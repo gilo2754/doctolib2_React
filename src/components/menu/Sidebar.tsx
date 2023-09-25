@@ -4,16 +4,18 @@ import jwtDecode from 'jwt-decode';
 
 function Sidebar() {
   const [userRoles, setUserRoles] = useState([]);
+  const [jwtToken, setJwtToken] = useState<string | null>(null);
 
   useEffect(() => {
     // Obtén el token JWT del almacenamiento local
-    const token = localStorage.getItem('jwtToken');
+    setJwtToken( localStorage.getItem('jwtToken'));
     
-    if (token) {
-      const decodedToken = jwtDecode(token);
+    if (jwtToken) {
+      const decodedToken = jwtDecode(jwtToken);
       const roles = decodedToken.roles || []; // Supongamos que los roles están en un campo 'roles' del JWT
       setUserRoles(roles);
       console.log(roles);
+      //console.log(typeof userRoles);
     }
   }, []); // Este efecto se ejecutará solo una vez al montar el componente
 
@@ -30,16 +32,19 @@ function Sidebar() {
           <li>
             <Link to="/appointments">Own appointments</Link>
           </li>
-          TOFIX: visible for Doctors
+          TODO: visible for Doctors
           {userRoles.includes('ROLE_DOCTOR') && (
             <li>
               <Link to="/clinic-appointments">Administration for appointments [solo visible para Doctores]</Link>
             </li>
           )}
         </ul>
-        {userRoles.length > 0 && (
+        { (
           <div>
-            <p>Tus Roles: {userRoles.join(', ')}</p>
+            TOFIX: Roles to show/hide components
+          {userRoles.map((role, index) => (
+          <li key={index}>{role}</li>
+        ))}               
           </div>
         )}
       </div>
