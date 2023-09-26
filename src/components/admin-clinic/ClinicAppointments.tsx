@@ -1,85 +1,124 @@
 import React, { useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios'; // Importa AxiosError para manejar errores específicos de Axios
+import Clinic from '../clinic/Clinic';
+import Appointment from '../appointments/appointment';
+import Modal from 'react-modal'; // Importa react-modal
+
+Modal.setAppElement('#root'); // Set the app element here
 
 interface ClinicAppointment {
-  appointment_id: number;
-  clinic: {
-    clinic_id: number;
-    clinic_name: string;
-    clinic_description: string;
-    clinic_address: string;
-    clinic_phone_number: string;
-    clinic_state: string;
-    speciality: string;
-    openingTime: string;
-    closingTime: string;
-  };
-  doctor: {
-    user_id: number;
-    role: string;
-    username: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    speciality: string;
-  };
+  appointment_id: number; 
 }
 
 const ClinicAppointments: React.FC = () => {
-  const [clinicAppointments, setClinicAppointments] = useState<ClinicAppointment[]>([]);
-  const [loading, setLoading] = useState(true); // Agrega un estado de carga
-  const [error, setError] = useState<string | null>(null); // Agrega un estado de error
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [appointmentToHandle, setAppointmentToHandle] = useState<Appointment | null>(null);
+
+  const TEMPORARY_CLINIC_ID =1;
 
   useEffect(() => {
-    // Realiza la solicitud GET a la API para obtener las citas clínicas de la clínica con ID 4
-    axios.get('http://localhost:8081/api/v1/appointment/clinic/1')
-      .then((response) => {
-        setClinicAppointments(response.data);
-        setLoading(false); // Establece el estado de carga en falso cuando se completa la solicitud con éxito
-        setError(null); // Limpia el estado de error
-      })
-      .catch((error: AxiosError) => {
-        if (error.response && error.response.status === 404) {
-          // Maneja el error 404 específicamente
-          setClinicAppointments([]); // Establece la lista de citas en vacío
-          setLoading(false); // Establece el estado de carga en falso
-          setError('No se encontraron citas clínicas para esta clínica.'); // Establece un mensaje de error
-        } else {
-          // Maneja otros errores
-          console.error('Error al obtener las citas clínicas:', error);
-          setLoading(false); // Establece el estado de carga en falso
-          setError('Ocurrió un error al obtener las citas clínicas.'); // Establece un mensaje de error general
-        }
-      });
+    fetchAppointments();
   }, []);
 
+  const fetchAppointments = async () => {
+    try {
+      const response = await axios.get('http://localhost:8081/api/v1/appointment/clinic/1');
+      setAppointments(response.data);
+    } catch (error) {
+      console.error('Error fetching appointments:', error);
+    }
+  };
+
+  const openModal = (appointment: Appointment) => {
+    setAppointmentToHandle(appointment);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  const handleAppointment = async (appointment: Appointment, appointmentStatus: string) => {
+    if (appointment) {
+      try {
+        const modifiedAppointment: Partial<Appointment> = {
+          appointment_id: appointment.appointment_id,
+          appointment_status: appointmentStatus,
+          clinic: { clinic_id: appointment.clinic.clinic_id },
+          // TODO: Obtén el ID del usuario del paciente de alguna manera (puede ser a través de la autenticación)
+          patient: { user_id: 1 },
+          doctor: { user_id: appointment.doctor.user_id },
+          endTime: appointment.endTime,
+          startTime: appointment.startTime,
+        };
+  
+        // Envía una solicitud al servidor para modificar el estado de la cita
+        const response = await axios.put(
+          "http://localhost:8081/api/v1/appointment/update",
+          modifiedAppointment
+        );
+  
+        console.log("Appointment was changed:", response.data);
+        closeModal();
+        // Refresh the list of appointments after the status change
+        fetchAppointments();
+      } catch (error) {
+        console.error("Error changing appointment status:", error);
+      }
+    }
+  };
+  
   return (
     <div>
-      <h2>Citas de la clínica con la cuenta activa en este momento</h2>
-      {loading ? (
-        <p>Cargando...</p>
-      ) : error ? (
-        <p>{error}</p>
-      ) : clinicAppointments.length === 0 ? (
-        <p>No se encontraron citas clínicas para esta clínica.</p>
-      ) : (
-        <ul>
-          {clinicAppointments.map((appointment) => (
-            <li key={appointment.appointment_id}>
-              <strong>Cita ID:</strong> {appointment.appointment_id}
-              <br />
-              <strong>Doctor:</strong> {appointment.doctor.firstName} {appointment.doctor.lastName}
-              <br />
-              <strong>Especialidad:</strong> {appointment.doctor.speciality}
-              <br />
-              <strong>Descripción de la Clínica:</strong> {appointment.clinic.clinic_description}
-              <br />
-              {/* Agrega aquí más detalles de la cita clínica */}
-            </li>
-          ))}
-        </ul>
-      )}
+  <h1>Mis próximas citas</h1>
+  {appointments.map(appointment => (
+    <div key={appointment.appointment_id} className="appointment-box">
+      <h2>Appointment ID: {appointment.appointment_id}</h2>
+      <p>Clinic ID: {appointment.clinic.clinic_id}</p>
+      <p>{appointment.clinic.clinic_name}</p>
+      <p>{appointment.clinic.clinic_address}</p>
+      <p>Start Time: {appointment.startTime}</p>
+      <p>Doctor: {appointment.doctor.firstName} {appointment.doctor.lastName}</p>
+      <p>Status: {appointment.appointment_status}</p>
+      {appointment.appointment_status !== 'CANCELLED_BY_DOCTOR' &&
+              appointment.appointment_status !== 'CANCELLED_BY_PATIENT' && (
+                <button onClick={() => openModal(appointment)}>
+                  Cancelar
+                </button>
+              )}
+                 {appointment.appointment_status !== 'COMPLETED' &&
+              appointment.appointment_status !== 'CONFIRMED' && (
+                    <button onClick={() => openModal(appointment)}>Confirmar</button>
+                    )}
     </div>
+  ))}
+
+<Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        className="modal-container"
+        overlayClassName="modal-overlay"
+      >
+        <div className="modal-content">
+          <h2>Confirmar acción</h2>
+          {appointmentToHandle && (
+            <p>{`¿Estás seguro de que deseas ${
+              /* Mostrar un mensaje diferente según la acción */
+              appointmentToHandle.appointment_status === 'CANCELLED_BY_DOCTOR'
+                ? 'cancelar esta cita?'
+                : 'aprobar esta cita?'
+            }`}</p>
+          )}
+          <button onClick={() => handleAppointment(appointmentToHandle, 'CANCELLED_BY_DOCTOR')}>
+            Sí, Cancelar
+          </button>
+          <button onClick={() => handleAppointment(appointmentToHandle, 'CONFIRMED')}>
+            Aprobar
+          </button>
+          <button onClick={closeModal}>No modificar</button>
+        </div>
+      </Modal>
+</div>
   );
 };
 

@@ -69,13 +69,12 @@ const MyAppointmentsList: React.FC = () => {
   {appointments.map(appointment => (
     <div key={appointment.appointment_id} className="appointment-box">
       <h2>Appointment ID: {appointment.appointment_id}</h2>
-      <p>Clinic: {appointment.clinic.clinic_id}</p>
+      <p>Clinic ID: {appointment.clinic.clinic_id}</p>
+      <p>{appointment.clinic.clinic_name}</p>
+      <p>{appointment.clinic.clinic_address}</p>
       <p>Start Time: {appointment.startTime}</p>
-      <p>End Time: {appointment.endTime}</p>
+      <p>Doctor: {appointment.doctor.firstName} {appointment.doctor.lastName}</p>
       <p>Status: {appointment.appointment_status}</p>
-      <p>
-        Doctor: {appointment.doctor.firstName} {appointment.doctor.lastName}
-      </p>
       {appointment.appointment_status !== "CANCELLED_BY_DOCTOR" &&
         appointment.appointment_status !== "CANCELLED_BY_PATIENT" && (
           <button onClick={() => openModal(appointment)}>Cancel</button>

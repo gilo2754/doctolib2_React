@@ -12,6 +12,8 @@ interface Appointment {
 
   interface Clinic {
     clinic_id: number;
+    clinic_name: string;
+    clinic_address: string;
   }
   
   interface User {
