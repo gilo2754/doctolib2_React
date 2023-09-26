@@ -16,6 +16,8 @@ interface Appointment {
   
   interface User {
     user_id: number;
+    firstName: string;
+    lastName: string;
   }
 
   export default Appointment;

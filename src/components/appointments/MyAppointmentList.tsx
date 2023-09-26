@@ -65,36 +65,39 @@ const MyAppointmentsList: React.FC = () => {
 
   return (
     <div>
-      <h1>Mis próximas citas</h1>
-      <ul>
-        {appointments.map(appointment => (
-          <li key={appointment.appointment_id}>
-            <p>Appointment ID: {appointment.appointment_id}</p>
-            <p>Clinic: {appointment.clinic.clinic_id}</p>
-            <p>Start Time: {appointment.startTime}</p>
-            <p>End Time: {appointment.endTime}</p>
-            <p>Status: {appointment.appointment_status}</p>
-            {appointment.appointment_status !== "CANCELLED_BY_DOCTOR" && appointment.appointment_status !== "CANCELLED_BY_PATIENT" && (
-              <button onClick={() => openModal(appointment)}>Cancel</button>
-            )}
-          </li>
-        ))}
-      </ul>
-
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        className="modal-container"
-        overlayClassName="modal-overlay"
-      >
-        <div className="modal-content">
-          <h2>Confirmar cancelación</h2>
-          <p>¿Estás seguro de que deseas cancelar esta cita?</p>
-          <button onClick={handleCancel}>Sí, Cancelar</button>
-          <button onClick={closeModal}>Conservar cita</button>
-        </div>
-      </Modal>
+  <h1>Mis próximas citas</h1>
+  {appointments.map(appointment => (
+    <div key={appointment.appointment_id} className="appointment-box">
+      <h2>Appointment ID: {appointment.appointment_id}</h2>
+      <p>Clinic: {appointment.clinic.clinic_id}</p>
+      <p>Start Time: {appointment.startTime}</p>
+      <p>End Time: {appointment.endTime}</p>
+      <p>Status: {appointment.appointment_status}</p>
+      <p>
+        Doctor: {appointment.doctor.firstName} {appointment.doctor.lastName}
+      </p>
+      {appointment.appointment_status !== "CANCELLED_BY_DOCTOR" &&
+        appointment.appointment_status !== "CANCELLED_BY_PATIENT" && (
+          <button onClick={() => openModal(appointment)}>Cancel</button>
+        )}
     </div>
+  ))}
+
+  <Modal
+    isOpen={isModalOpen}
+    onRequestClose={closeModal}
+    className="modal-container"
+    overlayClassName="modal-overlay"
+  >
+    <div className="modal-content">
+      <h2>Confirmar cancelación</h2>
+      <p>¿Estás seguro de que deseas cancelar esta cita?</p>
+      <button onClick={handleCancel}>Sí, Cancelar</button>
+      <button onClick={closeModal}>Conservar cita</button>
+    </div>
+  </Modal>
+</div>
+
   );
 };
 
