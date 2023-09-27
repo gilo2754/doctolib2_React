@@ -80,14 +80,15 @@ const ClinicAppointments: React.FC = () => {
       <p>Start Time: {appointment.startTime}</p>
       <p>Doctor: {appointment.doctor.firstName} {appointment.doctor.lastName}</p>
       <p>Status: {appointment.appointment_status}</p>
-      {appointment.appointment_status !== 'CANCELLED_BY_DOCTOR' &&
-              appointment.appointment_status !== 'CANCELLED_BY_PATIENT' && (
+      {appointment.appointment_status === 'PENDING' ||
+              appointment.appointment_status === 'CONFIRMED' && (
                 <button onClick={() => openModal(appointment)}>
                   Cancelar
                 </button>
               )}
-                 {appointment.appointment_status !== 'COMPLETED' &&
-              appointment.appointment_status !== 'CONFIRMED' && (
+                 {appointment.appointment_status === 'PENDING' && 
+                 appointment.appointment_status !== 'COMPLETED' &&
+                 appointment.appointment_status !== 'CONFIRMED' && (
                     <button onClick={() => openModal(appointment)}>Confirmar</button>
                     )}
     </div>
