@@ -23,7 +23,7 @@ const ClinicAppointments: React.FC = () => {
 
   const fetchAppointments = async () => {
     try {
-      const response = await axios.get('http://localhost:8081/api/v1/appointment/clinic/1');
+      const response = await axios.get(`http://localhost:8081/api/v1/appointment/clinic/${TEMPORARY_CLINIC_ID}`);
       setAppointments(response.data);
     } catch (error) {
       console.error('Error fetching appointments:', error);
