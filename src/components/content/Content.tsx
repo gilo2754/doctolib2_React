@@ -4,7 +4,7 @@ import ClinicAppointments from '../admin-clinic/ClinicAppointments';
 import CreateAppointment from '../appointments/CreateAppointment';
 import MyAppointmentList from '../appointments/MyAppointmentList';
 import ClinicList from '../clinic/ClinicList';
-import Account from '../user/Account';
+import UserInfo from '../user/UserInfo';
 import Login from '../user/Login';
 
 function Content() {
@@ -14,7 +14,7 @@ function Content() {
         <Routes>
           <Route path="/" element={<ClinicList />} />
           <Route path="/appointments" element={<MyAppointmentList />} />
-          <Route path="/account" element={<Account />} />
+          <Route path="/account" element={<UserInfo />} />
           <Route path="/login" element={<Login />} />
           <Route path="/create-appointment/:selectedDate" element={<CreateAppointment />}/>
           <Route path="/clinic-appointments" element={<ClinicAppointments />} />           
