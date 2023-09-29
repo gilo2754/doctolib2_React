@@ -5,19 +5,30 @@ import jwtDecode from 'jwt-decode';
 function Sidebar() {
   const [userRoles, setUserRoles] = useState([]);
   const [jwtToken, setJwtToken] = useState<string | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado para rastrear el estado de la sesión
 
   useEffect(() => {
     // Obtén el token JWT del almacenamiento local
-    setJwtToken( localStorage.getItem('jwtToken'));
-    
+    setJwtToken(localStorage.getItem('jwtToken'));
+
     if (jwtToken) {
       const decodedToken = jwtDecode(jwtToken);
-      const roles = decodedToken.roles || []; // Supongamos que los roles están en un campo 'roles' del JWT
+      const roles = decodedToken.roles || [];
       setUserRoles(roles);
-      console.log(roles);
-      //console.log(typeof userRoles);
+      setIsLoggedIn(true); // Si hay un token JWT, el usuario está autenticado
+    } else {
+      setIsLoggedIn(false); // Si no hay un token JWT, el usuario no está autenticado
     }
-  }, []); // Este efecto se ejecutará solo una vez al montar el componente
+  }, [jwtToken]);
+
+  const handleLogout = () => {
+    // Elimina el token JWT del almacenamiento local
+    localStorage.removeItem('jwtToken');
+      // Recargar la página
+      window.location.reload();
+    // Actualiza el estado de la sesión a "cerrada"
+    setIsLoggedIn(false);
+  };
 
   return (
     <nav className="sidebar">
@@ -32,19 +43,29 @@ function Sidebar() {
           <li>
             <Link to="/appointments">Own appointments</Link>
           </li>
-          TODO: visible for Doctors
-          {userRoles.includes('ROLE_DOCTOR') && (
+          {isLoggedIn && userRoles.includes('ROLE_DOCTOR') && (
             <li>
               <Link to="/clinic-appointments">Administration for appointments [solo visible para Doctores]</Link>
             </li>
           )}
         </ul>
-        { (
+        <div>
+          {isLoggedIn ? (
+            <div>
+              <button onClick={handleLogout}>Cerrar Sesión</button>
+            </div>
+          ) : (
+            <button>
+              <Link to="/login">Iniciar Sesión</Link>
+            </button>
+          )}
+        </div>
+        {isLoggedIn && (
           <div>
             TOFIX: Roles to show/hide components
-          {userRoles.map((role, index) => (
-          <li key={index}>{role}</li>
-        ))}               
+            {userRoles.map((role, index) => (
+              <li key={index}>{role}</li>
+            ))}
           </div>
         )}
       </div>

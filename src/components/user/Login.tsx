@@ -3,22 +3,30 @@ import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState<string>(''); // Estado para el email
+  const [password, setPassword] = useState<string>(''); // Estado para la contraseña
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [jwtToken, setJwtToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   // Efecto para verificar si hay un JWT almacenado en localStorage al cargar el componente
   useEffect(() => {
-    setJwtToken( localStorage.getItem('jwtToken'));
-    if (jwtToken) {
-      setJwtToken(jwtToken);
-      const decodedToken = jwtDecode(jwtToken);
-      const userRole = decodedToken.role; // Suponiendo que 'role' es el campo que contiene el rol en el token
+    const token = localStorage.getItem('jwtToken');
+    if (token) {
+      setJwtToken(token);
+      const decodedToken = jwtDecode(token);
+      const userRole = decodedToken.role;
       console.log('Rol del usuario:', userRole);
     }
-  }, [jwtToken]); //CHECK: puse jwtToken en el arreglo
+
+    // Verificar si hay credenciales guardadas en el estado local
+    const savedEmail = localStorage.getItem('savedEmail');
+    const savedPassword = localStorage.getItem('savedPassword');
+    if (savedEmail && savedPassword) {
+      setEmail(savedEmail);
+      setPassword(savedPassword);
+    }
+  }, []);
 
   const handleLogin = async () => {
     setError(null); // Limpiar cualquier error previo al intentar iniciar sesión
@@ -33,6 +41,12 @@ const Login: React.FC = () => {
       setJwtToken(token);
       localStorage.setItem('jwtToken', token);
 
+      // Guardar las credenciales en el estado local
+      localStorage.setItem('savedEmail', email);
+      localStorage.setItem('savedPassword', password);
+
+      // Recargar la página
+      window.location.reload();
     } catch (error) {
       if (error.response) {
         // El servidor respondió con un estado de error (por ejemplo, credenciales incorrectas)
@@ -49,6 +63,13 @@ const Login: React.FC = () => {
     // Borrar el JWT del estado y de localStorage
     setJwtToken(null);
     localStorage.removeItem('jwtToken');
+
+    // Borrar las credenciales del estado local
+    localStorage.removeItem('savedEmail');
+    localStorage.removeItem('savedPassword');
+
+    // Recargar la página
+    window.location.reload();
   };
 
   return (
@@ -91,8 +112,7 @@ const Login: React.FC = () => {
       )}
       {jwtToken && (
         <div>
-          <h3>Token JWT:</h3>
-          <p>{jwtToken}</p>
+          <h3>JWT esta ahi!</h3>
         </div>
       )}
     </div>
