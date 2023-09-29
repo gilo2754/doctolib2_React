@@ -1,10 +1,10 @@
-import { Box, Typography } from "@mui/material";
-import { useState } from "react";
+import React from "react";
+import { Box, Typography, Button } from "@mui/material";
 import { useQuery } from "react-query";
-import { Book, Clinic } from "../../App";
-import BookItem from "../book/Book";
+import { Clinic } from "../../App";
 import ClinicItem from "./Clinic";
 import LoadingWrapper from "../loading-wrapper/LoadingWrapper";
+import { useAuth } from "../Auth/AuthContext";
 
 const ClinicList: React.FC = () => {
   const { isLoading, error, data } = useQuery("clinics", () =>
@@ -12,6 +12,7 @@ const ClinicList: React.FC = () => {
       response.json()
     )
   );
+  const { isLoggedIn, userRoles, jwtToken, logout } = useAuth();
 
   return (
     <Box
@@ -24,25 +25,30 @@ const ClinicList: React.FC = () => {
       }}
     >
       <Typography variant="h2" sx={{ mb: 4 }}>
-        Clinicas
+        Clínicas
       </Typography>
+      <div>
+        {isLoggedIn ? (
+          <div>
+            <p>Usuario autenticado</p>
+            <p>Roles: {userRoles.join(", ")}</p>
+            <p>Token JWT: {jwtToken}</p>
+            <Button onClick={logout}>Cerrar Sesión</Button>
+          </div>
+        ) : (
+          <p>Usuario no autenticado</p>
+        )}
+      </div>
       <LoadingWrapper loading={isLoading}>
         <>
-          {error ||
-            (!data && (
-              <Box>
-                <Typography variant="body1" sx={{ mb: 4 }}>
-                  No hay clinicas aún 😞
-                </Typography>
-              </Box>
-            ))}
+          {error || (!data && <p>No hay clínicas aún 😞</p>)}
           {data && (
             <>
-                {(data as Clinic[])
-                  .slice(0, 8)
-                  .map((clinic, index) => (
-                    <ClinicItem clinic={clinic} key={index} />
-                  ))}
+              {(data as Clinic[])
+                .slice(0, 8)
+                .map((clinic, index) => (
+                  <ClinicItem clinic={clinic} key={index} />
+                ))}
             </>
           )}
         </>

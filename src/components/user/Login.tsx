@@ -1,32 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import { useAuth } from '../Auth/AuthContext';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>(''); // Estado para el email
   const [password, setPassword] = useState<string>(''); // Estado para la contraseña
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [jwtToken, setJwtToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  // Efecto para verificar si hay un JWT almacenado en localStorage al cargar el componente
-  useEffect(() => {
-    const token = localStorage.getItem('jwtToken');
-    if (token) {
-      setJwtToken(token);
-      const decodedToken = jwtDecode(token);
-      const userRole = decodedToken.role;
-      console.log('Rol del usuario:', userRole);
-    }
-
-    // Verificar si hay credenciales guardadas en el estado local
-    const savedEmail = localStorage.getItem('savedEmail');
-    const savedPassword = localStorage.getItem('savedPassword');
-    if (savedEmail && savedPassword) {
-      setEmail(savedEmail);
-      setPassword(savedPassword);
-    }
-  }, []);
+  const { isLoggedIn, userRoles, jwtToken, logout, setJwtToken } = useAuth();
 
   const handleLogin = async () => {
     setError(null); // Limpiar cualquier error previo al intentar iniciar sesión
@@ -59,26 +41,13 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleLogout = () => {
-    // Borrar el JWT del estado y de localStorage
-    setJwtToken(null);
-    localStorage.removeItem('jwtToken');
-
-    // Borrar las credenciales del estado local
-    localStorage.removeItem('savedEmail');
-    localStorage.removeItem('savedPassword');
-
-    // Recargar la página
-    window.location.reload();
-  };
-
   return (
     <div>
       <h2>Iniciar Sesión</h2>
       {jwtToken ? (
         <div>
           <p>¡Has iniciado sesión! </p>
-          <button onClick={handleLogout}>Cerrar Sesión</button>
+          <button onClick={logout}>Cerrar Sesión</button>
         </div>
       ) : (
         <div>
