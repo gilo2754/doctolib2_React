@@ -106,7 +106,9 @@ const UserInfo: React.FC = () => {
           </form>
         </div>
       ) : (
-        <p>Cargando información de la cuenta...</p>
+        <p>Cargando información de la cuenta...
+          Ya iniciaste sesion?
+        </p>
       )}
     </div>
   );

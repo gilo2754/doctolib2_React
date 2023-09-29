@@ -40,6 +40,12 @@ const Login: React.FC = () => {
       setJwtToken(null);
     }
   };
+  const handlePasswordKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      // Si se presionó la tecla "Enter", llama a la función handleLogin
+      handleLogin();
+    }
+  };
 
   return (
     <div>
@@ -65,6 +71,7 @@ const Login: React.FC = () => {
               type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={handlePasswordKeyPress}
             />
             <button onClick={() => setShowPassword(!showPassword)}>
               {showPassword ? 'Ocultar' : 'Mostrar'}
