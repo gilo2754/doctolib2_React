@@ -4,12 +4,12 @@ import React, { useState } from 'react';
 const SignUp = () => {
   const [formData, setFormData] = useState({
     username: '',
-    password: '',
-    firstName: '',
-    lastName: '',
+    password: 'P123',
+    firstName: 'carlo',
+    lastName: 'menji',
     email: '',
-    phoneNumber: '',
-    dateOfBirth: '',
+    phoneNumber: '0154564351685',
+    dateOfBirth: '1990-01-01',
     social_number: '',
     role: 'PATIENT',
   });
@@ -17,6 +17,16 @@ const SignUp = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const generatePlaceholders = () => {
+    const username = `carlo${Math.floor(Math.random() * 100)}`;
+    const email = `carlo${Math.floor(Math.random() * 100)}@example.com`;
+    setFormData({
+      ...formData,
+      username,
+      email,
+    });
   };
 
   const handleSubmit = async () => {
@@ -109,6 +119,9 @@ const SignUp = () => {
             onChange={handleInputChange}
           />
         </div>
+        <button type="button" onClick={generatePlaceholders}>
+          Generar Placeholders
+        </button>
         <button type="submit">Registrarse</button>
       </form>
     </div>
