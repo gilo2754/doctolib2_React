@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Link } from "@mui/material";
 import { useQuery } from "react-query";
 import { Clinic } from "../../App";
 import ClinicItem from "./Clinic";
@@ -27,18 +27,6 @@ const ClinicList: React.FC = () => {
       <Typography variant="h2" sx={{ mb: 4 }}>
         Clínicas
       </Typography>
-      <div>
-        {isLoggedIn ? (
-          <div>
-            <p>Usuario autenticado</p>
-            <p>Roles: {userRoles.join(", ")}</p>
-            <p>Token JWT: {jwtToken}</p>
-            <Button onClick={logout}>Cerrar Sesión</Button>
-          </div>
-        ) : (
-          <p>Usuario no autenticado</p>
-        )}
-      </div>
       <LoadingWrapper loading={isLoading}>
         <>
           {error || (!data && <p>No hay clínicas aún 😞</p>)}

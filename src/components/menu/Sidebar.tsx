@@ -61,9 +61,11 @@ function Sidebar() {
               <button onClick={handleLogout}>Cerrar Sesión</button>
             </div>
           ) : (
-            <button>
-              <Link to="/login">Iniciar Sesión</Link>
-            </button>
+            <><button>
+                <Link to="/login">Iniciar Sesión</Link>
+              </button><button>
+                  <Link to="/register">Registrarse</Link>
+                </button></>
           )}
         </div>
         {isLoggedIn && (
