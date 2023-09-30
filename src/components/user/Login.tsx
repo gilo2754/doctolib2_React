@@ -60,7 +60,7 @@ const Login: React.FC = () => {
       {jwtToken ? (
         <div>
           <p>¡Has iniciado sesión! </p>
-          <button onClick={logout}>Cerrar Sesión</button>
+          <button className="btn btn-danger" onClick={logout}>Cerrar Sesión</button>
         </div>
       ) : (
         <div>
