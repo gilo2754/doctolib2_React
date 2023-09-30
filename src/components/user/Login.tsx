@@ -4,8 +4,10 @@ import jwtDecode from 'jwt-decode';
 import { useAuth } from '../Auth/AuthContext';
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState<string>(''); // Estado para el email
-  const [password, setPassword] = useState<string>(''); // Estado para la contraseña
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { isLoggedIn, userRoles, jwtToken, logout, setJwtToken } = useAuth();
@@ -14,8 +16,8 @@ const Login: React.FC = () => {
     setError(null); // Limpiar cualquier error previo al intentar iniciar sesión
     try {
       const response = await axios.post('http://localhost:8081/api/v1/login', {
-        email,
-        password,
+        email: formData.email,
+        password: formData.password,
       });
 
       // Guardar el token JWT en el estado y en localStorage
@@ -24,8 +26,8 @@ const Login: React.FC = () => {
       localStorage.setItem('jwtToken', token);
 
       // Guardar las credenciales en el estado local
-      localStorage.setItem('savedEmail', email);
-      localStorage.setItem('savedPassword', password);
+      localStorage.setItem('savedEmail', formData.email);
+      localStorage.setItem('savedPassword', formData.password);
 
       // Recargar la página
       window.location.reload();
@@ -40,9 +42,14 @@ const Login: React.FC = () => {
       setJwtToken(null);
     }
   };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
   const handlePasswordKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      // Si se presionó la tecla "Enter", llama a la función handleLogin
       handleLogin();
     }
   };
@@ -57,27 +64,37 @@ const Login: React.FC = () => {
         </div>
       ) : (
         <div>
-          <div>
-            <label>Email:</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+      <div className="mb-3">
+              <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            className="form-control"
+            required
+            placeholder="E-Mail" 
+
+          />
           </div>
-          <div>
-            <label>Contraseña:</label>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onKeyDown={handlePasswordKeyPress}
-            />
-            <button onClick={() => setShowPassword(!showPassword)}>
-              {showPassword ? 'Ocultar' : 'Mostrar'}
-            </button>
-          </div>
-          <button onClick={handleLogin}>Iniciar Sesión</button>
+          <div className="mb-3 d-flex align-items-center">
+  <input
+    type={showPassword ? 'text' : 'password'}
+    id="password"
+    name="password"
+    value={formData.password}
+    onChange={handleInputChange}
+    onKeyDown={handlePasswordKeyPress}
+    className="form-control"
+    required
+    placeholder="Contraseña"
+  />
+  <button className="btn btn-primary ms-2" onClick={() => setShowPassword(!showPassword)}>
+    {showPassword ? 'Ocultar' : 'Mostrar'}
+  </button>
+</div>
+
+          <button className="btn btn-dark" onClick={handleLogin}>Iniciar Sesión</button>
 
           {error && (
             <div>

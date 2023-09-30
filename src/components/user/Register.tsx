@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-const SignUp = () => {
+const Register = () => {
   const [formData, setFormData] = useState({
     username: '',
     password: 'P123',
@@ -42,90 +43,99 @@ const SignUp = () => {
 
   return (
     <div>
-      <h2>Registro</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nombre de Usuario*:</label>
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleInputChange}
-            required // Campo obligatorio
-          />
-        </div>
-        <div>
-          <label>Contraseña*:</label>
+    <form onSubmit={handleSubmit}>
+    <h2>Registro</h2>
+
+      <div className="mb-3">
+        <input
+          type="text"
+          name="username"
+          value={formData.username}
+          onChange={handleInputChange}
+          className="form-control"
+          placeholder="Nombre de Usuario" // Marcador de posición
+          required // Campo obligatorio
+        />
+      </div>
+        <div className="mb-3">
           <input
             type="password"
             name="password"
             value={formData.password}
             onChange={handleInputChange}
+            className="form-control"
+            placeholder="Contraseña" // Marcador de posición
             required // Campo obligatorio
           />
         </div>
-        <div>
-          <label>Nombre:</label>
+        <div className="mb-3">
           <input
             type="text"
             name="firstName"
             value={formData.firstName}
             onChange={handleInputChange}
+            className="form-control"
+            placeholder="Nombre" // Marcador de posición
           />
         </div>
-        <div>
-          <label>Apellido:</label>
+        <div className="mb-3">
           <input
             type="text"
             name="lastName"
             value={formData.lastName}
             onChange={handleInputChange}
+            className="form-control"
+            placeholder="Apellido" // Marcador de posición
           />
         </div>
-        <div>
-          <label>Correo Electrónico*:</label>
+        <div className="mb-3">
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleInputChange}
+            className="form-control"
+            placeholder="Correo Electrónico" // Marcador de posición
             required // Campo obligatorio
           />
         </div>
-        <div>
-          <label>Número de Teléfono:</label>
+        <div className="mb-3">
           <input
             type="tel"
             name="phoneNumber"
             value={formData.phoneNumber}
             onChange={handleInputChange}
+            className="form-control"
+            placeholder="Número de Teléfono" // Marcador de posición
           />
         </div>
-        <div>
-          <label>Fecha de Nacimiento:</label>
+        <div className="mb-3">
           <input
             type="date"
             name="dateOfBirth"
             value={formData.dateOfBirth}
             onChange={handleInputChange}
+            className="form-control"
+            placeholder="Fecha de Nacimiento" // Marcador de posición
           />
         </div>
-        <div>
-          <label>Número Social:</label>
+        <div className="mb-3">
           <input
             type="text"
             name="social_number"
             value={formData.social_number}
             onChange={handleInputChange}
+            className="form-control"
+            placeholder="Número Social" // Marcador de posición
           />
         </div>
-        <button type="button" onClick={generatePlaceholders}>
+        <button type="button" className="btn btn-primary me-2" onClick={generatePlaceholders}>
           Generar Placeholders
         </button>
-        <button type="submit">Registrarse</button>
+        <button type="submit" className="btn btn-success">Registrarse</button>
       </form>
     </div>
   );
 };
 
-export default SignUp;
+export default Register;

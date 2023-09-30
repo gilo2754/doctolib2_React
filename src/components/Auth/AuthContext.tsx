@@ -18,8 +18,11 @@ export function AuthProvider({ children }) {
 
     if (token) {
       const decodedToken = jwtDecode(token);
-      const roles = decodedToken.roles || [];
+      const roles = decodedToken.role || [];
       setUserRoles(roles);
+      console.log('Roles del usuario:', roles);
+      console.log('Roles del usuario de useState:', userRoles);
+
       setIsLoggedIn(true); // Si hay un token JWT, el usuario está autenticado
     } else {
       setIsLoggedIn(false); // Si no hay un token JWT, el usuario no está autenticado

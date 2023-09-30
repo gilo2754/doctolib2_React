@@ -24,8 +24,8 @@ function Sidebar() {
   const handleLogout = () => {
     // Elimina el token JWT del almacenamiento local
     localStorage.removeItem('jwtToken');
-      // Recargar la página
-      window.location.reload();
+    // Recargar la página
+    window.location.reload();
     // Actualiza el estado de la sesión a "cerrada"
     setIsLoggedIn(false);
   };
@@ -33,41 +33,57 @@ function Sidebar() {
   return (
     <nav className="sidebar">
       <div className="centered-content">
-        {isLoggedIn &&  (
-        <ul>
-          <li>
-            <Link to="/account">Account</Link>
-          </li>
-         
-        
-          <li>
-            <Link to="/appointments">Own appointments</Link>
-          </li>
-
-            <li>
-              <Link to="/clinic-appointments">Administration for appointments [solo visible para Doctores]</Link>
+      <ul className="nav flex-column nav-pills">
+          <li className="nav-item">
+            <Link to="/" className="nav-link">
+              Clinics
+            </Link>
             </li>
-         
         </ul>
-        )}
-        <ul>
-         <li>
-            <Link to="/">Clinics</Link>
-          </li>
+        {isLoggedIn && (
+          <ul className="nav flex-column nav-pills"  data-toggle="pill">
+            <li className="nav-item">
+              <Link to="/account" className="nav-link">
+                Account
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/appointments" className="nav-link">
+                Own appointments
+              </Link>
+            </li>
+            {userRoles.includes('DOCTOR') && (
+              <li className="nav-item">
+                <Link to="/clinic-appointments" className="nav-link">
+                  Administration for appointments [solo visible para Doctores]
+                </Link>
+              </li>
+            )}
           </ul>
+        )}
+
         <div>
           {isLoggedIn ? (
             <div>
-              <button onClick={handleLogout}>Cerrar Sesión</button>
+              <button onClick={handleLogout} className="btn btn-danger">
+                Cerrar Sesión
+              </button>
             </div>
           ) : (
-            <><button>
+            <>
+            <ul className="nav flex-column nav-pills">
+            <li className="nav-item">
                 <Link to="/login">Iniciar Sesión</Link>
-              </button><button>
-                  <Link to="/register">Registrarse</Link>
-                </button></>
+                </li>
+                <li className="nav-item">
+                <Link to="/register">Registrarse</Link>
+                </li>
+              </ul>
+
+            </>
           )}
         </div>
+
         {isLoggedIn && (
           <div>
             TOFIX: Roles to show/hide components
