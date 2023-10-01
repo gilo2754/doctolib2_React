@@ -11,6 +11,18 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { isLoggedIn, userRoles, jwtToken, logout, setJwtToken } = useAuth();
+const  [username, setUsername] = useState();
+  useEffect(() => {
+    // Obtén el token JWT del almacenamiento local
+    const token = localStorage.getItem('jwtToken');
+
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      setUsername(decodedToken.sub || []);
+      console.log('Username:', username);
+    }
+    setJwtToken(token);
+  }, []);
 
   const handleLogin = async () => {
     setError(null); // Limpiar cualquier error previo al intentar iniciar sesión
@@ -59,7 +71,9 @@ const Login: React.FC = () => {
       <h2>Iniciar Sesión</h2>
       {jwtToken ? (
         <div>
-          <p>¡Has iniciado sesión! </p>
+          <p>¡Bienvenid@ {username}! {String.fromCodePoint(0x1F603)}</p>
+          <p> Has iniciado sesión</p>
+          <p> Tu rol es:  {userRoles}</p>
           <button className="btn btn-danger" onClick={logout}>Cerrar Sesión</button>
         </div>
       ) : (

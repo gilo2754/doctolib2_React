@@ -1,99 +1,79 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
+import { useAuth } from '../Auth/AuthContext';
 
 function Sidebar() {
-  const [userRoles, setUserRoles] = useState([]);
-  const [jwtToken, setJwtToken] = useState<string | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado para rastrear el estado de la sesión
-
-  useEffect(() => {
-    // Obtén el token JWT del almacenamiento local
-    setJwtToken(localStorage.getItem('jwtToken'));
-
-    if (jwtToken) {
-      const decodedToken = jwtDecode(jwtToken);
-      const roles = decodedToken.roles || [];
-      setUserRoles(roles);
-      setIsLoggedIn(true); // Si hay un token JWT, el usuario está autenticado
-    } else {
-      setIsLoggedIn(false); // Si no hay un token JWT, el usuario no está autenticado
-    }
-  }, [jwtToken]);
-
-  const handleLogout = () => {
-    // Elimina el token JWT del almacenamiento local
-    localStorage.removeItem('jwtToken');
-    // Recargar la página
-    window.location.reload();
-    // Actualiza el estado de la sesión a "cerrada"
-    setIsLoggedIn(false);
-  };
+  const { isLoggedIn, userRoles, jwtToken, logout, setJwtToken } = useAuth();
 
   return (
     <nav className="sidebar">
-      <div className="centered-content">
-      <ul className="nav flex-column nav-pills">
+  <div className="centered-content">
+    <ul className="nav flex-column nav-pills">
+      <li className="nav-item">
+        <Link to="/" className="nav-link">
+          Clinics
+        </Link>
+      </li>
+      {isLoggedIn && (
+        <>
           <li className="nav-item">
-            <Link to="/" className="nav-link">
-              Clinics
+            <Link to="/account" className="nav-link">
+              Account
             </Link>
-            </li>
-        </ul>
-        {isLoggedIn && (
-          <ul className="nav flex-column nav-pills"  data-toggle="pill">
+          </li>
+          <li className="nav-item">
+            <Link to="/appointments" className="nav-link">
+              Own appointments
+            </Link>
+          </li>
+          {userRoles.includes('ROLE_DOCTOR') && (
             <li className="nav-item">
-              <Link to="/account" className="nav-link">
-                Account
+              <Link to="/clinic-appointments" className="nav-link">
+                Administration for appointments [visible para Doctores]
               </Link>
             </li>
-            <li className="nav-item">
-              <Link to="/appointments" className="nav-link">
-                Own appointments
-              </Link>
-            </li>
-            {userRoles.includes('DOCTOR') && (
-              <li className="nav-item">
-                <Link to="/clinic-appointments" className="nav-link">
-                  Administration for appointments [solo visible para Doctores]
-                </Link>
-              </li>
-            )}
-          </ul>
-        )}
-
-        <div>
-          {isLoggedIn ? (
-            <div>
-              <button onClick={handleLogout} className="btn btn-danger">
-                Cerrar Sesión
-              </button>
-            </div>
-          ) : (
-            <>
-            <ul className="nav flex-column nav-pills">
-            <li className="nav-item">
-                <Link to="/login">Iniciar Sesión</Link>
-                </li>
-                <li className="nav-item">
-                <Link to="/register">Registrarse</Link>
-                </li>
-              </ul>
-
-            </>
           )}
-        </div>
+        </>
+      )}
 
-        {isLoggedIn && (
+      <div>
+        {isLoggedIn ? (
           <div>
-            TOFIX: Roles to show/hide components
+            <button onClick={logout} className="btn btn-danger">
+              Cerrar Sesión
+            </button>
+          </div>
+        ) : (
+          <>
+            <li className="nav-item">
+              <Link to="/login" className="nav-link">
+                Iniciar Sesión
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/register" className="nav-link">
+                Registrarse
+              </Link>
+            </li>
+          </>
+        )}
+      </div>
+
+      {isLoggedIn && (
+        <div>
+          <p>Tus roles son:</p>
+          <ul>
             {userRoles.map((role, index) => (
               <li key={index}>{role}</li>
             ))}
-          </div>
-        )}
-      </div>
-    </nav>
+          </ul>
+        </div>
+      )}
+    </ul>
+  </div>
+</nav>
+
   );
 }
 
