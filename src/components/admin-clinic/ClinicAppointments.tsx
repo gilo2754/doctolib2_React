@@ -3,30 +3,42 @@ import axios, { AxiosError } from 'axios'; // Importa AxiosError para manejar er
 import Clinic from '../clinic/Clinic';
 import Appointment from '../appointments/appointment';
 import Modal from 'react-modal'; // Importa react-modal
+import { useAuth } from '../Auth/AuthContext';
 
 Modal.setAppElement('#root'); // Set the app element here
 
 interface ClinicAppointment {
-  appointment_id: number; 
+  appointment_id: number;
 }
 
 const ClinicAppointments: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [appointmentToHandle, setAppointmentToHandle] = useState<Appointment | null>(null);
+  const { isLoggedIn, userRoles, jwtToken, logout, setJwtToken } = useAuth();
 
-  const TEMPORARY_CLINIC_ID =1;
+  const TEMPORARY_CLINIC_ID = 1;
 
   useEffect(() => {
-    fetchAppointments();
-  }, []);
+    if (jwtToken) {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      };
 
-  const fetchAppointments = async () => {
+      // Llamada a la función fetchAppointments dentro del useEffect
+      fetchAppointments(config);
+    }
+  }, [jwtToken]);
+
+  const fetchAppointments = async (config: any) => {
     try {
-      const response = await axios.get('http://localhost:8081/api/v1/appointment/clinic/1');
+      const response = await axios.get('http://localhost:8081/api/v1/appointment/clinic/1', config);
       setAppointments(response.data);
     } catch (error) {
       console.error('Error fetching appointments:', error);
+      console.error('Respuesta del servidor:', error.response.data);
     }
   };
 
@@ -38,6 +50,7 @@ const ClinicAppointments: React.FC = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
   const handleAppointment = async (appointment: Appointment, appointmentStatus: string) => {
     if (appointment) {
       try {
@@ -51,49 +64,47 @@ const ClinicAppointments: React.FC = () => {
           endTime: appointment.endTime,
           startTime: appointment.startTime,
         };
-  
+
         // Envía una solicitud al servidor para modificar el estado de la cita
         const response = await axios.put(
-          "http://localhost:8081/api/v1/appointment/update",
+          'http://localhost:8081/api/v1/appointment/update',
           modifiedAppointment
         );
-  
-        console.log("Appointment was changed:", response.data);
+
+        console.log('Appointment was changed:', response.data);
         closeModal();
-        // Refresh the list of appointments after the status change
-        fetchAppointments();
+        // Refresca la lista de citas después del cambio de estado
+        fetchAppointments({ headers: { Authorization: `Bearer ${jwtToken}` } });
       } catch (error) {
-        console.error("Error changing appointment status:", error);
+        console.error('Error changing appointment status:', error);
       }
     }
   };
-  
+
   return (
     <div>
-  <h1>Mis próximas citas</h1>
-  {appointments.map(appointment => (
-    <div key={appointment.appointment_id} className="appointment-box">
-      <h2>Appointment ID: {appointment.appointment_id}</h2>
-      <p>Clinic ID: {appointment.clinic.clinic_id}</p>
-      <p>{appointment.clinic.clinic_name}</p>
-      <p>{appointment.clinic.clinic_address}</p>
-      <p>Start Time: {appointment.startTime}</p>
-      <p>Doctor: {appointment.doctor.firstName} {appointment.doctor.lastName}</p>
-      <p>Status: {appointment.appointment_status}</p>
-      {appointment.appointment_status !== 'CANCELLED_BY_DOCTOR' &&
-              appointment.appointment_status !== 'CANCELLED_BY_PATIENT' && (
-                <button onClick={() => openModal(appointment)}>
-                  Cancelar
-                </button>
-              )}
-                 {appointment.appointment_status !== 'COMPLETED' &&
-              appointment.appointment_status !== 'CONFIRMED' && (
-                    <button onClick={() => openModal(appointment)}>Confirmar</button>
-                    )}
-    </div>
-  ))}
+      <h1>Mis próximas citas</h1>
+      {appointments.map(appointment => (
+        <div key={appointment.appointment_id} className="appointment-box">
+          <h2>Appointment ID: {appointment.appointment_id}</h2>
+          <p>Clinic ID: {appointment.clinic.clinic_id}</p>
+          <p>{appointment.clinic.clinic_name}</p>
+          <p>{appointment.clinic.clinic_address}</p>
+          <p>Start Time: {appointment.startTime}</p>
+          <p>Doctor: {appointment.doctor.firstName} {appointment.doctor.lastName}</p>
+          <p>Status: {appointment.appointment_status}</p>
+          {appointment.appointment_status !== 'CANCELLED_BY_DOCTOR' &&
+            appointment.appointment_status !== 'CANCELLED_BY_PATIENT' && (
+              <button onClick={() => openModal(appointment)}>Cancelar</button>
+            )}
+          {appointment.appointment_status !== 'COMPLETED' &&
+            appointment.appointment_status !== 'CONFIRMED' && (
+              <button onClick={() => openModal(appointment)}>Confirmar</button>
+            )}
+        </div>
+      ))}
 
-<Modal
+      <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         className="modal-container"
@@ -109,16 +120,12 @@ const ClinicAppointments: React.FC = () => {
                 : 'aprobar esta cita?'
             }`}</p>
           )}
-          <button onClick={() => handleAppointment(appointmentToHandle, 'CANCELLED_BY_DOCTOR')}>
-            Sí, Cancelar
-          </button>
-          <button onClick={() => handleAppointment(appointmentToHandle, 'CONFIRMED')}>
-            Aprobar
-          </button>
+          <button onClick={() => handleAppointment(appointmentToHandle, 'CANCELLED_BY_DOCTOR')}>Sí, Cancelar</button>
+          <button onClick={() => handleAppointment(appointmentToHandle, 'CONFIRMED')}>Aprobar</button>
           <button onClick={closeModal}>No modificar</button>
         </div>
       </Modal>
-</div>
+    </div>
   );
 };
 
