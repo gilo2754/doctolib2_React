@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Register = () => {
+const RegisterPatient = () => {
   const [formData, setFormData] = useState({
     username: '',
     password: 'P123',
@@ -12,7 +12,14 @@ const Register = () => {
     phoneNumber: '0154564351685',
     dateOfBirth: '1990-01-01',
     social_number: '',
+    dui: '',
     role: 'PATIENT',
+    street: '1a ave nte',         // Nuevo campo: Calle y Número
+    neighborhood: 'Transito',    // Nuevo campo: Colonia
+    city: 'Apopa',            // Nuevo campo: Ciudad o Municipio
+    department: 'San Salvador',      // Nuevo campo: Departamento
+    postalCode: '503',      // Nuevo campo: Código Postal
+    additionalInfo: 'frente a Rustik',
   });
 
   const handleInputChange = (e) => {
@@ -44,7 +51,7 @@ const Register = () => {
   return (
     <div>
     <form onSubmit={handleSubmit}>
-    <h2>Registro</h2>
+    <h2>Registro Paciente</h2>
 
       <div className="mb-3">
         <input
@@ -106,7 +113,7 @@ const Register = () => {
             value={formData.phoneNumber}
             onChange={handleInputChange}
             className="form-control"
-            placeholder="Número de Teléfono" // Marcador de posición
+            placeholder="Número celular" // Marcador de posición
           />
         </div>
         <div className="mb-3">
@@ -126,9 +133,80 @@ const Register = () => {
             value={formData.social_number}
             onChange={handleInputChange}
             className="form-control"
-            placeholder="Número Social" // Marcador de posición
+            placeholder="Número Social (opcional)" 
           />
         </div>
+        <div className="mb-3">
+          <input
+            type="text"
+            name="dui"
+            value={formData.dui}
+            onChange={handleInputChange}
+            className="form-control"
+            placeholder="DUI (opcional)" 
+          />
+        </div>
+        <div className="mb-3">
+  <input
+    type="text"
+    name="street"
+    value={formData.street}
+    onChange={handleInputChange}
+    className="form-control"
+    placeholder="Calle y Número" // Marcador de posición
+  />
+</div>
+<div className="mb-3">
+  <input
+    type="text"
+    name="neighborhood"
+    value={formData.neighborhood}
+    onChange={handleInputChange}
+    className="form-control"
+    placeholder="Colonia" // Marcador de posición
+  />
+</div>
+<div className="mb-3">
+  <input
+    type="text"
+    name="city"
+    value={formData.city}
+    onChange={handleInputChange}
+    className="form-control"
+    placeholder="Ciudad o Municipio" // Marcador de posición
+  />
+</div>
+<div className="mb-3">
+  <input
+    type="text"
+    name="department"
+    value={formData.department}
+    onChange={handleInputChange}
+    className="form-control"
+    placeholder="Departamento" // Marcador de posición
+  />
+</div>
+<div className="mb-3">
+  <input
+    type="text"
+    name="postalCode"
+    value={formData.postalCode}
+    onChange={handleInputChange}
+    className="form-control"
+    placeholder="Código Postal" // Marcador de posición
+  />
+</div>
+<div className="mb-3">
+  <input
+    type="text"
+    name="additionalInfo"
+    value={formData.additionalInfo}
+    onChange={handleInputChange}
+    className="form-control"
+    placeholder="Referencias adicionales" // Marcador de posición
+  />
+</div>
+
         <button type="button" className="btn btn-primary me-2" onClick={generatePlaceholders}>
           Generar Placeholders
         </button>
@@ -138,4 +216,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterPatient;

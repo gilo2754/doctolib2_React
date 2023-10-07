@@ -52,8 +52,13 @@ function Sidebar() {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/register" className="nav-link">
-                Registrarse
+              <Link to="/register/patient" className="nav-link">
+                Registrar paciente
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/register/doctor" className="nav-link">
+                Registrar doctor
               </Link>
             </li>
           </>
