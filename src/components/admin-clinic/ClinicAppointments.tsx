@@ -7,17 +7,18 @@ import { useAuth } from '../Auth/AuthContext';
 
 Modal.setAppElement('#root'); // Set the app element here
 
-interface ClinicAppointment {
-  appointment_id: number;
-}
 
 const ClinicAppointments: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [appointmentToHandle, setAppointmentToHandle] = useState<Appointment | null>(null);
-  const { isLoggedIn, userRoles, jwtToken, logout, setJwtToken } = useAuth();
-
-  const TEMPORARY_CLINIC_ID = 1;
+  interface AuthData {
+    jwtToken: string;
+    isLoggedIn: boolean;
+    userRoles: string[];
+    logout: void;
+  }
+  const { isLoggedIn, userRoles, jwtToken, logout, setJwtToken } = useAuth() as AuthData;
 
   useEffect(() => {
     if (jwtToken) {

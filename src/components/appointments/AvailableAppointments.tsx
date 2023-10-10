@@ -7,7 +7,7 @@ interface AppointmentFormProps {
 }
 
 const AvailableAppointments: React.FC<AppointmentFormProps> = ({ onSubmit }) => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<string |Date | null>(null);
 
   const handleDateClick = (date: Date) => {
     setSelectedDate(date);

@@ -22,7 +22,7 @@ const RegisterPatient = () => {
     additionalInfo: 'frente a Rustik',
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
