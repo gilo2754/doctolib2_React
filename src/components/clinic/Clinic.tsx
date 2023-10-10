@@ -21,7 +21,7 @@ const ClinicItem: React.FC<Props> = ({ clinic }: Props) => {
         <Typography variant="body2">Closing Time: {clinic.closingTime}</Typography>
         </div>
         <div className="box">
-        <AppointmentForm/>
+        <AppointmentForm onSubmit={handleDateClick} />
         </div>
       </CardContent>
     </Card>

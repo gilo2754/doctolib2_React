@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const RegisterDoctor : React.FC = () => {
+const RegisterDoctor = () => {
   const [specialities, setSpecialities] = useState([]); // Estado para almacenar las especialidades
   const [formData, setFormData] = useState({
     username: '',
@@ -36,8 +36,12 @@ const RegisterDoctor : React.FC = () => {
       });
   }, []);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
@@ -205,12 +209,12 @@ const RegisterDoctor : React.FC = () => {
   />
 </div>
 
-<div className="mb-3">
+  <div className="mb-3">
           <label htmlFor="speciality" className="form-label">Especialidad:</label>
           <select
             name="speciality"
             value={formData.speciality}
-            onChange={handleInputChange}
+            onChange={handleSelectChange}
             className="form-select"
             required
           >

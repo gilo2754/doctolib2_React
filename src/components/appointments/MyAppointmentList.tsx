@@ -40,10 +40,10 @@ const MyAppointmentsList: React.FC = () => {
         const modifiedAppointment: Partial<Appointment> = {
           appointment_id: appointmentToCancel.appointment_id,
           appointment_status: "CANCELLED_BY_PATIENT",
-          clinic: { clinic_id: appointmentToCancel.clinic.clinic_id },
+          clinic: appointmentToCancel.clinic,
           // TODO: Obtén el ID del usuario del paciente de alguna manera (puede ser a través de la autenticación)
-          patient: { user_id: 1 },
-          doctor: { user_id: appointmentToCancel.doctor.user_id },
+          patient: appointmentToCancel.patient,
+          doctor: appointmentToCancel.doctor,
           endTime: appointmentToCancel.endTime,
           startTime: appointmentToCancel.startTime,
         };

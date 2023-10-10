@@ -37,7 +37,8 @@ const datePlaceholder = "2023-03-18T10:30:00";
                 <Link to={`/create-appointment/${datePlaceholder}`}>
               {datePlaceholder} 
             </Link>
-                </button></li>
+                </button>
+              </li>
                  ))}
           </ul>
         )}
