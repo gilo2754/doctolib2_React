@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
+    "start": "node server.js",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
@@ -20,7 +21,8 @@
     "react-dom": "^18.2.0",
     "react-modal": "^3.16.1",
     "react-query": "^3.39.0",
-    "react-router-dom": "^6.15.0"
+    "react-router-dom": "^6.15.0",
+    "serve": "^14.2.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
