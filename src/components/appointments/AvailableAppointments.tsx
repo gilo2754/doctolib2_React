@@ -1,75 +1,71 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react";
 import "./AvailableAppointments.css";
-import { Link } from "react-router-dom";
+import { AppointmentToCreate } from "./AppointmentToCreate"; // Asegúrate de importar la interfaz
+import axios from "axios";
 
 interface AppointmentFormProps {
-  onDateClick: (selectedDate: Date) => void;
+  onDateClick: (selectedDate: Date, selectedAppointment: AppointmentToCreate) => void;
 }
 
 const AvailableAppointments: React.FC<AppointmentFormProps> = ({ onDateClick }) => {
   const [selectedDate, setSelectedDate] = useState<string | Date | null>(null);
-  const [startTime, setStartTime] = useState<string>("");
-  const [endTime, setEndTime] = useState<string>("");
-  const [clinicId, setClinicId] = useState<number>(1);
-  const [patientId, setPatientId] = useState<number>(1);
-  const [doctorId, setDoctorId] = useState<number>(4);
+  const [selectedAppointment, setSelectedAppointment] = useState<AppointmentToCreate | null>(null);
 
-  const { selectedDate: routeSelectedDate } = useParams();
-
-  useEffect(() => {
-    if (routeSelectedDate) {
-      setStartTime(routeSelectedDate);
-
-      const startTimeDate = new Date(routeSelectedDate);
-      startTimeDate.setMinutes(startTimeDate.getMinutes() + 30);
-      setEndTime(startTimeDate.toISOString().substring(0, 16));
+  const availableAppointments: AppointmentToCreate[] = [
+    {
+      appointment_status: "AVALIABLE",
+      clinic: {
+        clinic_id: 1,
+      },
+      patient: {
+        user_id: 3,
+      },
+      doctor: {
+        user_id: 2,
+      },
+      endTime: "2023-03-18T11:33:00",
+      startTime: "2023-03-18T10:00:00",
+    },
+    {
+      appointment_status: "AVALIABLE",
+      clinic: {
+        clinic_id: 1,
+      },
+      patient: {
+        user_id: 3,
+      },
+      doctor: {
+        user_id: 2,
+      },
+      endTime: "2025-03-18T11:33:00",
+      startTime: "2025-03-18T10:00:00",
     }
-  }, [routeSelectedDate]);
+    // Agrega más citas disponibles si es necesario
+  ];
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleDateClick = (date: Date, appointment: AppointmentToCreate) => {
+    setSelectedDate(date);
+   //setSelectedAppointment(appointment);
+    onDateClick(date, appointment);
 
-    if (!startTime || !endTime) {
-      console.error("Start time or end time is not valid.");
+  };
+  const createAppointment = async () => {
+    if (!selectedAppointment) {
+      console.error("No appointment selected.");
       return;
     }
-
-    const newAppointment = {
-      appointment_status: "PENDING",
-      clinic: { clinic_id: clinicId },
-      patient: { user_id: patientId },
-      doctor: { user_id: doctorId },
-      startTime,
-      endTime,
-    };
-
+  
     try {
       const response = await axios.post(
         "http://localhost:8081/api/v1/appointment/create",
-        newAppointment
+        selectedAppointment // Asegúrate de que selectedAppointment contiene los datos correctos
       );
       console.log("Appointment created:", response.data);
     } catch (error) {
       console.error("Error creating appointment:", error);
     }
   };
-
-  const handleDateClick = (date: Date) => {
-    setSelectedDate(date);
-    onDateClick(date);
-  };
-
-  const availableAppointments = [
-    "Lunes 4 de septiembre 2023 - 10:00 AM",
-    "Martes 5 de septiembre 2023 - 2:00 PM",
-    "Miércoles 6 de septiembre 2023 - 11:30 AM",
-    "Jueves 7 de septiembre 2023 - 4:00 PM",
-    "Viernes 8 de septiembre 2023 - 9:00 AM",
-  ];
-
-  const datePlaceholder = "2023-03-18T10:30:00";
+  
 
   return (
     <div>
@@ -83,11 +79,11 @@ const AvailableAppointments: React.FC<AppointmentFormProps> = ({ onDateClick }) 
               <li key={index}>
                 <button
                   className="small-button"
-                  onClick={() => handleDateClick(new Date(appointment))}
+                  onClick={() => {
+                    handleDateClick(new Date(appointment.startTime), appointment);
+                  }}
                 >
-                  <Link to={`/create-appointment/${datePlaceholder}`}>
-                    {datePlaceholder}
-                  </Link>
+                  {appointment.startTime} - {appointment.endTime}
                 </button>
               </li>
             ))}
