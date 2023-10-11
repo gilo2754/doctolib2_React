@@ -1,11 +1,16 @@
 import { Box, Card, CardContent, Typography, Button } from "@mui/material";
 import { Clinic } from "../../App";
-import AppointmentForm from "../appointments/AvailableAppointments";
+import AvailableAppointments from "../appointments/AvailableAppointments";
 import "./clinic.css";
 
 interface Props {
   clinic: Clinic;
 }
+const handleDateClick = (date: Date) => {
+  // Handle the date click here in Clinic.tsx
+  console.log(date);
+  
+};
 
 const ClinicItem: React.FC<Props> = ({ clinic }: Props) => {
   return (<div>
@@ -21,7 +26,8 @@ const ClinicItem: React.FC<Props> = ({ clinic }: Props) => {
         <Typography variant="body2">Closing Time: {clinic.closingTime}</Typography>
         </div>
         <div className="box">
-        <AppointmentForm onSubmit={handleDateClick} />
+        <AvailableAppointments onDateClick={handleDateClick} />
+
         </div>
       </CardContent>
     </Card>

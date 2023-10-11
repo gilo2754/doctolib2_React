@@ -12,13 +12,7 @@ const ClinicAppointments: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [appointmentToHandle, setAppointmentToHandle] = useState<Appointment | null>(null);
-  interface AuthData {
-    jwtToken: string;
-    isLoggedIn: boolean;
-    userRoles: string[];
-    logout: void;
-  }
-  const { isLoggedIn, userRoles, jwtToken, logout, setJwtToken } = useAuth() as AuthData;
+  const { isLoggedIn, userRoles, jwtToken, logout, setJwtToken } = useAuth();
 
   useEffect(() => {
     if (jwtToken) {
@@ -58,10 +52,10 @@ const ClinicAppointments: React.FC = () => {
         const modifiedAppointment: Partial<Appointment> = {
           appointment_id: appointment.appointment_id,
           appointment_status: appointmentStatus,
-          clinic: { clinic_id: appointment.clinic.clinic_id },
+          clinic: appointment.clinic,
           // TODO: Obtén el ID del usuario del paciente de alguna manera (puede ser a través de la autenticación)
-          patient: { user_id: 1 },
-          doctor: { user_id: appointment.doctor.user_id },
+          patient: appointment.patient,
+          doctor: appointment.doctor,
           endTime: appointment.endTime,
           startTime: appointment.startTime,
         };

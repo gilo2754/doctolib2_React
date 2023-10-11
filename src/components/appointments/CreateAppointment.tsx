@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import Appointment from "./appointment";
 
+interface NewAppointmentInterface {
+  appointment_status: string;
+  clinic: number;
+  patient: number;
+  doctor: number;
+  startTime: string;
+  endTime: string;
+}
 const CreateAppointment: React.FC = () => {
   const [startTime, setStartTime] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
@@ -32,11 +39,11 @@ const CreateAppointment: React.FC = () => {
       return;
     }
 
-    const newAppointment: Appointment = {
+    const newAppointment: NewAppointmentInterface = {
       appointment_status: "PENDING",
-      clinic: { clinic_id: clinicId },
-      patient: { user_id: patientId },
-      doctor: { user_id: doctorId },
+      clinic: clinicId,
+      patient: patientId,
+      doctor: doctorId,
       startTime,
       endTime,
     };
