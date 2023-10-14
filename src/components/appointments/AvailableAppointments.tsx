@@ -10,7 +10,22 @@ interface AppointmentFormProps {
 const AvailableAppointments: React.FC<AppointmentFormProps> = ({ onDateClick }) => {
   const [selectedDate, setSelectedDate] = useState<string | Date | null>(null);
   const [selectedAppointment, setSelectedAppointment] = useState<AppointmentToCreate | null>(null);
+  const [availableAppointments, setAvailableAppointments] = useState<AppointmentToCreate[]>([]);
 
+  useEffect(() => {
+    // Fetch appointments from the API when the component mounts
+    const fetchAppointments = async () => {
+      try {
+        const response = await axios.get("http://localhost:8081/api/v1/appointment");
+        setAvailableAppointments(response.data);
+      } catch (error) {
+        console.error("Error fetching appointments:", error);
+      }
+    };
+
+    fetchAppointments();
+  }, []);
+/*
   const availableAppointments: AppointmentToCreate[] = [
     {
       appointment_status: "AVALIABLE",
@@ -42,7 +57,7 @@ const AvailableAppointments: React.FC<AppointmentFormProps> = ({ onDateClick }) 
     }
     // Agrega más citas disponibles si es necesario
   ];
-
+*/
   const handleDateClick = (date: Date, appointment: AppointmentToCreate) => {
     setSelectedDate(date);
    //setSelectedAppointment(appointment);
@@ -95,3 +110,7 @@ const AvailableAppointments: React.FC<AppointmentFormProps> = ({ onDateClick }) 
 };
 
 export default AvailableAppointments;
+function useEffect(arg0: () => void, arg1: undefined[]) {
+  throw new Error("Function not implemented.");
+}
+
