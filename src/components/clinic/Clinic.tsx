@@ -15,6 +15,7 @@ const ClinicItem: React.FC<Props> = ({ clinic }: Props) => {
 
   useEffect(() => {
     // Agregar dos appointments al estado 'appointments'
+    /*
     const newAppointments = [
       {
         // Datos del primer appointment
@@ -37,6 +38,7 @@ const ClinicItem: React.FC<Props> = ({ clinic }: Props) => {
     ];
 
     setAppointments([...appointments, ...newAppointments]);
+    */
   }, []); // Dependencias vacías para que se ejecute solo una vez
 
   return (

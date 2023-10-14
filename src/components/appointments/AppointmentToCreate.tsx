@@ -1,4 +1,4 @@
-interface AppointmentToCreate {
+export interface AppointmentToCreate {
     appointment_status: string;
     clinic: {
       clinic_id: number;
