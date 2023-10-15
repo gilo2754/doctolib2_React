@@ -55,10 +55,11 @@ const ClinicItem: React.FC<Props> = ({ clinic }: Props) => {
             <Typography variant="body2">Opening Time: {clinic.openingTime}</Typography>
             <Typography variant="body2">Closing Time: {clinic.closingTime}</Typography>
           </div>
+          {/* 
           <div className="box">
             <AppointmentsByStatus appointments={appointments} status="AVAILABLE" />
             TODO: show availableAppointments for this clinic
-          </div>
+          </div>  */}
           
           <CreateAppointment />
         </CardContent>

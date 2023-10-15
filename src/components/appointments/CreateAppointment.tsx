@@ -11,7 +11,7 @@ const CreateAppointment: React.FC = () => {
   const [clinicId, setClinicId] = useState<number>(1);
   const [patientId, setPatientId] = useState<number>(2);
   const [doctorId, setDoctorId] = useState<number>(4);
-  const { userInfo } = useAuth();
+  const { userInfo, isLoggedIn } = useAuth();
 
   const { selectedDate } = useParams();
 
@@ -38,18 +38,19 @@ const CreateAppointment: React.FC = () => {
       console.error("Start time or end time is not valid.");
       return;
     }
-
+if(isLoggedIn){
     const newAppointment: IAppointmentWithoutDetails = {
       appointment_status: "PENDING",
       clinic: {
         clinic_id: clinicId 
       },  
       doctor: {user_id: doctorId},
-      patient: {user_id: userInfo.user_id},    
+      patient: userInfo ? { user_id: userInfo.user_id } : 1,
       startTime,
       endTime,
     };
-
+    
+    
     try {
       console.log(newAppointment)
       const response = await axios.post(
@@ -59,12 +60,13 @@ const CreateAppointment: React.FC = () => {
       console.log("Appointment created:", response.data);
     } catch (error) {
       console.error("Error creating appointment:", error);
-    }
+  }
+}
   };
 
   return (
     <div>
-      <h2>Create Appointment for {userInfo.user_id}</h2>
+      <h2>Create Appointment for {userInfo?.user_id}</h2>
       <form onSubmit={handleSubmit}>
         <label>
           Start Time:

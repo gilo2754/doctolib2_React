@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ClinicRegistration from '../clinic/ClinicRegistration';
 
 const RegisterDoctor = () => {
   const [specialities, setSpecialities] = useState([]); // Estado para almacenar las especialidades
@@ -67,8 +68,11 @@ const RegisterDoctor = () => {
     }
   };
 
+ 
+
   return (
-    <div>
+    <div className="row">
+      <div className="col-md-6">
     <form onSubmit={handleSubmit}>
     <h2>Registro Doctor</h2>
 
@@ -233,7 +237,14 @@ const RegisterDoctor = () => {
         </button>
         <button type="submit" className="btn btn-success">Registrar doctor</button>
       </form>
-    </div>
+      
+      </div>
+      <div className="col-md-6">
+      <ClinicRegistration />
+
+      </div>
+      
+      </div>
   );
 };
 

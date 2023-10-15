@@ -73,6 +73,8 @@ export function AuthProvider({ children }) {
     // Borrar las credenciales del estado local
     localStorage.removeItem('savedEmail');
     localStorage.removeItem('savedPassword');
+    localStorage.removeItem('userIDLoggedIn');
+
     window.location.reload();
   };
 
