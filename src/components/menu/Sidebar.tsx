@@ -67,7 +67,6 @@ function Sidebar() {
 
       {isLoggedIn && (
         <div>
-          <p>Tus roles son:</p>
           <ul>
             {userRoles.map((role, index) => (
               <li key={index}>{role}</li>

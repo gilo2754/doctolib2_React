@@ -2,18 +2,24 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { IAppointmentWithoutDetails } from "./interfaces/IAppointmentWithoutDetails";
+import { useAuth } from '../Auth/AuthContext';
 
 
 const CreateAppointment: React.FC = () => {
   const [startTime, setStartTime] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
-  const [clinicId, setClinicId] = useState<number>(5);
-  const [patientId, setPatientId] = useState<number>(3);
-  const [doctorId, setDoctorId] = useState<number>(1);
+  const [clinicId, setClinicId] = useState<number>(1);
+  const [patientId, setPatientId] = useState<number>(2);
+  const [doctorId, setDoctorId] = useState<number>(4);
+  const { userInfo } = useAuth();
 
   const { selectedDate } = useParams();
 
+ 
+
+
   useEffect(() => {
+
     if (selectedDate) {
       // Mantén la fecha en el formato que recibes de la API
       setStartTime(selectedDate);
@@ -39,7 +45,7 @@ const CreateAppointment: React.FC = () => {
         clinic_id: clinicId 
       },  
       doctor: {user_id: doctorId},
-      patient: {user_id: patientId},    
+      patient: {user_id: userInfo.user_id},    
       startTime,
       endTime,
     };
@@ -58,7 +64,7 @@ const CreateAppointment: React.FC = () => {
 
   return (
     <div>
-      <h2>Create Appointment</h2>
+      <h2>Create Appointment for {userInfo.user_id}</h2>
       <form onSubmit={handleSubmit}>
         <label>
           Start Time:

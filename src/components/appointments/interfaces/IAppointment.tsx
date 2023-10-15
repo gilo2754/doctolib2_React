@@ -16,10 +16,16 @@ export interface Clinic {
     clinic_address: string;
   }
   
-export  interface User {
-    user_id: number;
-    firstName: string;
-    lastName: string;
+  export interface User {
+    user_id?: number;
+    role?: string;
+    username?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phoneNumber?: string;
+    dateOfBirth?: string;
+    social_number?: string;
   }
 
   export default IAppointmentWithDetails;

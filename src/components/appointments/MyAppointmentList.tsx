@@ -65,7 +65,7 @@ const MyAppointmentsList: React.FC = () => {
 
   return (
     <div>
-  <h1>Mis próximas citas</h1>
+  <h1>Mis próximas citas. Are those mines?</h1>
   {appointments.map(appointment => (
     <div key={appointment.appointment_id} className="appointment-box">
       <h2>Appointment ID: {appointment.appointment_id}</h2>

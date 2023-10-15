@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, SetStateAction } from 'react';
 import jwtDecode from 'jwt-decode';
+import axios from 'axios';
+import { User } from '../appointments/interfaces/IAppointment';
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -7,6 +9,7 @@ interface AuthContextType {
   jwtToken: string | null;
   setJwtToken: (token: string | null) => void;
   logout: () => void;
+  userInfo: SetStateAction<User>;
 }
 interface DecodedToken {
   role: string[];
@@ -22,6 +25,7 @@ export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRoles, setUserRoles] = useState([]);
   const [jwtToken, setJwtToken] = useState<string | null>(null);
+  const [userInfo, setUserInfo] = useState(null); // Agrega userInfo al estado del contexto
 
   useEffect(() => {
     const token = localStorage.getItem('jwtToken');
@@ -37,8 +41,27 @@ export function AuthProvider({ children }) {
       setIsLoggedIn(true); // Si hay un token JWT, el usuario está autenticado
     } else {
       setIsLoggedIn(false); // Si no hay un token JWT, el usuario no está autenticado
-    }
+    }  
+
     setJwtToken(token);
+
+    // Obtiene la información de usuario aquí y la almacena en userInfo
+    if (token) {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      axios
+        .get('http://localhost:8081/api/v1/user-info', config)
+        .then((response) => {
+          setUserInfo(response.data);
+        })
+        .catch((error) => {
+          console.error('Error al obtener la información del usuario:', error);
+        });
+    }
   }, []);
 
   const logout = () => {
@@ -54,10 +77,11 @@ export function AuthProvider({ children }) {
   };
 
   const value = {
+    userInfo,
     isLoggedIn,
     userRoles,
     jwtToken,
-    setJwtToken, // Agrega setJwtToken al contexto
+    setJwtToken, 
     logout,
   };
 
