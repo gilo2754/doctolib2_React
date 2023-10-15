@@ -1,12 +1,10 @@
 import React from 'react';
-import Appointment from './appointment';
+import { IAppointmentWithoutDetails } from './interfaces/IAppointmentWithoutDetails';
 
 interface AppointmentsByStatusProps {
   status: string;
-  appointments?: Appointment[]; // Ahora es opcional
+  appointments?: IAppointmentWithoutDetails[]; // Ahora es opcional
 }
-
-// ...
 
 const AppointmentsByStatus: React.FC<AppointmentsByStatusProps> = ({ appointments = [], status }) => {
   // Filtra los appointments por estado
@@ -21,13 +19,8 @@ const AppointmentsByStatus: React.FC<AppointmentsByStatusProps> = ({ appointment
         <ul>
           {filteredAppointments.map(appointment => (
             <li key={appointment.appointment_id}>
-              <p>Appointment ID: {appointment.appointment_id}</p>
-              <p>Clinic ID: {appointment.clinic.clinic_id}</p>
-              <p>{appointment.clinic.clinic_name}</p>
-              <p>{appointment.clinic.clinic_address}</p>
-              <p>Start Time: {appointment.startTime}</p>
-              <p>Doctor: {appointment.doctor.firstName} {appointment.doctor.lastName}</p>
-              <p>Status: {appointment.appointment_status}</p>
+              <p>Appointment ID: {appointment.appointment_id}</p>             
+              <p>Status: {appointment. appointment_status}</p>
             </li>
           ))}
         </ul>

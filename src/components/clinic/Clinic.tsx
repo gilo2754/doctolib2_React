@@ -1,17 +1,18 @@
 import { Card, CardContent, Typography } from "@mui/material";
 import { Clinic } from "../../App";
 import "./clinic.css";
-import Appointment from "../appointments/appointment";
+import IAppointmentWithDetails from "../appointments/interfaces/IAppointment";
 import { useState, useEffect } from "react";
 import AppointmentsByStatus from "../appointments/AppointmentsByStatus";
 import CreateAppointment from "../appointments/CreateAppointment";
+import { IAppointmentWithoutDetails } from "../appointments/interfaces/IAppointmentWithoutDetails";
 
 interface Props {
   clinic: Clinic;
 }
 
 const ClinicItem: React.FC<Props> = ({ clinic }: Props) => {
-  const [appointments, setAppointments] = useState<Appointment[] | null>([]);
+  const [appointments, setAppointments] = useState<IAppointmentWithoutDetails[] | null>([]);
 
   useEffect(() => {
     // Agregar dos appointments al estado 'appointments'

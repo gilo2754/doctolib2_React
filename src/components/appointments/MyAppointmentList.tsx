@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal'; // Importa react-modal
-import Clinic from '../clinic/Clinic';
-import Appointment from './appointment';
-import './MyAppointmentsList.css';
+import IAppointmentWithDetails from './interfaces/IAppointment';
+import './style/myAppointmentsList.css';
+import { IAppointmentWithoutDetails } from './interfaces/IAppointmentWithoutDetails';
 
 Modal.setAppElement('#root'); // Set the app element here
 
 const MyAppointmentsList: React.FC = () => {
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [appointments, setAppointments] = useState<IAppointmentWithDetails[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [appointmentToCancel, setAppointmentToCancel] = useState<Appointment | null>(null);
+  const [appointmentToCancel, setAppointmentToCancel] = useState<IAppointmentWithDetails | null>(null);
 
   useEffect(() => {
     fetchAppointments();
@@ -25,7 +25,7 @@ const MyAppointmentsList: React.FC = () => {
     }
   };
 
-  const openModal = (appointment: Appointment) => {
+  const openModal = (appointment: IAppointmentWithDetails) => {
     setAppointmentToCancel(appointment);
     setIsModalOpen(true);
   };
@@ -37,17 +37,17 @@ const MyAppointmentsList: React.FC = () => {
   const handleCancel = async () => {
     if (appointmentToCancel) {
       try {
-        const modifiedAppointment: Partial<Appointment> = {
+        const modifiedAppointment: Partial<IAppointmentWithoutDetails> = {
           appointment_id: appointmentToCancel.appointment_id,
           appointment_status: "CANCELLED_BY_PATIENT",
-          clinic: appointmentToCancel.clinic,
-          // TODO: Obtén el ID del usuario del paciente de alguna manera (puede ser a través de la autenticación)
-          patient: appointmentToCancel.patient,
-          doctor: appointmentToCancel.doctor,
+          clinic: {clinic_id: appointmentToCancel.clinic.clinic_id},
+         // patient: {user_id: appointmentToCancel.patient.user_id}, Not needed to change the appointment and is not in the Appointment for now (15.10.23) 
+          doctor: {user_id: appointmentToCancel.doctor.user_id},
           endTime: appointmentToCancel.endTime,
           startTime: appointmentToCancel.startTime,
         };
 
+        console.log()
         const response = await axios.put(
           "http://localhost:8081/api/v1/appointment/update",
           modifiedAppointment

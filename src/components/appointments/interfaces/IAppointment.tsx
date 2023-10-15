@@ -1,6 +1,6 @@
 import { Key } from "react";
 
-interface Appointment {
+export interface IAppointmentWithDetails {
     appointment_id: number;
     appointment_status: string;
     clinic: Clinic;
@@ -10,16 +10,16 @@ interface Appointment {
     endTime: string;
   }
 
-  interface Clinic {
+export interface Clinic {
     clinic_id: number;
     clinic_name: string;
     clinic_address: string;
   }
   
-  interface User {
+export  interface User {
     user_id: number;
     firstName: string;
     lastName: string;
   }
 
-  export default Appointment;
+  export default IAppointmentWithDetails;

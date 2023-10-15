@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import "./AvailableAppointments.css";
-import { AppointmentToCreate } from "./AppointmentToCreate"; // Asegúrate de importar la interfaz
+import React, { useEffect, useState } from "react";
+import "./style/availableAppointments.css";
+import { IAppointmentWithoutDetails } from "./interfaces/IAppointmentWithoutDetails"; // Asegúrate de importar la interfaz
 import axios from "axios";
 
 interface AppointmentFormProps {
-  onDateClick: (selectedDate: Date, selectedAppointment: AppointmentToCreate) => void;
+  onDateClick: (selectedDate: Date, selectedAppointment: IAppointmentWithoutDetails) => void;
 }
 
 const AvailableAppointments: React.FC<AppointmentFormProps> = ({ onDateClick }) => {
   const [selectedDate, setSelectedDate] = useState<string | Date | null>(null);
-  const [selectedAppointment, setSelectedAppointment] = useState<AppointmentToCreate | null>(null);
-  const [availableAppointments, setAvailableAppointments] = useState<AppointmentToCreate[]>([]);
+  const [selectedAppointment, setSelectedAppointment] = useState<IAppointmentWithoutDetails | null>(null);
+  const [availableAppointments, setAvailableAppointments] = useState<IAppointmentWithoutDetails[]>([]);
 
   useEffect(() => {
     // Fetch appointments from the API when the component mounts
@@ -58,9 +58,8 @@ const AvailableAppointments: React.FC<AppointmentFormProps> = ({ onDateClick }) 
     // Agrega más citas disponibles si es necesario
   ];
 */
-  const handleDateClick = (date: Date, appointment: AppointmentToCreate) => {
+  const handleDateClick = (date: Date, appointment: IAppointmentWithoutDetails) => {
     setSelectedDate(date);
-   //setSelectedAppointment(appointment);
     onDateClick(date, appointment);
 
   };
@@ -73,14 +72,13 @@ const AvailableAppointments: React.FC<AppointmentFormProps> = ({ onDateClick }) 
     try {
       const response = await axios.post(
         "http://localhost:8081/api/v1/appointment/create",
-        selectedAppointment // Asegúrate de que selectedAppointment contiene los datos correctos
+        selectedAppointment 
       );
       console.log("Appointment created:", response.data);
     } catch (error) {
       console.error("Error creating appointment:", error);
     }
   };
-  
 
   return (
     <div>
@@ -110,7 +108,5 @@ const AvailableAppointments: React.FC<AppointmentFormProps> = ({ onDateClick }) 
 };
 
 export default AvailableAppointments;
-function useEffect(arg0: () => void, arg1: undefined[]) {
-  throw new Error("Function not implemented.");
-}
+
 

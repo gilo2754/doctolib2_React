@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { IAppointmentWithoutDetails } from "./interfaces/IAppointmentWithoutDetails";
 
-interface NewAppointmentInterface {
-  appointment_status: string;
-  clinic: number;
-  patient: number;
-  doctor: number;
-  startTime: string;
-  endTime: string;
-}
+
 const CreateAppointment: React.FC = () => {
   const [startTime, setStartTime] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
-  const [clinicId, setClinicId] = useState<number>(1);
-  const [patientId, setPatientId] = useState<number>(1);
-  const [doctorId, setDoctorId] = useState<number>(4);
+  const [clinicId, setClinicId] = useState<number>(5);
+  const [patientId, setPatientId] = useState<number>(3);
+  const [doctorId, setDoctorId] = useState<number>(1);
 
   const { selectedDate } = useParams();
 
@@ -39,16 +33,19 @@ const CreateAppointment: React.FC = () => {
       return;
     }
 
-    const newAppointment: NewAppointmentInterface = {
+    const newAppointment: IAppointmentWithoutDetails = {
       appointment_status: "PENDING",
-      clinic: clinicId,
-      patient: patientId,
-      doctor: doctorId,
+      clinic: {
+        clinic_id: clinicId 
+      },  
+      doctor: {user_id: doctorId},
+      patient: {user_id: patientId},    
       startTime,
       endTime,
     };
 
     try {
+      console.log(newAppointment)
       const response = await axios.post(
         "http://localhost:8081/api/v1/appointment/create",
         newAppointment
