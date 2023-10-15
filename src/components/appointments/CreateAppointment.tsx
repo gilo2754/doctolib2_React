@@ -8,9 +8,9 @@ import { useAuth } from '../Auth/AuthContext';
 const CreateAppointment: React.FC = () => {
   const [startTime, setStartTime] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
-  const [clinicId, setClinicId] = useState<number>(1);
-  const [patientId, setPatientId] = useState<number>(2);
-  const [doctorId, setDoctorId] = useState<number>(4);
+  const [clinicId, setClinicId] = useState<number>();
+  const [patientId, setPatientId] = useState<number>();
+  const [doctorId, setDoctorId] = useState<number>(3);
   const { userInfo, isLoggedIn } = useAuth();
 
   const { selectedDate } = useParams();
@@ -88,7 +88,7 @@ if(isLoggedIn){
           />
         </label>
         <br />
-        <button type="submit">Create Appointment</button>
+        <button type="submit">Create Appointment. TODO: getting the correct values?</button>
       </form>
     </div>
   );
