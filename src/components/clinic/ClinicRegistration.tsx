@@ -67,7 +67,7 @@ const ClinicRegistration: React.FC = () => {
   return (
       <div>
     <form onSubmit={handleSubmit}>
-      <h2>Registro de Clínica</h2>
+      <h2>Registro de Clínica. TODO: possible just if you are logged in, to assign to a Doctor</h2>
           <div className="mb-3">
         <input
           type="text"
