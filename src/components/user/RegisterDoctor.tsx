@@ -238,12 +238,7 @@ const RegisterDoctor = () => {
         <button type="submit" className="btn btn-success">Registrar doctor</button>
       </form>
       
-      </div>
-      <div className="col-md-6">
-      <ClinicRegistration />
-
-      </div>
-      
+      </div>      
       </div>
   );
 };

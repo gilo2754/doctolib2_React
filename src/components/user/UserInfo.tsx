@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useAuth } from '../Auth/AuthContext';
 import { User } from '../appointments/interfaces/IAppointment';
+import ClinicRegistration from '../clinic/ClinicRegistration';
 
 const UserInfo: React.FC = () => {
-  const { userInfo: userInfoFromContext } = useAuth();
+  const { userInfo: userInfoFromContext, userRoles } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [editedUserInfo, setEditedUserInfo] = useState<User | null>(null);
 
@@ -105,6 +106,12 @@ const UserInfo: React.FC = () => {
       ) : (
         <p>Cargando información de la cuenta... ¿Ya iniciaste sesión?</p>
       )}
+      {userRoles.includes('ROLE_DOCTOR') && 
+             <div>
+             <ClinicRegistration />
+       
+             </div>}
+
     </div>
   );
 };

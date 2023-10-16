@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import axios from 'axios';
+import { useAuth } from '../Auth/AuthContext';
 
 interface Clinic {
   clinic_id?: number;
@@ -19,7 +20,7 @@ const initialClinicData: Clinic = {
   clinic_address: null,
   clinic_phone_number: '123',
   clinic_state: 'IN_REVIEW',
-  speciality: 'UROLOGIA',
+  speciality: 'GENERAL',
   openingTime: null,
   closingTime: null,
 };
@@ -27,6 +28,7 @@ const initialClinicData: Clinic = {
 const ClinicRegistration: React.FC = () => {
   const [clinicData, setClinicData] = useState(initialClinicData);
   const [specialities, setSpecialities] = useState([]); // Estado para almacenar las especialidades
+  const { userInfo } = useAuth();
 
   useEffect(() => {
     axios.get('http://localhost:8081/admin/api/v1/specialities')
@@ -67,7 +69,7 @@ const ClinicRegistration: React.FC = () => {
   return (
       <div>
     <form onSubmit={handleSubmit}>
-      <h2>Registro de Clínica. TODO: possible just if you are logged in, to assign to a Doctor</h2>
+      <h2>Registra tu de Clínica</h2>
           <div className="mb-3">
         <input
           type="text"
