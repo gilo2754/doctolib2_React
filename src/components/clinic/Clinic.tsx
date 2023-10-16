@@ -1,9 +1,7 @@
 import { Card, CardContent, Typography } from "@mui/material";
 import { Clinic } from "../../App";
 import "./clinic.css";
-import IAppointmentWithDetails from "../appointments/interfaces/IAppointment";
 import { useState, useEffect } from "react";
-import AppointmentsByStatus from "../appointments/AppointmentsByStatus";
 import CreateAppointment from "../appointments/CreateAppointment";
 import { IAppointmentWithoutDetails } from "../appointments/interfaces/IAppointmentWithoutDetails";
 

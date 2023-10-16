@@ -4,32 +4,23 @@ import { useParams } from "react-router-dom";
 import { IAppointmentWithoutDetails } from "./interfaces/IAppointmentWithoutDetails";
 import { useAuth } from '../Auth/AuthContext';
 
-
 const CreateAppointment: React.FC = () => {
-  const [startTime, setStartTime] = useState<string>("");
-  const [endTime, setEndTime] = useState<string>("");
-  const [clinicId, setClinicId] = useState<number>();
+  const [startTime, setStartTime] = useState<Date | null>(null);
+  const [endTime, setEndTime] = useState<Date | null>(null);
+  const [clinicId, setClinicId] = useState<number>(2);
   const [patientId, setPatientId] = useState<number>();
   const [doctorId, setDoctorId] = useState<number>(3);
   const { userInfo, isLoggedIn } = useAuth();
 
-  const { selectedDate } = useParams();
-
- 
-
+  const duration = 15; //In minutes
 
   useEffect(() => {
-
-    if (selectedDate) {
-      // Mantén la fecha en el formato que recibes de la API
-      setStartTime(selectedDate);
-
-      // Calcula endTime agregando 30 minutos a startTime
-      const startTimeDate = new Date(selectedDate);
-      startTimeDate.setMinutes(startTimeDate.getMinutes() + 30);
-      setEndTime(startTimeDate.toISOString().substring(0, 16));
+    if (startTime) {
+      const endTimeDate = new Date(startTime);
+      endTimeDate.setMinutes(endTimeDate.getMinutes() + duration);
+      setEndTime(endTimeDate);
     }
-  }, [selectedDate]);
+  }, [startTime, duration]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,30 +29,30 @@ const CreateAppointment: React.FC = () => {
       console.error("Start time or end time is not valid.");
       return;
     }
-if(isLoggedIn){
-    const newAppointment: IAppointmentWithoutDetails = {
-      appointment_status: "PENDING",
-      clinic: {
-        clinic_id: clinicId 
-      },  
-      doctor: {user_id: doctorId},
-      patient: userInfo ? { user_id: userInfo.user_id } : 1,
-      startTime,
-      endTime,
-    };
-    
-    
-    try {
-      console.log(newAppointment)
-      const response = await axios.post(
-        "http://localhost:8081/api/v1/appointment/create",
-        newAppointment
-      );
-      console.log("Appointment created:", response.data);
-    } catch (error) {
-      console.error("Error creating appointment:", error);
-  }
-}
+
+    if (isLoggedIn) {
+      const newAppointment: IAppointmentWithoutDetails = {
+        appointment_status: "PENDING",
+        clinic: {
+          clinic_id: clinicId,
+        },
+        doctor: { user_id: doctorId },
+        patient: userInfo ? { user_id: userInfo.user_id } : 1,
+        startTime: startTime.toISOString(), // Convierte a cadena ISO8601
+        endTime: endTime.toISOString(), // Convierte a cadena ISO8601
+      };
+
+      try {
+        console.log(newAppointment);
+        const response = await axios.post(
+          "http://localhost:8081/api/v1/appointment/create",
+          newAppointment
+        );
+        console.log("Appointment created:", response.data);
+      } catch (error) {
+        console.error("Error creating appointment:", error);
+      }
+    }
   };
 
   return (
@@ -72,23 +63,23 @@ if(isLoggedIn){
           Start Time:
           <input
             type="datetime-local"
-            value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
+            value={startTime ? startTime.toISOString().substring(0, 16) : ""}
+            onChange={(e) => setStartTime(new Date(e.target.value))}
             required
           />
         </label>
         <br />
-        <label>
+        {/* <label>
           End Time:
           <input
             type="datetime-local"
-            value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
+            value={endTime ? endTime.toISOString().substring(0, 16) : ""}
+            onChange={(e) => setEndTime(new Date(e.target.value))}
             required
           />
         </label>
-        <br />
-        <button type="submit">Create Appointment. TODO: getting the correct values?</button>
+  <br />*/}
+        <button type="submit">Create Appointment</button>
       </form>
     </div>
   );
