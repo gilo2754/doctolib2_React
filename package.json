@@ -24,7 +24,8 @@
     "react-modal": "^3.16.1",
     "react-query": "^3.39.0",
     "react-router-dom": "^6.15.0",
-    "serve": "^14.2.1"
+    "serve": "^14.2.1",
+    "sweetalert2": "^11.7.32"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",

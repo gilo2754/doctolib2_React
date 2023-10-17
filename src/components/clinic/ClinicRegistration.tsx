@@ -1,6 +1,8 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../Auth/AuthContext';
+import Swal from 'sweetalert2';
+import { successMessageCreateClinic, errorMessageCreateClinic } from '../../notifications/messages';
 
 interface Clinic {
   clinic_id?: number;
@@ -60,9 +62,22 @@ const ClinicRegistration: React.FC = () => {
     axios.post('http://localhost:8081/api/v1/clinic/add', clinicData)
       .then((response) => {
         console.log('Clínica registrada con éxito', response.data);
+        
+        Swal.fire({
+          icon: 'success',
+          ...successMessageCreateClinic,
+        });
+    
       })
+
       .catch((error) => {
         console.error('Error al registrar la clínica', error);
+
+      Swal.fire({
+        icon: 'error',
+        ...errorMessageCreateClinic,
+      });
+
       });
   };
 
