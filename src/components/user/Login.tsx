@@ -3,6 +3,11 @@ import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { useAuth } from '../Auth/AuthContext';
 
+interface DecodedToken {
+  sub?: string;
+  // Add any other properties you expect in the decoded token here
+}
+
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -11,14 +16,14 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { isLoggedIn, userRoles, jwtToken, logout, setJwtToken } = useAuth();
-const  [username, setUsername] = useState();
+  const [username, setUsername] = useState<string | undefined>(); // Provide a type for 'username'
   useEffect(() => {
     // Obtén el token JWT del almacenamiento local
     const token = localStorage.getItem('jwtToken');
 
     if (token) {
-      const decodedToken = jwtDecode(token);
-      setUsername(decodedToken.sub || []);
+      const decodedToken: { sub?: string } = jwtDecode(token);
+      setUsername(decodedToken.sub || '');
       console.log('Username:', username);
     }
     setJwtToken(token);

@@ -1,9 +1,14 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import { errorMessageRegisterUser, successMessageRegisterUser } from '../../notifications/messages';
 
-const RegisterDoctor : React.FC = () => {
-  const [specialities, setSpecialities] = useState([]); // Estado para almacenar las especialidades
+const RegisterDoctor: React.FC = () => {
+  const navigate = useNavigate();
+
+  const [specialities, setSpecialities] = useState([]); 
   const [formData, setFormData] = useState({
     username: '',
     password: 'P123',
@@ -36,7 +41,12 @@ const RegisterDoctor : React.FC = () => {
       });
   }, []);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
@@ -51,20 +61,35 @@ const RegisterDoctor : React.FC = () => {
     });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault(); // Evitar la recarga de la página
     try {
       const response = await axios.post('http://localhost:8081/api/v1/person/add', formData);
       console.log('Registro de doctor exitoso:', response.data);
       // Puedes redirigir al usuario a otra página o realizar alguna acción después del registro exitoso
+
+      Swal.fire({
+        icon: 'success',
+        ...successMessageRegisterUser,
+      });
+      
+      navigate('/login');
+
+
     } catch (error) {
       console.error('Error en el registro:', error);
-      // Manejar errores aquí (por ejemplo, mostrar un mensaje de error al usuario)
+     
+      Swal.fire({
+        icon: 'error',
+        ...errorMessageRegisterUser,
+      });
     }
-  };
+  }; 
 
   return (
-    <div>
-    <form onSubmit={handleSubmit}>
+    <div className="row">
+      <div className="col-md-6">
+    <form>
     <h2>Registro Doctor</h2>
 
       <div className="mb-3">
@@ -204,12 +229,12 @@ const RegisterDoctor : React.FC = () => {
   />
 </div>
 
-<div className="mb-3">
+  <div className="mb-3">
           <label htmlFor="speciality" className="form-label">Especialidad:</label>
           <select
             name="speciality"
             value={formData.speciality}
-            onChange={handleInputChange}
+            onChange={handleSelectChange}
             className="form-select"
             required
           >
@@ -226,9 +251,14 @@ const RegisterDoctor : React.FC = () => {
         <button type="button" className="btn btn-primary me-2" onClick={generatePlaceholders}>
           Generar Placeholders
         </button>
-        <button type="submit" className="btn btn-success">Registrar doctor</button>
+        <button type="button" className="btn btn-success" onClick={handleSubmit}>
+            Registrar doctor
+          </button>
+
       </form>
-    </div>
+      
+      </div>      
+      </div>
   );
 };
 

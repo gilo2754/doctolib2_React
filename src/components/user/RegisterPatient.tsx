@@ -1,8 +1,13 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import { errorMessageRegisterUser, successMessageRegisterUser } from '../../notifications/messages';
 
-const RegisterPatient = () => {
+const RegisterPatient: React.FC = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     username: '',
     password: 'P123',
@@ -22,7 +27,7 @@ const RegisterPatient = () => {
     additionalInfo: 'frente a Rustik',
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
@@ -37,20 +42,32 @@ const RegisterPatient = () => {
     });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     try {
       const response = await axios.post('http://localhost:8081/api/v1/person/add', formData);
       console.log('Registro exitoso:', response.data);
+
+      Swal.fire({
+        icon: 'success',
+        ...successMessageRegisterUser,
+      });
       // Puedes redirigir al usuario a otra página o realizar alguna acción después del registro exitoso
+      navigate('/login');
+
     } catch (error) {
       console.error('Error en el registro:', error);
-      // Manejar errores aquí (por ejemplo, mostrar un mensaje de error al usuario)
+
+      Swal.fire({
+        icon: 'error',
+        ...errorMessageRegisterUser,
+      });
     }
   };
 
   return (
     <div>
-    <form onSubmit={handleSubmit}>
+    <form>
     <h2>Registro Paciente</h2>
 
       <div className="mb-3">
@@ -210,8 +227,11 @@ const RegisterPatient = () => {
         <button type="button" className="btn btn-primary me-2" onClick={generatePlaceholders}>
           Generar Placeholders
         </button>
-        <button type="submit" className="btn btn-success">Registrarse</button>
-      </form>
+        <button type="button" className="btn btn-success" onClick={handleSubmit}>
+            Registrar paciente
+        </button>
+        </form>
+
     </div>
   );
 };

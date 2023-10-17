@@ -1,23 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios'; // Importa AxiosError para manejar errores específicos de Axios
 import Clinic from '../clinic/Clinic';
-import Appointment from '../appointments/appointment';
+import IAppointmentWithDetails from '../appointments/interfaces/IAppointment';
 import Modal from 'react-modal'; // Importa react-modal
 import { useAuth } from '../Auth/AuthContext';
 
 Modal.setAppElement('#root'); // Set the app element here
 
-interface ClinicAppointment {
-  appointment_id: number;
-}
 
 const ClinicAppointments: React.FC = () => {
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [appointments, setAppointments] = useState<IAppointmentWithDetails[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [appointmentToHandle, setAppointmentToHandle] = useState<Appointment | null>(null);
+  const [appointmentToHandle, setAppointmentToHandle] = useState<IAppointmentWithDetails | null>(null);
   const { isLoggedIn, userRoles, jwtToken, logout, setJwtToken } = useAuth();
-
-  const TEMPORARY_CLINIC_ID = 1;
 
   useEffect(() => {
     if (jwtToken) {
@@ -42,7 +37,7 @@ const ClinicAppointments: React.FC = () => {
     }
   };
 
-  const openModal = (appointment: Appointment) => {
+  const openModal = (appointment: IAppointmentWithDetails) => {
     setAppointmentToHandle(appointment);
     setIsModalOpen(true);
   };
@@ -51,16 +46,16 @@ const ClinicAppointments: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  const handleAppointment = async (appointment: Appointment, appointmentStatus: string) => {
+  const handleAppointment = async (appointment: IAppointmentWithDetails, appointmentStatus: string) => {
     if (appointment) {
       try {
-        const modifiedAppointment: Partial<Appointment> = {
+        const modifiedAppointment: Partial<IAppointmentWithDetails> = {
           appointment_id: appointment.appointment_id,
           appointment_status: appointmentStatus,
-          clinic: { clinic_id: appointment.clinic.clinic_id },
+          clinic: appointment.clinic,
           // TODO: Obtén el ID del usuario del paciente de alguna manera (puede ser a través de la autenticación)
-          patient: { user_id: 1 },
-          doctor: { user_id: appointment.doctor.user_id },
+          patient: appointment.patient,
+          doctor: appointment.doctor,
           endTime: appointment.endTime,
           startTime: appointment.startTime,
         };
