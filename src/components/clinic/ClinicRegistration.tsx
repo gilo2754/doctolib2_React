@@ -126,7 +126,7 @@ const ClinicRegistration: React.FC = () => {
         <br />
        
        <div className="mb-3">
-          <label htmlFor="speciality" className="form-label">Especialidad:</label>
+          <label htmlFor="speciality" className="form-label">Especialidades []:</label>
           <select
             name="speciality"
             value={clinicData.speciality}
