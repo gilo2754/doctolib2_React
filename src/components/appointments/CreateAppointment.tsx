@@ -5,12 +5,15 @@ import { useAuth } from '../Auth/AuthContext';
 import Swal from "sweetalert2";
 import { successMessageCreateAppointment, errorMessageCreateAppointment } from "../../notifications/messages";
 
-const CreateAppointment: React.FC = () => {
+interface CreateAppointmentProps {
+  clinicIdFromClinic: number; // Define the clinicId prop
+}
+const CreateAppointment: React.FC<CreateAppointmentProps> = ({ clinicIdFromClinic }) => {
   const [startTime, setStartTime] = useState<Date | null>(new Date('2023-10-17T18:06:00.000Z'));
   const [endTime, setEndTime] = useState<Date | null>(null);
-  const [clinicId, setClinicId] = useState<number>(18);
+  const [clinicId, setClinicId] = useState<number>();
   const [patientId, setPatientId] = useState<number>();
-  const [doctorId, setDoctorId] = useState<number>(3);
+  const [doctorId, setDoctorId] = useState<number>(1);
   const { userInfo, isLoggedIn } = useAuth();
 
   const duration = 15; //In minutes
@@ -21,10 +24,14 @@ const CreateAppointment: React.FC = () => {
       endTimeDate.setMinutes(endTimeDate.getMinutes() + duration);
       setEndTime(endTimeDate);
     }
+
+    if (clinicIdFromClinic) { setClinicId(clinicIdFromClinic) }
+    
   }, [startTime, duration]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(`Creating an appointment for clinic ${clinicIdFromClinic}`);
 
     if (!startTime || !endTime) {
       console.error("Start time or end time is not valid.");

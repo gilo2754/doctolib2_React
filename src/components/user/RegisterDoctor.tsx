@@ -20,7 +20,7 @@ const RegisterDoctor: React.FC = () => {
     social_number: '',
     dui: '',
     role: 'DOCTOR',
-    speciality: '',
+    speciality: 'GENERAL',
     street: '1a ave nte',         // Nuevo campo: Calle y Número
     neighborhood: 'Transito',    // Nuevo campo: Colonia
     city: 'Apopa',            // Nuevo campo: Ciudad o Municipio
