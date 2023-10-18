@@ -1,10 +1,10 @@
 import React from "react";
 import { Box, Typography, Button, Link } from "@mui/material";
 import { useQuery } from "react-query";
-import { Clinic } from "../../App";
-import ClinicItem from "./Clinic";
+import Clinic from "./Clinic";
 import LoadingWrapper from "../loading-wrapper/LoadingWrapper";
 import { useAuth } from "../Auth/AuthContext";
+import { IClinic } from "./IClinic";
 
 const ClinicList: React.FC = () => {
   const { isLoading, error, data } = useQuery("clinics", () =>
@@ -32,10 +32,10 @@ const ClinicList: React.FC = () => {
           {error || (!data && <p>No hay clínicas aún 😞</p>)}
           {data && (
             <>
-              {(data as Clinic[])
+              {(data as IClinic[])
                 .slice(0, 8)
                 .map((clinic, index) => (
-                  <ClinicItem clinic={clinic} key={index} />
+                  <Clinic clinic={clinic} key={index} />
                 ))}
             </>
           )}

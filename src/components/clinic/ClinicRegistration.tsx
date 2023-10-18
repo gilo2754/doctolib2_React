@@ -1,20 +1,9 @@
-import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import React, { useState, FormEvent, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../Auth/AuthContext';
 import Swal from 'sweetalert2';
 import { successMessageCreateClinic, errorMessageCreateClinic } from '../../notifications/messages';
-
-interface Clinic {
-  clinic_id?: number;
-  clinic_name: string | null;
-  clinic_description: string;
-  clinic_address: string | null;
-  clinic_phone_number: string;
-  clinic_state: string;
-  speciality?: string;
-  openingTime: string | null;
-  closingTime: string | null;
-}
+import { Clinic } from './IClinic';
 
 const initialClinicData: Clinic = {
   clinic_name: null,
@@ -25,6 +14,7 @@ const initialClinicData: Clinic = {
   speciality: 'GENERAL',
   openingTime: null,
   closingTime: null,
+  doctors
 };
 
 const ClinicRegistration: React.FC = () => {
@@ -134,7 +124,6 @@ const ClinicRegistration: React.FC = () => {
             required
           >
             <option value="" disabled>Selecciona una especialidad</option>
-            {/* Mapear las especialidades disponibles en las opciones */}
             {specialities.map(speciality => (
               <option key={speciality.id} value={speciality.id}>
                 {speciality}

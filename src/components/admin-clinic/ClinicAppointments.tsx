@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios, { AxiosError } from 'axios'; // Importa AxiosError para manejar errores específicos de Axios
-import Clinic from '../clinic/Clinic';
+import axios from 'axios'; // Importa AxiosError para manejar errores específicos de Axios
 import IAppointmentWithDetails from '../appointments/interfaces/IAppointment';
 import Modal from 'react-modal'; // Importa react-modal
 import { useAuth } from '../Auth/AuthContext';
@@ -12,7 +11,7 @@ const ClinicAppointments: React.FC = () => {
   const [appointments, setAppointments] = useState<IAppointmentWithDetails[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [appointmentToHandle, setAppointmentToHandle] = useState<IAppointmentWithDetails | null>(null);
-  const { isLoggedIn, userRoles, jwtToken, logout, setJwtToken } = useAuth();
+  const { jwtToken } = useAuth();
 
   useEffect(() => {
     if (jwtToken) {
@@ -22,7 +21,6 @@ const ClinicAppointments: React.FC = () => {
         },
       };
 
-      // Llamada a la función fetchAppointments dentro del useEffect
       fetchAppointments(config);
     }
   }, [jwtToken]);

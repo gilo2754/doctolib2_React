@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { useAuth } from '../Auth/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 interface DecodedToken {
   sub?: string;
@@ -17,6 +18,8 @@ const Login: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const { isLoggedIn, userRoles, jwtToken, logout, setJwtToken } = useAuth();
   const [username, setUsername] = useState<string | undefined>(); // Provide a type for 'username'
+  const navigate = useNavigate();
+
   useEffect(() => {
     // Obtén el token JWT del almacenamiento local
     const token = localStorage.getItem('jwtToken');
@@ -37,23 +40,18 @@ const Login: React.FC = () => {
         password: formData.password,
       });
 
-      // Guardar el token JWT en el estado y en localStorage
       const token = response.data.token;
       setJwtToken(token);
       localStorage.setItem('jwtToken', token);
-
-      // Guardar las credenciales en el estado local
       localStorage.setItem('savedEmail', formData.email);
       localStorage.setItem('savedPassword', formData.password);
 
-      // Recargar la página
       window.location.reload();
+    
     } catch (error) {
       if (error.response) {
-        // El servidor respondió con un estado de error (por ejemplo, credenciales incorrectas)
         setError('Credenciales incorrectas');
       } else {
-        // Error de red o problema en la solicitud
         setError('Error en la solicitud');
       }
       setJwtToken(null);

@@ -1,15 +1,14 @@
 import { Card, CardContent, Typography } from "@mui/material";
-import { Clinic } from "../../App";
 import "./clinic.css";
-import { useState, useEffect } from "react";
 import CreateAppointment from "../appointments/CreateAppointment";
 import { IAppointmentWithoutDetails } from "../appointments/interfaces/IAppointmentWithoutDetails";
+import { IClinic } from "./IClinic";
 
 interface Props {
-  clinic: Clinic;
+  clinic: IClinic;
 }
 
-const ClinicItem: React.FC<Props> = ({ clinic }: Props) => {
+const Clinic: React.FC<Props> = ({ clinic }: Props) => {
 
   return (
     <div>
@@ -33,4 +32,4 @@ const ClinicItem: React.FC<Props> = ({ clinic }: Props) => {
   );
 };
 
-export default ClinicItem;
+export default Clinic;

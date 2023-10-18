@@ -4,7 +4,7 @@ import jwtDecode from 'jwt-decode';
 import { useAuth } from '../Auth/AuthContext';
 
 function Sidebar() {
-  const { isLoggedIn, userRoles, jwtToken, logout, setJwtToken } = useAuth();
+  const { isLoggedIn, userRoles, jwtToken, logout, setJwtToken,  } = useAuth();
 
   return (
     <nav className="sidebar">
@@ -28,7 +28,7 @@ function Sidebar() {
                 </li>
                 <li className="nav-item">
                   <Link to="/" className="nav-link">
-                    Clínicas: PACIENTE
+                    Clínicas disponibles: PACIENTE
                   </Link>
                 </li>
               </>
@@ -80,7 +80,9 @@ function Sidebar() {
             ))}
           </ul>
         </div>
-      )}
+          )}
+          
+          { isLoggedIn && "Logged IN"}
     </ul>
   </div>
 </nav>

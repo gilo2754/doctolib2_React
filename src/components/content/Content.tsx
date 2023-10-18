@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import ClinicAppointments from '../admin-clinic/ClinicAppointments';
 import CreateAppointment from '../appointments/CreateAppointment';
 import MyAppointmentList from '../appointments/MyAppointmentList';
@@ -9,6 +9,8 @@ import Login from '../user/Login';
 import RegisterPatient from '../user/RegisterPatient';
 import RegisterDoctor from '../user/RegisterDoctor';
 import axios from 'axios';
+import { useAuth } from '../Auth/AuthContext';
+
 
 function ServerDown() {
   return (
@@ -21,8 +23,23 @@ function ServerDown() {
 
 const Content: React.FC = () => {
   const [serverStatus, setServerStatus] = useState('checking');
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   useEffect(() => {
-    // Realiza una solicitud al servidor para verificar su estado
+    if (!isLoggedIn && location.pathname !== '/register/doctor'  && location.pathname !== '/register/patient') { 
+      navigate("/login");
+    }
+    //TODO
+    /*
+    if (isLoggedIn  && location.pathname !== '/login') { 
+      navigate("/account");
+    }
+    */
+  }, [isLoggedIn, navigate]);
+
+  useEffect(() => {
     axios.get('http://localhost:8081/admin/api/v1/server/status')
       .then((response) => {
         if (response.status === 200) {
@@ -37,27 +54,33 @@ const Content: React.FC = () => {
   }, []);
 
   if (serverStatus === 'checking') {
-    // Mostrar un mensaje de carga mientras se verifica el estado del servidor
     return <div>Cargando...</div>;
   } else if (serverStatus === 'down') {
-    // Si el servidor está inactivo o se produjo un error al conectar, muestra el mensaje de disculpas
     return <ServerDown />;
   }
 
   return (
     <div className="content">
       <div className="centered-content">
-        <Routes>
+      <Routes>
+      {isLoggedIn ? (
+        <>
           <Route path="/" element={<ClinicList />} />
           <Route path="/appointments" element={<MyAppointmentList />} />
           <Route path="/account" element={<UserInfo />} />
+          <Route path="/create-appointment/:selectedDate" element={<CreateAppointment clinicIdFromClinic={0} />} />
+          <Route path="/clinic-appointments" element={<ClinicAppointments />} />
+        </>
+      ) : (
+        <>
+
           <Route path="/login" element={<Login />} />
           <Route path="/register/patient" element={<RegisterPatient />} />
           <Route path="/register/doctor" element={<RegisterDoctor />} />
+                </>
 
-          <Route path="/create-appointment/:selectedDate" element={<CreateAppointment />}/>
-          <Route path="/clinic-appointments" element={<ClinicAppointments />} />           
-        </Routes>
+          )}
+    </Routes>
       </div>
     </div>
   );
