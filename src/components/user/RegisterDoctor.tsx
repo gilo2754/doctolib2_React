@@ -87,8 +87,7 @@ const RegisterDoctor: React.FC = () => {
   }; 
 
   return (
-    <div className="row">
-      <div className="col-md-6">
+    <div>
     <form>
     <h2>Registro Doctor</h2>
 
@@ -225,7 +224,7 @@ const RegisterDoctor: React.FC = () => {
     value={formData.additionalInfo}
     onChange={handleInputChange}
     className="form-control"
-    placeholder="Referencias adicionales" // Marcador de posición
+    placeholder="Referencias adicionales para la dirección" // Marcador de posición
   />
 </div>
 
@@ -258,7 +257,6 @@ const RegisterDoctor: React.FC = () => {
       </form>
       
       </div>      
-      </div>
   );
 };
 

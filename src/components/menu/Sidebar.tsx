@@ -10,27 +10,34 @@ function Sidebar() {
     <nav className="sidebar">
   <div className="centered-content">
     <ul className="nav flex-column nav-pills">
-      <li className="nav-item">
-        <Link to="/" className="nav-link">
-          Clinics
-        </Link>
-      </li>
+     
       {isLoggedIn && (
         <>
           <li className="nav-item">
             <Link to="/account" className="nav-link">
-              Account
+              Cuenta
             </Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/appointments" className="nav-link">
-              Own appointments
-            </Link>
-          </li>
+              </li>
+               
+              {userRoles.includes('ROLE_PATIENT') && (
+              <>
+                <li className="nav-item">
+                  <Link to="/appointments" className="nav-link">
+                    Mis citas: PACIENTE
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/" className="nav-link">
+                    Clínicas: PACIENTE
+                  </Link>
+                </li>
+              </>
+              )}
+
           {userRoles.includes('ROLE_DOCTOR') && (
             <li className="nav-item">
               <Link to="/clinic-appointments" className="nav-link">
-                Administration for appointments [visible para Doctores]
+                Administración de citas: DOCTORS
               </Link>
             </li>
           )}

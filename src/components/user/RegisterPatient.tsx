@@ -220,7 +220,7 @@ const RegisterPatient: React.FC = () => {
     value={formData.additionalInfo}
     onChange={handleInputChange}
     className="form-control"
-    placeholder="Referencias adicionales" // Marcador de posición
+    placeholder="Referencias adicionales para la dirección" // Marcador de posición
   />
 </div>
 

@@ -123,7 +123,6 @@ const ClinicRegistration: React.FC = () => {
                   />
               </div>
 
-        <br />
        
        <div className="mb-3">
           <label htmlFor="speciality" className="form-label">Especialidades []:</label>
