@@ -4,6 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { errorMessageRegisterUser, successMessageRegisterUser } from '../../notifications/messages';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAddressCard, faBuilding, faCity, faEnvelope, faInfoCircle, faLock, faMapMarkedAlt, faMobilePhone, faPhone, faUser } from '@fortawesome/free-solid-svg-icons';
 
 const RegisterDoctor: React.FC = () => {
   const navigate = useNavigate();
@@ -91,161 +93,217 @@ const RegisterDoctor: React.FC = () => {
     <form>
     <h2>Registro Doctor</h2>
 
-      <div className="mb-3">
+    <div className="input-group mb-3">
+        <span className="input-group-text">
+          <FontAwesomeIcon icon={faUser} />
+        </span>
         <input
           type="text"
           name="username"
           value={formData.username}
           onChange={handleInputChange}
           className="form-control"
-          placeholder="Nombre de Usuario" 
-          required 
+          placeholder="Nombre de Usuario"
+          required
+          autoComplete="username"
         />
       </div>
-        <div className="mb-3">
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            className="form-control"
-            placeholder="Contraseña" 
-            required 
-          />
+
+      <div className="input-group mb-3">
+        <span className="input-group-text">
+          <FontAwesomeIcon icon={faLock} />
+        </span>
+        <input
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleInputChange}
+          className="form-control"
+          placeholder="Contraseña"
+          required
+          autoComplete="current-password"
+        />
+      </div>
+
+      <div className="input-group mb-3">
+        <span className="input-group-text">
+          <FontAwesomeIcon icon={faUser} />
+        </span>
+        <input
+          type="text"
+          name="firstName"
+          value={formData.firstName}
+          onChange={handleInputChange}
+          className="form-control"
+          placeholder="Nombre"
+          autoComplete="given-name"
+        />
+      </div>
+
+      <div className="input-group mb-3">
+        <span className="input-group-text">
+          <FontAwesomeIcon icon={faUser} />
+        </span>
+        <input
+          type="text"
+          name="lastName"
+          value={formData.lastName}
+          onChange={handleInputChange}
+          className="form-control"
+          placeholder="Apellido"
+          autoComplete="family-name"
+        />
+      </div>
+
+      <div className="input-group mb-3">
+        <span className="input-group-text">
+          <FontAwesomeIcon icon={faEnvelope} />
+        </span>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleInputChange}
+          className="form-control"
+          placeholder="Correo Electrónico"
+          required
+          autoComplete="email"
+        />
+      </div>
+
+      <div className="input-group mb-3">
+        <span className="input-group-text">
+          <FontAwesomeIcon icon={faPhone} />
+        </span>
+  <input
+    type="tel"
+    name="phoneNumber"
+    value={formData.phoneNumber}
+    onChange={handleInputChange}
+    className="form-control"
+    placeholder="Número celular" 
+    autoComplete="tel" // Añadir atributo autocomplete con el valor "tel"
+  />
         </div>
-        <div className="mb-3">
-          <input
-            type="text"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleInputChange}
-            className="form-control"
-            placeholder="Nombre" // Marcador de posición
-          />
-        </div>
-        <div className="mb-3">
-          <input
-            type="text"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleInputChange}
-            className="form-control"
-            placeholder="Apellido" // Marcador de posición
-          />
-        </div>
-        <div className="mb-3">
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            className="form-control"
-            placeholder="Correo Electrónico" // Marcador de posición
-            required // Campo obligatorio
-          />
-        </div>
-        <div className="mb-3">
-          <input
-            type="tel"
-            name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleInputChange}
-            className="form-control"
-            placeholder="Número celular" // Marcador de posición
-          />
-        </div>
-        <div className="mb-3">
-          <input
-            type="date"
-            name="dateOfBirth"
-            value={formData.dateOfBirth}
-            onChange={handleInputChange}
-            className="form-control"
-            placeholder="Fecha de Nacimiento" // Marcador de posición
-          />
-        </div>
-      
-        <div className="mb-3">
-          <input
-            type="text"
-            name="dui"
-            value={formData.dui}
-            onChange={handleInputChange}
-            className="form-control"
-            placeholder="DUI (opcional)" 
-          />
-        </div>
-        <div className="mb-3">
-          Dirección:
+        {/*
+<div className="mb-3">
+  <input
+    type="date"
+    name="dateOfBirth"
+    value={formData.dateOfBirth}
+    onChange={handleInputChange}
+    className="form-control"
+    placeholder="Fecha de Nacimiento"
+    autoComplete="bday" // Añadir atributo autocomplete con el valor "bday"
+  />
+</div>
+*/}
+<div className="input-group mb-3">
+        <span className="input-group-text">
+          <FontAwesomeIcon icon={faAddressCard} />
+        </span>  <input
+    type="text"
+    name="dui"
+    value={formData.dui}
+    onChange={handleInputChange}
+    className="form-control"
+    placeholder="DUI (opcional)" 
+  />
+</div>
+   Dirección:
+         
+    <div className="input-group mb-3">
+  <span className="input-group-text">
+    <FontAwesomeIcon icon={faMapMarkedAlt} />
+  </span>  
   <input
     type="text"
     name="street"
     value={formData.street}
     onChange={handleInputChange}
     className="form-control"
-    placeholder="Calle y Número" // Marcador de posición
+    placeholder="Calle y Número"
   />
 </div>
-<div className="mb-3">
+          
+        <div className="input-group mb-3">
+  <span className="input-group-text">
+    <FontAwesomeIcon icon={faBuilding} />
+  </span>  
   <input
     type="text"
     name="neighborhood"
     value={formData.neighborhood}
     onChange={handleInputChange}
     className="form-control"
-    placeholder="Colonia" // Marcador de posición
+    placeholder="Colonia"
   />
 </div>
-<div className="mb-3">
+<div className="input-group mb-3">
+  <span className="input-group-text">
+            <FontAwesomeIcon icon={faCity} />
+            </span>  
   <input
     type="text"
     name="city"
     value={formData.city}
     onChange={handleInputChange}
     className="form-control"
-    placeholder="Ciudad o Municipio" // Marcador de posición
+    placeholder="Ciudad o Municipio"
   />
 </div>
-<div className="mb-3">
-  <input
+<div className="input-group mb-3">
+  <span className="input-group-text">
+            <FontAwesomeIcon icon={faCity} />
+          </span>
+          <input
     type="text"
     name="department"
     value={formData.department}
     onChange={handleInputChange}
     className="form-control"
-    placeholder="Departamento" // Marcador de posición
+    placeholder="Departamento"
   />
 </div>
 
-<div className="mb-3">
+<div className="input-group mb-3">
+  <span className="input-group-text">
+            <FontAwesomeIcon icon={faInfoCircle } />
+          </span>
   <input
     type="text"
     name="additionalInfo"
     value={formData.additionalInfo}
     onChange={handleInputChange}
     className="form-control"
-    placeholder="Referencias adicionales para la dirección" // Marcador de posición
+    placeholder="Referencias adicionales para la dirección"
   />
 </div>
 
-  <div className="mb-3">
-          <label htmlFor="speciality" className="form-label">Especialidad:</label>
-          <select
-            name="speciality"
-            value={formData.speciality}
-            onChange={handleSelectChange}
-            className="form-select"
-            required
-          >
-            <option value="" disabled>Selecciona una especialidad</option>
-            {/* Mapear las especialidades disponibles en las opciones */}
-            {specialities.map(speciality => (
-              <option key={speciality.id} value={speciality.id}>
-                {speciality}
-              </option>
-            ))}
-          </select>
-        </div>
+<div className="mb-3">
+  <label htmlFor="speciality" className="form-label">Especialidad:</label>
+  <select
+    name="speciality"
+    value={formData.speciality}
+    onChange={handleSelectChange}
+    className="form-select"
+    required
+  >
+    <option value="" disabled>Selecciona una especialidad</option>
+    {specialities.map(speciality => (
+  <option key={speciality.id} value={speciality.id}>
+    {speciality}
+  </option>
+    ))}
+     {specialities.map((speciality, index) => (
+  <option key={index} value={speciality}>
+    {speciality}
+  </option>
+))}
+
+  </select>
+</div>
+
 
         <button type="button" className="btn btn-primary me-2" onClick={generatePlaceholders}>
           Generar Placeholders

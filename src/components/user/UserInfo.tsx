@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { useAuth } from '../Auth/AuthContext';
 import { User } from '../appointments/interfaces/IAppointment';
 import ClinicRegistration from '../clinic/ClinicRegistration';
+import axios from 'axios';
 
 const UserInfo: React.FC = () => {
   const { userInfo: userInfoFromContext, userRoles } = useAuth();
@@ -18,18 +19,33 @@ const UserInfo: React.FC = () => {
     setEditedUserInfo(userInfoFromContext);
   };
 
-  const handleSaveClick = () => {
-    // Realiza una solicitud para guardar los cambios en el servidor, si es necesario
-    // Actualiza el estado de userInfo con los valores editados
-    // Aquí puedes agregar la lógica para guardar los cambios en la API
-
+  const handleSaveClick = async (e: FormEvent) => {
+    e.preventDefault();
+  
+    // Verifica si editedUserInfo no es nulo
     if (editedUserInfo) {
-      // Copia las modificaciones de editedUserInfo a userInfo
-      Object.assign(userInfoFromContext, editedUserInfo);
+      try {
+        console.log(editedUserInfo);
+        // Realiza una solicitud PUT a la API para actualizar los datos del usuario
+        const response = await axios.put('http://localhost:8081/api/v1/person/update', editedUserInfo);
+  
+        if (response.status === 200) {
+          // Actualización exitosa, puedes realizar acciones adicionales si es necesario
+          console.log('Datos del usuario actualizados correctamente');
+        } else {
+          // Maneja cualquier otro caso según tus necesidades
+          console.error('Error al actualizar los datos del usuario');
+        }
+      } catch (error) {
+        // Maneja errores de la solicitud, por ejemplo, problemas de red o errores en la API
+        console.error('Error en la solicitud de actualización:', error);
+      }
     }
-
+  
     setIsEditing(false);
   };
+  
+  
 
   const handleCancelClick = () => {
     // Cancela la edición y restaura los valores originales
@@ -97,6 +113,8 @@ const UserInfo: React.FC = () => {
                 value={isEditing ? editedUserInfo?.social_number : userInfoFromContext.social_number}
                 onChange={(e) => handleInputChange(e, 'social_number')}
                 className="form-control"
+                placeholder="Numero social"
+
               />
             </div>
             <div className="mb-3">
@@ -114,7 +132,7 @@ const UserInfo: React.FC = () => {
                 <button className="btn btn-danger ms-5" onClick={handleCancelClick}>Cancelar</button>
               </div>
             ) : (
-              <button className="btn btn-primary" onClick={handleEditClick}>Editar</button>
+              <button className="btn btn-primary" onClick={handleEditClick}>Editar(FIXME)</button>
             )}
           </form>
         </div>

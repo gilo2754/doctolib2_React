@@ -14,7 +14,7 @@ const initialClinicData: Clinic = {
   speciality: 'GENERAL',
   openingTime: null,
   closingTime: null,
-  doctors
+  doctors:[]
 };
 
 const ClinicRegistration: React.FC = () => {
@@ -46,11 +46,11 @@ const ClinicRegistration: React.FC = () => {
         setClinicData({ ...clinicData, [name]: value });
       };
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-
-    axios.post('http://localhost:8081/api/v1/clinic/add', clinicData)
-      .then((response) => {
+    const handleSubmit = (e: FormEvent) => {
+      e.preventDefault();
+  
+      axios.post('http://localhost:8081/api/v1/clinic/add', clinicData)
+        .then((response) => {
         console.log('Clínica registrada con éxito', response.data);
         
         Swal.fire({

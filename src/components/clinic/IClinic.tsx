@@ -10,5 +10,5 @@ export interface Clinic {
   speciality?: string;
   openingTime: string | null;
   closingTime: string | null;
-  doctors: User[];
+  doctors?: User[];
 }

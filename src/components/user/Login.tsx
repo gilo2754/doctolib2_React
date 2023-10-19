@@ -78,47 +78,49 @@ const Login: React.FC = () => {
           <p> Has iniciado sesión</p>
           <p> Tu rol es:  {userRoles}</p>
           <button className="btn btn-danger" onClick={logout}>Cerrar Sesión</button>
-        </div>
-      ) : (
-        <div>
-      <div className="mb-3">
-              <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            className="form-control"
-            required
-            placeholder="E-Mail" 
-
-          />
           </div>
-          <div className="mb-3 d-flex align-items-center">
-  <input
-    type={showPassword ? 'text' : 'password'}
-    id="password"
-    name="password"
-    value={formData.password}
-    onChange={handleInputChange}
-    onKeyDown={handlePasswordKeyPress}
-    className="form-control"
-    required
-    placeholder="Contraseña"
-  />
-  <button className="btn btn-primary ms-2" onClick={() => setShowPassword(!showPassword)}>
-    {showPassword ? 'Ocultar' : 'Mostrar'}
-  </button>
-</div>
+  ) : (
+    <form onSubmit={handleLogin}> {/* Agregamos un formulario */}
+    <div className="mb-3">
+      <input
+        type="email"
+        id="email"
+        name="email"
+        value={formData.email}
+        onChange={handleInputChange}
+        className="form-control"
+        required
+        placeholder="E-Mail"
+        autoComplete="email" 
 
-          <button className="btn btn-dark" onClick={handleLogin}>Iniciar Sesión</button>
-
-          {error && (
-            <div>
-              <p>{error}</p>
+      />
             </div>
-          )}
+            <div className="mb-3 d-flex align-items-center">
+        <input
+          type={showPassword ? 'text' : 'password'}
+          id="password"
+          name="password"
+          value={formData.password}
+          onChange={handleInputChange}
+          onKeyDown={handlePasswordKeyPress}
+          className="form-control"
+          required
+          placeholder="Contraseña"
+          autoComplete="current-password" 
+              />
+              <button className="btn btn-primary ms-2" onClick={() => setShowPassword(!showPassword)}>
+          {showPassword ? 'Ocultar' : 'Mostrar'}
+        </button>
+      </div>
+      <button type="submit" className="btn btn-dark">Iniciar Sesión</button>
+
+
+      {error && (
+        <div>
+          <p>{error}</p>
         </div>
+      )}
+    </form>
       )}
       {jwtToken && (
         <div>

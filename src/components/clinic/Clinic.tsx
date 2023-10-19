@@ -3,6 +3,7 @@ import "./clinic.css";
 import CreateAppointment from "../appointments/CreateAppointment";
 import { IAppointmentWithoutDetails } from "../appointments/interfaces/IAppointmentWithoutDetails";
 import { IClinic } from "./IClinic";
+import AddressComponent from "../others/AddressComponent";
 
 interface Props {
   clinic: IClinic;
@@ -25,7 +26,8 @@ const Clinic: React.FC<Props> = ({ clinic }: Props) => {
             <Typography variant="body2">Closing Time: {clinic.closingTime}</Typography>
           </div>
           
-          <CreateAppointment clinicIdFromClinic={clinic.clinic_id}/>
+          <CreateAppointment clinicIdFromClinic={clinic.clinic_id} />
+          <AddressComponent />
         </CardContent>
       </Card>
     </div>
