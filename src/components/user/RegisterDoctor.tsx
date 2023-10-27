@@ -54,8 +54,8 @@ const RegisterDoctor: React.FC = () => {
   };
 
   const generatePlaceholders = () => {
-    const username = `monse${Math.floor(Math.random() * 100)}`;
-    const email = `monse${Math.floor(Math.random() * 100)}@example.com`;
+    const username = `d${Math.floor(Math.random() * 100)}`;
+    const email = `d${Math.floor(Math.random() * 100)}@example.com`;
     setFormData({
       ...formData,
       username,

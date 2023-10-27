@@ -11,7 +11,7 @@ const RegisterPatient: React.FC = () => {
   const [formData, setFormData] = useState({
     username: '',
     password: 'P123',
-    firstName: 'carlo',
+    firstName: 'p',
     lastName: 'menji',
     email: '',
     phoneNumber: '0154564351685',
@@ -33,8 +33,8 @@ const RegisterPatient: React.FC = () => {
   };
 
   const generatePlaceholders = () => {
-    const username = `carlo${Math.floor(Math.random() * 100)}`;
-    const email = `carlo${Math.floor(Math.random() * 100)}@example.com`;
+    const username = `p${Math.floor(Math.random() * 100)}`;
+    const email = `p${Math.floor(Math.random() * 100)}@example.com`;
     setFormData({
       ...formData,
       username,

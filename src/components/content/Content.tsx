@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
-import ClinicAppointments from '../admin-clinic/ClinicAppointments';
+import axios from 'axios';
+import { useAuth } from '../Auth/AuthContext';
+import DoctorAppointments from '../admin-clinic/DoctorAppointments';
 import CreateAppointment from '../appointments/CreateAppointment';
-import MyAppointmentList from '../appointments/MyAppointmentList';
 import ClinicList from '../clinic/ClinicList';
 import UserInfo from '../user/UserInfo';
 import Login from '../user/Login';
 import RegisterPatient from '../user/RegisterPatient';
 import RegisterDoctor from '../user/RegisterDoctor';
-import axios from 'axios';
-import { useAuth } from '../Auth/AuthContext';
-
+import UserAppointments from '../appointments/UserAppointments';
 
 function ServerDown() {
   return (
@@ -31,12 +30,7 @@ const Content: React.FC = () => {
     if (!isLoggedIn && location.pathname !== '/register/doctor'  && location.pathname !== '/register/patient') { 
       navigate("/login");
     }
-    //TODO
-    /*
-    if (isLoggedIn  && location.pathname !== '/login') { 
-      navigate("/account");
-    }
-    */
+   
   }, [isLoggedIn, navigate]);
 
   useEffect(() => {
@@ -66,10 +60,10 @@ const Content: React.FC = () => {
       {isLoggedIn ? (
         <>
           <Route path="/" element={<ClinicList />} />
-          <Route path="/appointments" element={<MyAppointmentList />} />
+//        <Route path="/appointments" element={<UserAppointments />} />
           <Route path="/account" element={<UserInfo />} />
           <Route path="/create-appointment/:selectedDate" element={<CreateAppointment clinicIdFromClinic={0} />} />
-          <Route path="/clinic-appointments" element={<ClinicAppointments />} />
+          <Route path="/clinic-appointments" element={<DoctorAppointments />} />
         </>
       ) : (
         <>

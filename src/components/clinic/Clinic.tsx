@@ -26,7 +26,7 @@ const Clinic: React.FC<Props> = ({ clinic }: Props) => {
             <Typography variant="body2">Closing Time: {clinic.closingTime}</Typography>
           </div>
           
-          <CreateAppointment clinicIdFromClinic={clinic.clinic_id} />
+          <CreateAppointment clinicIdFromClinic={clinic.clinic_id} doctors={clinic.doctors } />
           <AddressComponent />
         </CardContent>
       </Card>

@@ -6,7 +6,7 @@ import { successMessageCreateClinic, errorMessageCreateClinic } from '../../noti
 import { Clinic } from './IClinic';
 
 const initialClinicData: Clinic = {
-  clinic_name: null,
+  clinic_name: 'Nueva clinica',
   clinic_description: '',
   clinic_address: null,
   clinic_phone_number: '123',
@@ -14,7 +14,7 @@ const initialClinicData: Clinic = {
   speciality: 'GENERAL',
   openingTime: null,
   closingTime: null,
-  doctors:[]
+  doctors: [],
 };
 
 const ClinicRegistration: React.FC = () => {
@@ -26,11 +26,22 @@ const ClinicRegistration: React.FC = () => {
     axios.get('http://localhost:8081/admin/api/v1/specialities')
       .then((response) => {
         setSpecialities(response.data);
-      })
-      .catch((error) => {
-        console.error('Error al obtener las especialidades:', error);
-      });
+    })
+    .catch((error) => {
+      console.error('Error al obtener las especialidades:', error);
+    });
   }, []);
+  
+  useEffect(() => {
+    // Este useEffect se ejecutará cuando userInfo cambie
+    if (userInfo) {
+      setClinicData({
+        ...clinicData,
+        doctors: [{ user_id: userInfo.user_id, role: "DOCTOR" }],
+      });
+    }
+  }, [userInfo]);
+
     
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -51,6 +62,8 @@ const ClinicRegistration: React.FC = () => {
   
       axios.post('http://localhost:8081/api/v1/clinic/add', clinicData)
         .then((response) => {
+          console.log('Se va a crear esta Clínica', clinicData);
+
         console.log('Clínica registrada con éxito', response.data);
         
         Swal.fire({
@@ -74,7 +87,7 @@ const ClinicRegistration: React.FC = () => {
   return (
       <div>
     <form onSubmit={handleSubmit}>
-      <h2>Registra tu de Clínica</h2>
+        <h2>Registra tu Clínica! Para doctor: { userInfo?.user_id}</h2>
           <div className="mb-3">
         <input
           type="text"

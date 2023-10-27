@@ -65,13 +65,14 @@ export function AuthProvider({ children }) {
   }, []);
 
   const logout = () => {
+    // Realiza cualquier lógica de cierre de sesión necesaria, como eliminar el token JWT y restablecer el estado
     localStorage.removeItem('jwtToken');
     setJwtToken(null);
     setIsLoggedIn(false);
     setUserRoles([]);
     localStorage.removeItem('savedEmail');
     localStorage.removeItem('savedPassword');
-    localStorage.removeItem('userIDLoggedIn');
+    localStorage.removeItem('user_idLoggedIn');
 
     window.location.reload();
   };

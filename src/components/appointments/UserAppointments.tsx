@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useAuth } from "../Auth/AuthContext";
 import Modal from 'react-modal'; // Importa react-modal
 import IAppointmentWithDetails from './interfaces/IAppointment';
 import './style/myAppointmentsList.css';
@@ -7,10 +8,11 @@ import { IAppointmentWithoutDetails } from './interfaces/IAppointmentWithoutDeta
 
 Modal.setAppElement('#root'); // Set the app element here
 
-const MyAppointmentsList: React.FC = () => {
+function UserAppointments() {
   const [appointments, setAppointments] = useState<IAppointmentWithDetails[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [appointmentToCancel, setAppointmentToCancel] = useState<IAppointmentWithDetails | null>(null);
+  const { jwtToken, userInfo } = useAuth();
 
   useEffect(() => {
     fetchAppointments();
@@ -18,7 +20,7 @@ const MyAppointmentsList: React.FC = () => {
 
   const fetchAppointments = async () => {
     try {
-      const response = await axios.get('http://localhost:8081/api/v1/appointment');
+      const response = await axios.get(`http://localhost:8081/api/v1/appointment/person/${userInfo.user_id}`);
       setAppointments(response.data);
     } catch (error) {
       console.error('Error fetching appointments:', error);
@@ -41,7 +43,6 @@ const MyAppointmentsList: React.FC = () => {
           appointment_id: appointmentToCancel.appointment_id,
           appointment_status: "CANCELLED_BY_PATIENT",
           clinic: {clinic_id: appointmentToCancel.clinic.clinic_id},
-         // patient: {user_id: appointmentToCancel.patient.user_id}, Not needed to change the appointment and is not in the Appointment for now (15.10.23) 
           doctor: {user_id: appointmentToCancel.doctor.user_id},
           endTime: appointmentToCancel.endTime,
           startTime: appointmentToCancel.startTime,
@@ -98,6 +99,6 @@ const MyAppointmentsList: React.FC = () => {
 </div>
 
   );
-};
+}
 
-export default MyAppointmentsList;
+export default UserAppointments;

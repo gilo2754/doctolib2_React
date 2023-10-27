@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { useAuth } from '../Auth/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface DecodedToken {
   sub?: string;
@@ -32,7 +34,9 @@ const Login: React.FC = () => {
     setJwtToken(token);
   }, []);
 
-  const handleLogin = async () => {
+  const handleLogin  = async (e: FormEvent) => {
+    e.preventDefault();
+
     setError(null); // Limpiar cualquier error previo al intentar iniciar sesión
     try {
       const response = await axios.post('http://localhost:8081/api/v1/login', {
@@ -65,7 +69,7 @@ const Login: React.FC = () => {
 
   const handlePasswordKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      handleLogin();
+      handleLogin(event);
     }
   };
 
@@ -81,9 +85,12 @@ const Login: React.FC = () => {
           </div>
   ) : (
     <form onSubmit={handleLogin}> {/* Agregamos un formulario */}
-    <div className="mb-3">
-      <input
-        type="email"
+    <div className="input-group mb-3">
+        <span className="input-group-text">
+          <FontAwesomeIcon icon={faUser} />
+    </span>
+    <input
+        type="text"
         id="email"
         name="email"
         value={formData.email}
@@ -95,8 +102,11 @@ const Login: React.FC = () => {
 
       />
             </div>
-            <div className="mb-3 d-flex align-items-center">
-        <input
+            <div className="input-group mb-3">
+        <span className="input-group-text">
+          <FontAwesomeIcon icon={faLock} />
+              </span>
+              <input
           type={showPassword ? 'text' : 'password'}
           id="password"
           name="password"

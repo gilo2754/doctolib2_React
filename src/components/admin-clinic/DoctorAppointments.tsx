@@ -7,11 +7,11 @@ import { useAuth } from '../Auth/AuthContext';
 Modal.setAppElement('#root'); // Set the app element here
 
 
-const ClinicAppointments: React.FC = () => {
+const DoctorAppointments: React.FC = () => {
   const [appointments, setAppointments] = useState<IAppointmentWithDetails[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [appointmentToHandle, setAppointmentToHandle] = useState<IAppointmentWithDetails | null>(null);
-  const { jwtToken } = useAuth();
+  const { jwtToken, userInfo } = useAuth();
 
   useEffect(() => {
     if (jwtToken) {
@@ -27,7 +27,7 @@ const ClinicAppointments: React.FC = () => {
 
   const fetchAppointments = async (config: any) => {
     try {
-      const response = await axios.get('http://localhost:8081/api/v1/appointment/clinic/1', config);
+      const response = await axios.get(`http://localhost:8081/api/v1/appointment/person/${userInfo.user_id}`, config);
       setAppointments(response.data);
     } catch (error) {
       console.error('Error fetching appointments:', error);
@@ -51,7 +51,6 @@ const ClinicAppointments: React.FC = () => {
           appointment_id: appointment.appointment_id,
           appointment_status: appointmentStatus,
           clinic: appointment.clinic,
-          // TODO: Obtén el ID del usuario del paciente de alguna manera (puede ser a través de la autenticación)
           patient: appointment.patient,
           doctor: appointment.doctor,
           endTime: appointment.endTime,
@@ -122,4 +121,4 @@ const ClinicAppointments: React.FC = () => {
   );
 };
 
-export default ClinicAppointments;
+export default DoctorAppointments;

@@ -4,16 +4,21 @@ import { IAppointmentWithoutDetails } from "./interfaces/IAppointmentWithoutDeta
 import { useAuth } from '../Auth/AuthContext';
 import Swal from "sweetalert2";
 import { successMessageCreateAppointment, errorMessageCreateAppointment } from "../../notifications/messages";
+import { User } from "./interfaces/IAppointment";
 
 interface CreateAppointmentProps {
   clinicIdFromClinic: number; // Define the clinicId prop
+  doctors: User[];
 }
-const CreateAppointment: React.FC<CreateAppointmentProps> = ({ clinicIdFromClinic }) => {
+
+const CreateAppointment: React.FC<CreateAppointmentProps> = ({ clinicIdFromClinic, doctors }) => {
   const [startTime, setStartTime] = useState<Date | null>(new Date('2023-10-17T18:06:00.000Z'));
   const [endTime, setEndTime] = useState<Date | null>(null);
   const [clinicId, setClinicId] = useState<number>();
   const [patientId, setPatientId] = useState<number>();
-  const [doctorId, setDoctorId] = useState<number>(1);
+  const [doctorId, setDoctorId] = useState<number>();
+  const [selectedDoctor, setSelectedDoctor] = useState(""); // Estado para el doctor seleccionado
+
   const { userInfo, isLoggedIn } = useAuth();
 
   const duration = 15; //In minutes
@@ -23,6 +28,7 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({ clinicIdFromClini
       const endTimeDate = new Date(startTime);
       endTimeDate.setMinutes(endTimeDate.getMinutes() + duration);
       setEndTime(endTimeDate);
+      setDoctorId(clinicIdFromClinic);
     }
 
     if (clinicIdFromClinic) { setClinicId(clinicIdFromClinic) }
@@ -44,8 +50,9 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({ clinicIdFromClini
         clinic: {
           clinic_id: clinicId,
         },
-        doctor: { user_id: doctorId },
-        patient: userInfo ? { user_id: userInfo.user_id } : 1,
+        doctor: { user_id: selectedDoctor },
+        patient: userInfo ? { user_id: userInfo.user_id } : 0,
+        //TODO
         startTime: startTime.toISOString(), // Convierte a cadena ISO8601
         endTime: endTime.toISOString(), // Convierte a cadena ISO8601
       };
@@ -75,7 +82,7 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({ clinicIdFromClini
 
   return (
     <div>
-      <h2>Creando cita para UsuarioID: {userInfo?.user_id}</h2>
+      <h2>Creando cita para UsuarioID: {userInfo?.user_id} y DoctorID: { selectedDoctor}</h2>
       <form onSubmit={handleSubmit}>
         <label>
           Start Time:
@@ -98,6 +105,21 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({ clinicIdFromClini
           />
         </label>
   <br />*/}
+        <label>
+  Doctor:
+  <select
+    value={selectedDoctor}
+    onChange={(e) => setSelectedDoctor(e.target.value)}
+    required
+  >
+    <option value="">Seleccione un doctor</option>
+    {doctors.map((doctor) => (
+      <option key={doctor.user_id} value={doctor.user_id}>
+        {doctor.firstName} {doctor.lastName}
+      </option>
+    ))}
+  </select>
+</label>
         <button type="submit">Create Appointment</button>
       </form>
     </div>
