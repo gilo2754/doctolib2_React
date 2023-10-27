@@ -7,7 +7,6 @@ import { IAppointmentWithoutDetails } from '../appointments/interfaces/IAppointm
 
 Modal.setAppElement('#root'); // Set the app element here
 
-
 const DoctorAppointments: React.FC = () => {
   const [appointments, setAppointments] = useState<IAppointmentWithDetails[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

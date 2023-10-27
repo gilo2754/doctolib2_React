@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../Auth/AuthContext";
 import Modal from 'react-modal'; // Importa react-modal
 import IAppointmentWithDetails from './interfaces/IAppointment';
 import './style/myAppointmentsList.css';
 import { IAppointmentWithoutDetails } from './interfaces/IAppointmentWithoutDetails';
+import Swal from "sweetalert2";
+import { errorMessageModifyAppointment, successMessageModifyAppointment } from "../../notifications/messages";
 
 Modal.setAppElement('#root'); // Set the app element here
 
@@ -47,19 +49,26 @@ function UserAppointments() {
           endTime: appointmentToCancel.endTime,
           startTime: appointmentToCancel.startTime,
         };
+        closeModal();
 
-        console.log()
+        Swal.fire({
+          icon: 'success',
+          ...successMessageModifyAppointment,
+        });
         const response = await axios.put(
           "http://localhost:8081/api/v1/appointment/update",
           modifiedAppointment
         );
 
         console.log("Appointment was changed:", response.data);
-        closeModal();
         // Refresh the list of appointments after cancellation
         fetchAppointments();
       } catch (error) {
         console.error("Error changing values of appointment:", error);
+        Swal.fire({
+          icon: 'error',
+          ...errorMessageModifyAppointment,
+        });
       }
     }
   };
