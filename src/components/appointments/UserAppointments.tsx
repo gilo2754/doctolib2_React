@@ -12,7 +12,7 @@ function UserAppointments() {
   const [appointments, setAppointments] = useState<IAppointmentWithDetails[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [appointmentToCancel, setAppointmentToCancel] = useState<IAppointmentWithDetails | null>(null);
-  const { jwtToken, userInfo } = useAuth();
+  const { userInfo } = useAuth();
 
   useEffect(() => {
     fetchAppointments();
@@ -66,7 +66,7 @@ function UserAppointments() {
 
   return (
     <div>
-  <h1>Mis próximas citas. Are those mines?</h1>
+  <h1>Mis próximas citas. PATIENT</h1>
   {appointments.map(appointment => (
     <div key={appointment.appointment_id} className="appointment-box">
       <h2>Appointment ID: {appointment.appointment_id}</h2>

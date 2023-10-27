@@ -3,6 +3,7 @@ import axios from 'axios'; // Importa AxiosError para manejar errores específic
 import IAppointmentWithDetails from '../appointments/interfaces/IAppointment';
 import Modal from 'react-modal'; // Importa react-modal
 import { useAuth } from '../Auth/AuthContext';
+import { IAppointmentWithoutDetails } from '../appointments/interfaces/IAppointmentWithoutDetails';
 
 Modal.setAppElement('#root'); // Set the app element here
 
@@ -44,17 +45,16 @@ const DoctorAppointments: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  const handleAppointment = async (appointment: IAppointmentWithDetails, appointmentStatus: string) => {
-    if (appointment) {
+  const handleAppointment = async (appointmentToModify: IAppointmentWithDetails, appointmentStatus: string) => {
+    if (appointmentToModify) {
       try {
-        const modifiedAppointment: Partial<IAppointmentWithDetails> = {
-          appointment_id: appointment.appointment_id,
+        const modifiedAppointment: Partial<IAppointmentWithoutDetails> = {
+          appointment_id: appointmentToModify.appointment_id,
           appointment_status: appointmentStatus,
-          clinic: appointment.clinic,
-          patient: appointment.patient,
-          doctor: appointment.doctor,
-          endTime: appointment.endTime,
-          startTime: appointment.startTime,
+          clinic: {clinic_id: appointmentToModify.clinic.clinic_id},
+          doctor: {user_id: appointmentToModify.doctor.user_id},
+          endTime: appointmentToModify.endTime,
+          startTime: appointmentToModify.startTime,
         };
 
         // Envía una solicitud al servidor para modificar el estado de la cita
@@ -75,7 +75,7 @@ const DoctorAppointments: React.FC = () => {
 
   return (
     <div>
-      <h1>Mis próximas citas</h1>
+      <h1>Mis próximas citas: DOCTOR</h1>
       {appointments.map(appointment => (
         <div key={appointment.appointment_id} className="appointment-box">
           <h2>Appointment ID: {appointment.appointment_id}</h2>
