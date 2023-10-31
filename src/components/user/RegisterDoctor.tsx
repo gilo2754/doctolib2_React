@@ -10,7 +10,8 @@ import { faAddressCard, faBuilding, faCity, faEnvelope, faInfoCircle, faLock, fa
 const RegisterDoctor: React.FC = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
+  const [passwordConfirmation, setPasswordConfirmation] = useState(''); // Estado para la confirmación de contraseña
+  const [passwordsMatch, setPasswordsMatch] = useState(true); // Estado para verificar si las contraseñas coinciden
   const [specialities, setSpecialities] = useState([]); 
   const [formData, setFormData] = useState({
     username: '',
@@ -33,10 +34,8 @@ const RegisterDoctor: React.FC = () => {
   });
 
   useEffect(() => {
-    // Realizar la solicitud GET para obtener las especialidades
     axios.get('http://localhost:8081/admin/api/v1/specialities')
       .then((response) => {
-        // Almacenar las especialidades en el estado
         setSpecialities(response.data);
       })
       .catch((error) => {
@@ -64,31 +63,36 @@ const RegisterDoctor: React.FC = () => {
     });
   };
 
+  const handlePasswordConfirmationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setPasswordConfirmation(e.target.value);
+  };
+
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // Evitar la recarga de la página
-    try {
-      const response = await axios.post('http://localhost:8081/api/v1/person/add', formData);
-      console.log('Registro de doctor exitoso:', response.data);
-      // Puedes redirigir al usuario a otra página o realizar alguna acción después del registro exitoso
 
-      Swal.fire({
-        icon: 'success',
-        ...successMessageRegisterUser,
-      });
-      
-      navigate('/login');
+    if (formData.password === passwordConfirmation) {
+      try {
+        const response = await axios.post('http://localhost:8081/api/v1/person/add', formData);
+        console.log('Registro de doctor exitoso:', response.data);
 
-
-    } catch (error) {
-      console.error('Error en el registro:', error);
-     
-      Swal.fire({
-        icon: 'error',
-        ...errorMessageRegisterUser,
-      });
+        Swal.fire({
+          icon: 'success',
+          ...successMessageRegisterUser,
+        });
+        navigate('/login');
+      } catch (error) {
+        console.error('Error en el registro:', error);
+        Swal.fire({
+          icon: 'error',
+          ...errorMessageRegisterUser,
+        });
+      }
+    } else {
+      // Las contraseñas no coinciden, muestra un mensaje de error
+      setPasswordsMatch(false);
     }
-  }; 
- 
+  };
 
   return (
     <div>
@@ -105,31 +109,53 @@ const RegisterDoctor: React.FC = () => {
           value={formData.username}
           onChange={handleInputChange}
           className="form-control"
-          placeholder="Nombre de Usuario"
+          placeholder="Nombre de usuario para iniciar sesión"
           required
           autoComplete="username"
         />
       </div>
 
       <div className="input-group mb-3">
-        <span className="input-group-text">
-          <FontAwesomeIcon icon={faLock} />
-              </span>
-              <input
-          type={showPassword ? 'text' : 'password'}
-          id="password"
-          name="password"
-          value={formData.password}
-          onChange={handleInputChange}
-          className="form-control"
-          required
-          placeholder="Contraseña"
-          autoComplete="current-password" 
-              />
-              <button className="btn btn-primary ms-2" onClick={() => setShowPassword(!showPassword)}>
-          {showPassword ? 'Ocultar' : 'Mostrar'}
+          <span className="input-group-text">
+            <FontAwesomeIcon icon={faLock} />
+          </span>
+          <input
+            type={showPassword ? 'text' : 'password'}
+            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            className="form-control"
+            required
+            placeholder="Contraseña"
+            autoComplete="new-password"
+          />
+        </div>
+        
+        <div className="input-group mb-3">
+          <span className="input-group-text">
+            <FontAwesomeIcon icon={faLock} />
+          </span>
+          <input
+            type={showPassword ? 'text' : 'password'}
+            name="passwordConfirmation"
+            value={passwordConfirmation}
+            onChange={handlePasswordConfirmationChange}
+            className="form-control"
+            required
+            placeholder="Confirmar Contraseña"
+            autoComplete="new-password"
+          />
+       <button type="button" className="btn btn-primary ms-2" onClick={() => setShowPassword(!showPassword)}>
+        {showPassword ? 'Ocultar' : 'Mostrar'}
         </button>
-      </div>
+          </div> 
+        
+        {!passwordsMatch && (
+          <div className="alert alert-danger" role="alert">
+            Las contraseñas no coinciden. Por favor, inténtalo de nuevo.
+          </div>
+        )}
 
       <div className="input-group mb-3">
         <span className="input-group-text">
@@ -188,7 +214,7 @@ const RegisterDoctor: React.FC = () => {
     onChange={handleInputChange}
     className="form-control"
     placeholder="Número celular" 
-    autoComplete="tel" // Añadir atributo autocomplete con el valor "tel"
+    autoComplete="tel" 
   />
         </div>
         {/*
@@ -216,8 +242,7 @@ const RegisterDoctor: React.FC = () => {
     placeholder="DUI (opcional)" 
   />
 </div>
-   Dirección:
-         
+   Dirección:         
     <div className="input-group mb-3">
   <span className="input-group-text">
     <FontAwesomeIcon icon={faMapMarkedAlt} />

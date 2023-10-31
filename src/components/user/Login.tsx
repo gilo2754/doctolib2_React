@@ -44,12 +44,12 @@ const Login: React.FC = () => {
         password: formData.password,
       });
 
+      navigate('/account');
       const token = response.data.token;
       setJwtToken(token);
       localStorage.setItem('jwtToken', token);
       localStorage.setItem('savedEmail', formData.email);
       localStorage.setItem('savedPassword', formData.password);
-
       window.location.reload();
     
     } catch (error) {
@@ -84,7 +84,7 @@ const Login: React.FC = () => {
           <button className="btn btn-danger" onClick={logout}>Cerrar Sesión</button>
           </div>
   ) : (
-    <form onSubmit={handleLogin}> {/* Agregamos un formulario */}
+    <form onSubmit={handleLogin}> 
     <div className="input-group mb-3">
         <span className="input-group-text">
           <FontAwesomeIcon icon={faUser} />
@@ -97,7 +97,7 @@ const Login: React.FC = () => {
         onChange={handleInputChange}
         className="form-control"
         required
-        placeholder="E-Mail"
+        placeholder="Nombre de usuario"
         autoComplete="email" 
 
       />

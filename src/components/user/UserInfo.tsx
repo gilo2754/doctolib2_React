@@ -4,11 +4,13 @@ import { User } from '../appointments/interfaces/IAppointment';
 import ClinicRegistration from '../clinic/ClinicRegistration';
 import axios from 'axios';
 import './UserInfo.css';
+import Swal from 'sweetalert2';
+import { errorMessage, successMessage, successMessageRegisterUser } from '../../notifications/messages';
 
 const UserInfo: React.FC = () => {
   const { userInfo: userInfoFromContext, userRoles } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
-  const [editedUserInfo, setEditedUserInfo] = useState<User | null>(null);
+  const [editedUserInfo, setEditedUserInfo] = useState<User>(null);
   const [profileImage, setProfileImage] = useState<File | null>(null); // Nuevo estado para la imagen de perfil
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: keyof User) => {
@@ -18,7 +20,12 @@ const UserInfo: React.FC = () => {
 
   const handleEditClick = () => {
     setIsEditing(true);
+
+    
+    //TODO
     setEditedUserInfo(userInfoFromContext);
+
+    
   };
 
   const handleSaveClick = async (e: FormEvent) => {
@@ -31,6 +38,11 @@ const UserInfo: React.FC = () => {
         // Realiza una solicitud PUT a la API para actualizar los datos del usuario
         const response = await axios.put('http://localhost:8081/api/v1/person/update', editedUserInfo);
   
+        Swal.fire({
+          icon: 'success',
+          ...successMessage,
+        });
+        
         if (response.status === 200) {
           // Actualización exitosa, puedes realizar acciones adicionales si es necesario
           console.log('Datos del usuario actualizados correctamente');
@@ -41,6 +53,10 @@ const UserInfo: React.FC = () => {
       } catch (error) {
         // Maneja errores de la solicitud, por ejemplo, problemas de red o errores en la API
         console.error('Error en la solicitud de actualización:', error);
+        Swal.fire({
+          icon: 'error',
+          ...errorMessage,
+        });
       }
     }
   
@@ -75,7 +91,7 @@ const UserInfo: React.FC = () => {
         className="profile-image"
       />
     ) : (
-      <div className="profile-image-placeholder">Drag and drop an image here</div>
+      <div className="profile-image-placeholder">Aquí va tu foto de perfil</div>
     )}
     <span className="change-photo-text">Cambiar foto</span>
   </label>
@@ -87,9 +103,6 @@ const UserInfo: React.FC = () => {
     className="visually-hidden"
   />
 </div>
-
-
-            
             <div className="mb-3">
               <input
                 type="text"

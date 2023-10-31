@@ -1,3 +1,14 @@
+//General
+export const successMessage = {
+  title: 'OK',
+  text: 'Todo funcionó!',
+};
+
+export const errorMessage = {
+  title: 'Error',
+  text: 'Hubo un problema. Por favor, revise los datos e inténtelo de nuevo.',
+};
+
 // Users
 export const successMessageRegisterUser = {
     title: 'Bienvenid@',

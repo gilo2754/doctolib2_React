@@ -27,13 +27,6 @@ const Content: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (!isLoggedIn && location.pathname !== '/register/doctor'  && location.pathname !== '/register/patient') { 
-      navigate("/login");
-    }
-   
-  }, [isLoggedIn, navigate]);
-
-  useEffect(() => {
     axios.get('http://localhost:8081/admin/api/v1/server/status')
       .then((response) => {
         if (response.status === 200) {
@@ -62,7 +55,7 @@ const Content: React.FC = () => {
           <Route path="/" element={<ClinicList />} />
 //        <Route path="/appointments" element={<UserAppointments />} />
           <Route path="/account" element={<UserInfo />} />
-          <Route path="/create-appointment/:selectedDate" element={<CreateAppointment clinicIdFromClinic={0} />} />
+          <Route path="/create-appointment/:selectedDate" element={<CreateAppointment clinicIdFromClinic={0} doctors={[]} />} />
           <Route path="/clinic-appointments" element={<DoctorAppointments />} />
         </>
       ) : (
