@@ -1,0 +1,65 @@
+.profile-image-label {
+    display: inline-block;
+    width: 150px; /* Ajusta el tamaño del círculo según tus necesidades */
+    height: 150px; /* Ajusta el tamaño del círculo según tus necesidades */
+    border: 2px dashed #ccc;
+    border-radius: 50%; /* Esto crea la forma de círculo */
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .profile-image-label:hover {
+    border-color: #333; /* Cambia el color del borde al pasar el mouse sobre el círculo */
+  }
+  
+  .profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajusta la imagen para que llene el círculo */
+    border-radius: 50%; /* Asegura que la imagen tenga la forma de un círculo */
+  }
+  
+  .profile-image-placeholder {
+    margin-top: 20px; /* Ajusta el espaciado según tus necesidades */
+    color: #666;
+  }
+  
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: polygon(0px 0px, 0px 0px, 0px 0px);
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  
+  .profile-image-label {
+    display: inline-block;
+    width: 150px; /* Ajusta el tamaño del círculo según tus necesidades */
+    height: 150px; /* Ajusta el tamaño del círculo según tus necesidades */
+    border: 2px dashed #ccc;
+    border-radius: 50%; /* Esto crea la forma de círculo */
+    text-align: center;
+    cursor: pointer;
+    position: relative; /* Agregamos esta propiedad */
+  }
+  
+  .profile-image-label:hover .change-photo-text {
+    display: block; /* Muestra el texto al pasar el cursor por encima */
+  }
+  
+  .profile-image-label .change-photo-text {
+    display: none; /* Oculta el texto por defecto */
+    position: absolute; /* Posición absoluta dentro del círculo */
+    bottom: 0; /* Coloca el texto en la parte inferior del círculo */
+    left: 0; /* Coloca el texto en la parte izquierda del círculo */
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo semitransparente para mayor legibilidad */
+    color: #fff; /* Color del texto */
+    padding: 5px;
+  }
+  

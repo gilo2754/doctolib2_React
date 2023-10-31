@@ -3,11 +3,13 @@ import { useAuth } from '../Auth/AuthContext';
 import { User } from '../appointments/interfaces/IAppointment';
 import ClinicRegistration from '../clinic/ClinicRegistration';
 import axios from 'axios';
+import './UserInfo.css';
 
 const UserInfo: React.FC = () => {
   const { userInfo: userInfoFromContext, userRoles } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [editedUserInfo, setEditedUserInfo] = useState<User | null>(null);
+  const [profileImage, setProfileImage] = useState<File | null>(null); // Nuevo estado para la imagen de perfil
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: keyof User) => {
     const updatedEditedUser = { ...editedUserInfo, [field]: event.target.value };
@@ -45,12 +47,15 @@ const UserInfo: React.FC = () => {
     setIsEditing(false);
   };
   
-  
-
   const handleCancelClick = () => {
     // Cancela la edición y restaura los valores originales
     setIsEditing(false);
     setEditedUserInfo(null); // Restablece editedUserInfo a null
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedImage = e.target.files[0];
+    setProfileImage(selectedImage);
   };
 
   return (
@@ -60,6 +65,31 @@ const UserInfo: React.FC = () => {
         <div>
           <form>
             <label>ID de usuario: {userInfoFromContext.user_id} </label>
+            
+            <div className="mb-3">
+  <label htmlFor="imageUpload" className="profile-image-label">
+    {profileImage ? (
+      <img
+        src={URL.createObjectURL(profileImage)}
+        alt="Profile Image"
+        className="profile-image"
+      />
+    ) : (
+      <div className="profile-image-placeholder">Drag and drop an image here</div>
+    )}
+    <span className="change-photo-text">Cambiar foto</span>
+  </label>
+  <input
+    type="file"
+    accept="image/*"
+    id="imageUpload"
+    onChange={handleImageChange}
+    className="visually-hidden"
+  />
+</div>
+
+
+            
             <div className="mb-3">
               <input
                 type="text"

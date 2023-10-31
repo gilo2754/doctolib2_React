@@ -9,6 +9,7 @@ import { faAddressCard, faBuilding, faCity, faEnvelope, faInfoCircle, faLock, fa
 
 const RegisterDoctor: React.FC = () => {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const [specialities, setSpecialities] = useState([]); 
   const [formData, setFormData] = useState({
@@ -87,6 +88,7 @@ const RegisterDoctor: React.FC = () => {
       });
     }
   }; 
+ 
 
   return (
     <div>
@@ -112,17 +114,21 @@ const RegisterDoctor: React.FC = () => {
       <div className="input-group mb-3">
         <span className="input-group-text">
           <FontAwesomeIcon icon={faLock} />
-        </span>
-        <input
-          type="password"
+              </span>
+              <input
+          type={showPassword ? 'text' : 'password'}
+          id="password"
           name="password"
           value={formData.password}
           onChange={handleInputChange}
           className="form-control"
-          placeholder="Contraseña"
           required
-          autoComplete="current-password"
-        />
+          placeholder="Contraseña"
+          autoComplete="current-password" 
+              />
+              <button className="btn btn-primary ms-2" onClick={() => setShowPassword(!showPassword)}>
+          {showPassword ? 'Ocultar' : 'Mostrar'}
+        </button>
       </div>
 
       <div className="input-group mb-3">
