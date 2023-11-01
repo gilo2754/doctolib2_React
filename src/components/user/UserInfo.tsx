@@ -6,6 +6,7 @@ import axios from 'axios';
 import './UserInfo.css';
 import Swal from 'sweetalert2';
 import { errorMessage, successMessage, successMessageRegisterUser } from '../../notifications/messages';
+import MyClinicsDoctor from '../clinic/MyClinics';
 
 const UserInfo: React.FC = () => {
   const { userInfo: userInfoFromContext, userRoles } = useAuth();
@@ -20,11 +21,8 @@ const UserInfo: React.FC = () => {
 
   const handleEditClick = () => {
     setIsEditing(true);
-
-    
     //TODO
     setEditedUserInfo(userInfoFromContext);
-
     
   };
 
@@ -103,71 +101,82 @@ const UserInfo: React.FC = () => {
     className="visually-hidden"
   />
 </div>
-            <div className="mb-3">
-              <input
-                type="text"
-                value={isEditing ? editedUserInfo?.username : userInfoFromContext.username}
-                onChange={(e) => handleInputChange(e, 'username')}
-                placeholder='Nombre de usuario'
-                className="form-control"
-              />
-            </div>
 
-            <div className="mb-3">
-            <input
-              type="text"
-              value={isEditing ? editedUserInfo?.firstName : userInfoFromContext.firstName}
-              onChange={(e) => handleInputChange(e, 'firstName')}
-              className="form-control"
-              /> 
-             </div>              
+<div className="mb-3">
+  <label htmlFor="username">Nombre de usuario</label>
+  <input
+    type="text"
+    value={isEditing ? editedUserInfo?.username : userInfoFromContext.username}
+    onChange={(e) => handleInputChange(e, 'username')}
+    placeholder="Nombre de usuario"
+    className="form-control"
+  />
+</div>
 
-            <div className="mb-3">
-            <input
-              type="text"
-              value={isEditing ? editedUserInfo?.lastName : userInfoFromContext.lastName}
-              onChange={(e) => handleInputChange(e, 'lastName')}
-              className="form-control"
-              />
-             </div>
+<div className="mb-3">
+  <label htmlFor="firstName">Nombre</label>
+  <input
+    type="text"
+    value={isEditing ? editedUserInfo?.firstName : userInfoFromContext.firstName}
+    onChange={(e) => handleInputChange(e, 'firstName')}
+    className="form-control"
+  />
+</div>
 
-            <div className="mb-3">
-              <input
-                type="email"
-                value={isEditing ? editedUserInfo?.email : userInfoFromContext.email}
-                onChange={(e) => handleInputChange(e, 'email')}
-                required
-                placeholder="E-Mail"
-                className="form-control"
-              />
-            </div>
-            <div className="mb-3">
-              <input
-                type="text"
-                value={isEditing ? editedUserInfo?.phoneNumber : userInfoFromContext.phoneNumber}
-                onChange={(e) => handleInputChange(e, 'phoneNumber')}
-                placeholder="phoneNumber"
-                className="form-control"
-              />
-            </div>
-            <div className="mb-3">
-              <input
-                type="text" 
-                value={isEditing ? editedUserInfo?.social_number : userInfoFromContext.social_number}
-                onChange={(e) => handleInputChange(e, 'social_number')}
-                className="form-control"
-                placeholder="Numero social"
+<div className="mb-3">
+  <label htmlFor="lastName">Apellido</label>
+  <input
+    type="text"
+    value={isEditing ? editedUserInfo?.lastName : userInfoFromContext.lastName}
+    onChange={(e) => handleInputChange(e, 'lastName')}
+    className="form-control"
+  />
+</div>
 
-              />
-            </div>
-            <div className="mb-3">
-              <input
-                type="date"
-                value={isEditing ? editedUserInfo?.dateOfBirth : userInfoFromContext.dateOfBirth}
-                onChange={(e) => handleInputChange(e, 'dateOfBirth')}
-                className="form-control"
-              />
-            </div>
+<div className="mb-3">
+  <label htmlFor="email">E-Mail</label>
+  <input
+    type="email"
+    value={isEditing ? editedUserInfo?.email : userInfoFromContext.email}
+    onChange={(e) => handleInputChange(e, 'email')}
+    required
+    placeholder="E-Mail"
+    className="form-control"
+  />
+</div>
+
+<div className="mb-3">
+  <label htmlFor="phoneNumber">Número de teléfono</label>
+  <input
+    type="text"
+    value={isEditing ? editedUserInfo?.phoneNumber : userInfoFromContext.phoneNumber}
+    onChange={(e) => handleInputChange(e, 'phoneNumber')}
+    placeholder="Número de teléfono"
+    className="form-control"
+  />
+</div>
+
+<div className="mb-3">
+  <label htmlFor="social_number">Número social</label>
+  <input
+    type="text"
+    value={isEditing ? editedUserInfo?.social_number : userInfoFromContext.social_number}
+    onChange={(e) => handleInputChange(e, 'social_number')}
+    className="form-control"
+    placeholder="Número social"
+  />
+</div>
+
+<div className="mb-3">
+  <label htmlFor="dateOfBirth">Fecha de nacimiento</label>
+  <input
+    type="date"
+    value={isEditing ? editedUserInfo?.dateOfBirth : userInfoFromContext.dateOfBirth}
+    onChange={(e) => handleInputChange(e, 'dateOfBirth')}
+    className="form-control"
+  />
+</div>
+
 
             {isEditing ? (
               <div>
@@ -185,6 +194,9 @@ const UserInfo: React.FC = () => {
       <hr />
       {userRoles.includes('ROLE_DOCTOR') && 
              <div>
+              <MyClinicsDoctor/>
+              +Aqui solo dejar un boton y ClinicReg en /clinic/new
+
              <ClinicRegistration />
        
              </div>}
