@@ -10,6 +10,7 @@ import Login from '../user/Login';
 import RegisterPatient from '../user/RegisterPatient';
 import RegisterDoctor from '../user/RegisterDoctor';
 import UserAppointments from '../appointments/UserAppointments';
+import ForgotPassword from '../Auth/ForgotPassword';
 
 function ServerDown() {
   return (
@@ -64,6 +65,8 @@ const Content: React.FC = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register/patient" element={<RegisterPatient />} />
           <Route path="/register/doctor" element={<RegisterDoctor />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+
                 </>
 
           )}

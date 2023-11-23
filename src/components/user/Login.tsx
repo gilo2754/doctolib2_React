@@ -2,7 +2,7 @@ import React, { useState, useEffect, FormEvent } from 'react';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { useAuth } from '../Auth/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -130,6 +130,10 @@ const Login: React.FC = () => {
           <p>{error}</p>
         </div>
       )}
+
+<div>
+          <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
+        </div>
     </form>
       )}
       {jwtToken && (
