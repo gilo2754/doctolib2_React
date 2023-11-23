@@ -37,7 +37,7 @@ const ClinicRegistration: React.FC = () => {
     if (userInfo) {
       setClinicData({
         ...clinicData,
-        doctors: [{ user_id: userInfo.user_id, role: "DOCTOR" }],
+        doctors: [{ user_id: userInfo?.user_id, role: "DOCTOR" }],
       });
     }
   }, [userInfo]);

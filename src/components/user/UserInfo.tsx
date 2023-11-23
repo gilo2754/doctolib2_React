@@ -5,7 +5,7 @@ import ClinicRegistration from '../clinic/ClinicRegistration';
 import axios from 'axios';
 import './UserInfo.css';
 import Swal from 'sweetalert2';
-import { errorMessage, successMessage, successMessageRegisterUser } from '../../notifications/messages';
+import { errorMessage, successMessage } from '../../notifications/messages';
 import MyClinicsDoctor from '../clinic/MyClinics';
 
 const UserInfo: React.FC = () => {
@@ -34,7 +34,7 @@ const UserInfo: React.FC = () => {
       try {
         console.log(editedUserInfo);
         // Realiza una solicitud PUT a la API para actualizar los datos del usuario
-        const response = await axios.put('http://localhost:8081/api/v1/person/update', editedUserInfo);
+        const response = await axios.put(`http://localhost:8081/api/v1/person/update`, editedUserInfo);
   
         Swal.fire({
           icon: 'success',

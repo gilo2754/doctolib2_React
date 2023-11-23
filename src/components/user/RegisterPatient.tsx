@@ -8,6 +8,8 @@ import { errorMessageRegisterUser, successMessageRegisterUser } from '../../noti
 const RegisterPatient: React.FC = () => {
   const navigate = useNavigate();
 
+ // const apiUrl = process.env.REACT_APP_API_URL;
+
   const [formData, setFormData] = useState({
     username: '',
     password: 'P123',
@@ -45,7 +47,7 @@ const RegisterPatient: React.FC = () => {
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8081/api/v1/person/add', formData);
+      const response = await axios.post(`http://localhost:8081/api/v1/person/add`, formData);
       console.log('Registro exitoso:', response.data);
 
       Swal.fire({

@@ -75,7 +75,7 @@ function UserAppointments() {
 
   return (
     <div>
-  <h1>Mis próximas citas. PATIENT</h1>
+  <h1>Mis próximas citas. PATIENT (Broken because UserDTO</h1>
   {appointments.map(appointment => (
     <div key={appointment.appointment_id} className="appointment-box">
       <h2>Appointment ID: {appointment.appointment_id}</h2>
