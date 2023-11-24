@@ -1,6 +1,6 @@
 import { User } from "../appointments/interfaces/IAppointment";
 
-export interface Clinic {
+export interface IClinic {
   clinic_id?: number;
   clinic_name: string | null;
   clinic_description: string;

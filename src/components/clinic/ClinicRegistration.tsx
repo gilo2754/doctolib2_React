@@ -3,9 +3,9 @@ import axios from 'axios';
 import { useAuth } from '../Auth/AuthContext';
 import Swal from 'sweetalert2';
 import { successMessageCreateClinic, errorMessageCreateClinic } from '../../notifications/messages';
-import { Clinic } from './IClinic';
+import { IClinic } from './IClinic';
 
-const initialClinicData: Clinic = {
+const initialClinicData: IClinic = {
   clinic_name: 'Nueva clinica',
   clinic_description: '',
   clinic_address: null,
