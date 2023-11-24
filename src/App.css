@@ -1,5 +1,9 @@
 .App {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vh; /* Ajusta el ancho al 100% */
+  margin: 0;  /* Elimina los márgenes predeterminados */
 }
 
 .App-logo {
@@ -60,11 +64,12 @@ button {
 }
 
 .sidebar {
-  width: 250px;
+  width: 35vh;
   height: 100%;
   background-color: #333;
   color: #fff;
   padding: 20px;
+   /*flex: 2; Ocupa el 20% del espacio disponible */
 }
 
 ul {
@@ -81,30 +86,14 @@ li:hover {
   font-weight: bold;
 }
 
-/* App.css */
-/* App.css */
-
-/* Utiliza Flexbox para la estructura general de la aplicación */
-.App {
-  display: flex;
-  flex-direction: column;
-  height: 100vh; /* Ajusta la altura a la altura de la ventana */
-}
 
 /* Utiliza Flexbox para el contenido y el sidebar */
 .container {
   display: flex;
   flex: 1; /* El contenido y el sidebar se expanden para llenar el espacio disponible */
+  width: 100vh;
 }
 
-/* Estilos del Sidebar */
-.Sidebar {
-  flex: 1; /* Ocupa el 20% del espacio disponible */
-  background-color: #f0f0f0;
-  padding: 20px; /* Espaciado adicional dentro del Sidebar (personalizable) */
-}
-
-/* Estilos del contenido centrado */
 .centered-content {
   display: flex;
   flex-direction: column;
