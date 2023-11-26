@@ -17,7 +17,7 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({ clinicIdFromClini
   const [clinicId, setClinicId] = useState<number>();
   const [patientId, setPatientId] = useState<number>();
   const [doctorId, setDoctorId] = useState<number>();
-  const [selectedDoctor, setSelectedDoctor] = useState(); // Estado para el doctor seleccionado
+  const [selectedDoctor, setSelectedDoctor] = useState<number>(); // Estado para el doctor seleccionado
 
   const { userInfo, isLoggedIn } = useAuth();
 
