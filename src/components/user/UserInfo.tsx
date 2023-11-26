@@ -1,12 +1,10 @@
 import React, { FormEvent, useState } from 'react';
 import { useAuth } from '../Auth/AuthContext';
 import { User } from '../appointments/interfaces/IAppointment';
-import ClinicRegistration from '../clinic/ClinicRegistration';
 import axios from 'axios';
 import './UserInfo.css';
 import Swal from 'sweetalert2';
 import { errorMessage, successMessage } from '../../notifications/messages';
-import MyClinicsDoctor from '../clinic/MyClinics';
 
 const UserInfo: React.FC = () => {
   const { userInfo: userInfoFromContext, userRoles, setUserInfo } = useAuth();
