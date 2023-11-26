@@ -25,7 +25,7 @@ export interface Clinic {
     email?: string;
     phoneNumber?: string;
     dateOfBirth?: string;
-    social_number?: string;
+    socialNumber?: string;
   }
 
   export default IAppointmentWithDetails;

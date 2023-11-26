@@ -9,7 +9,7 @@ import { errorMessage, successMessage } from '../../notifications/messages';
 import MyClinicsDoctor from '../clinic/MyClinics';
 
 const UserInfo: React.FC = () => {
-  const { userInfo: userInfoFromContext, userRoles } = useAuth();
+  const { userInfo: userInfoFromContext, userRoles, setUserInfo } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [editedUserInfo, setEditedUserInfo] = useState<User>(null);
   const [profileImage, setProfileImage] = useState<File | null>(null); // Nuevo estado para la imagen de perfil
@@ -23,7 +23,6 @@ const UserInfo: React.FC = () => {
     setIsEditing(true);
     //TODO
     setEditedUserInfo(userInfoFromContext);
-    
   };
 
   const handleSaveClick = async (e: FormEvent) => {
@@ -43,6 +42,8 @@ const UserInfo: React.FC = () => {
         
         if (response.status === 200) {
           // Actualización exitosa, puedes realizar acciones adicionales si es necesario
+          setUserInfo(response.data);
+          setIsEditing(false);
           console.log('Datos del usuario actualizados correctamente');
         } else {
           // Maneja cualquier otro caso según tus necesidades
@@ -73,7 +74,7 @@ const UserInfo: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="user-info-form">
       <h2>Información de mi cuenta</h2>
       {userInfoFromContext ? (
         <div>
@@ -109,7 +110,7 @@ const UserInfo: React.FC = () => {
     value={isEditing ? editedUserInfo?.username : userInfoFromContext.username}
     onChange={(e) => handleInputChange(e, 'username')}
     placeholder="Nombre de usuario"
-    className="form-control"
+    className={`mb-3 form-control ${isEditing ? 'editing' : ''}`}
   />
 </div>
 
@@ -119,7 +120,7 @@ const UserInfo: React.FC = () => {
     type="text"
     value={isEditing ? editedUserInfo?.firstName : userInfoFromContext.firstName}
     onChange={(e) => handleInputChange(e, 'firstName')}
-    className="form-control"
+    className={`mb-3 form-control ${isEditing ? 'editing' : ''}`}
   />
 </div>
 
@@ -129,42 +130,43 @@ const UserInfo: React.FC = () => {
     type="text"
     value={isEditing ? editedUserInfo?.lastName : userInfoFromContext.lastName}
     onChange={(e) => handleInputChange(e, 'lastName')}
-    className="form-control"
+    className={`mb-3 form-control ${isEditing ? 'editing' : ''}`}
   />
 </div>
 
 <div className="mb-3">
   <label htmlFor="email">E-Mail</label>
   <input
+    className={`mb-3 form-control ${isEditing ? 'editing' : ''}`}
     type="email"
     value={isEditing ? editedUserInfo?.email : userInfoFromContext.email}
     onChange={(e) => handleInputChange(e, 'email')}
     required
     placeholder="E-Mail"
-    className="form-control"
   />
 </div>
 
 <div className="mb-3">
-  <label htmlFor="phoneNumber">Número de teléfono</label>
+ <label htmlFor="phoneNumber">Número de teléfono</label>
   <input
+    className={`mb-3 form-control ${isEditing ? 'editing' : ''}`}
     type="text"
     value={isEditing ? editedUserInfo?.phoneNumber : userInfoFromContext.phoneNumber}
     onChange={(e) => handleInputChange(e, 'phoneNumber')}
     placeholder="Número de teléfono"
-    className="form-control"
   />
 </div>
 
 <div className="mb-3">
-  <label htmlFor="social_number">Número social</label>
+  <label htmlFor="socialNumber">Número social</label>
   <input
+  className={`mb-3 form-control ${isEditing ? 'editing' : ''}`}
     type="text"
-    value={isEditing ? editedUserInfo?.social_number : userInfoFromContext.social_number}
-    onChange={(e) => handleInputChange(e, 'social_number')}
-    className="form-control"
+    value={isEditing ? editedUserInfo?.socialNumber : userInfoFromContext.socialNumber}
+    onChange={(e) => handleInputChange(e, 'socialNumber')}
     placeholder="Número social"
-  />
+    readOnly={!isEditing}
+    />
 </div>
 
 <div className="mb-3">
@@ -173,7 +175,7 @@ const UserInfo: React.FC = () => {
     type="date"
     value={isEditing ? editedUserInfo?.dateOfBirth : userInfoFromContext.dateOfBirth}
     onChange={(e) => handleInputChange(e, 'dateOfBirth')}
-    className="form-control"
+    className={`mb-3 form-control ${isEditing ? 'editing' : ''}`}
   />
 </div>
 
@@ -184,7 +186,7 @@ const UserInfo: React.FC = () => {
                 <button className="btn btn-danger ms-5" onClick={handleCancelClick}>Cancelar</button>
               </div>
             ) : (
-              <button className="btn btn-primary" onClick={handleEditClick}>Editar(FIXME)</button>
+              <button className="btn btn-primary" onClick={handleEditClick}>Editar</button>
             )}
           </form>
         </div>

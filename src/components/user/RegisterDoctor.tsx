@@ -21,7 +21,7 @@ const RegisterDoctor: React.FC = () => {
     email: '',
     phoneNumber: '0154564351685',
     dateOfBirth: '2000-12-06',
-    social_number: '',
+    socialNumber: '',
     dui: '',
     role: 'DOCTOR',
     speciality: 'GENERAL',

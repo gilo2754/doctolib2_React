@@ -18,7 +18,7 @@ const RegisterPatient: React.FC = () => {
     email: '',
     phoneNumber: '0154564351685',
     dateOfBirth: '1990-01-01',
-    social_number: '',
+    socialNumber: '',
     dui: '',
     role: 'PATIENT',
     street: '1a ave nte',         // Nuevo campo: Calle y Número
@@ -148,8 +148,8 @@ const RegisterPatient: React.FC = () => {
         <div className="mb-3">
           <input
             type="text"
-            name="social_number"
-            value={formData.social_number}
+            name="socialNumber"
+            value={formData.socialNumber}
             onChange={handleInputChange}
             className="form-control"
             placeholder="Número Social (opcional)" 

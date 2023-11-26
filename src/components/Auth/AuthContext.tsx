@@ -10,6 +10,7 @@ interface AuthContextType {
   setJwtToken: (token: string | null) => void;
   logout: () => void;
   userInfo: User;
+  setUserInfo();
 }
 interface DecodedToken {
   role: string[];
@@ -84,6 +85,7 @@ export function AuthProvider({ children }) {
     jwtToken,
     setJwtToken, 
     logout,
+    setUserInfo
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

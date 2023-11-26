@@ -1,21 +1,18 @@
-import React from 'react'
-import ReactDOM from 'react-dom';
-import App from './App'
-import { AuthProvider } from './components/Auth/AuthContext'
-import './index.css'
-//import dotenv from 'dotenv';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import { AuthProvider } from './components/Auth/AuthContext';
+import './index.css';
 
-// Configurar dotenv
-//dotenv.config();
+const rootElement = document.getElementById('root');
 
+// Use createRoot instead of ReactDOM.render
+const root = ReactDOM.createRoot(rootElement);
 
-  ReactDOM.render(
-
+root.render(
   <React.StrictMode>
-    <AuthProvider> 
-    <App />
+    <AuthProvider>
+      <App />
     </AuthProvider>
-  </React.StrictMode>,
-    document.getElementById('root')
-
-)
+  </React.StrictMode>
+);
