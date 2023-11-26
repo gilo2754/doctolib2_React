@@ -17,7 +17,7 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({ clinicIdFromClini
   const [clinicId, setClinicId] = useState<number>();
   const [patientId, setPatientId] = useState<number>();
   const [doctorId, setDoctorId] = useState<number>();
-  const [selectedDoctor, setSelectedDoctor] = useState<number>(); // Estado para el doctor seleccionado
+  const [selectedDoctor, setSelectedDoctor] = useState<number>(0); // Estado para el doctor seleccionado
 
   const { userInfo, isLoggedIn } = useAuth();
 
@@ -109,7 +109,8 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({ clinicIdFromClini
   Doctor:
   <select
     value={selectedDoctor}
-    onChange={(e) => setSelectedDoctor(e.target.value)}
+//      onChange={(e) => setSelectedDoctor(e.target.value, 10)}
+            onChange={(e) => setSelectedDoctor(parseInt(e.target.value, 10))}
     required
   >
     <option value="">Seleccione un doctor</option>
