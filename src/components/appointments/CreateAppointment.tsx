@@ -51,7 +51,7 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({ clinicIdFromClini
           clinic_id: clinicId,
         },
         doctor: { user_id: selectedDoctor },
-        patient: userInfo ? { user_id: userInfo.user_id } : 0,
+        patient: userInfo ? { user_id: userInfo.user_id } : { user_id: 0 },
         //TODO
         startTime: startTime.toISOString(), // Convierte a cadena ISO8601
         endTime: endTime.toISOString(), // Convierte a cadena ISO8601
