@@ -193,15 +193,7 @@ const UserInfo: React.FC = () => {
       ) : (
         <p>Cargando información de la cuenta... ¿Ya iniciaste sesión?</p>
       )}
-      <hr />
-      {userRoles.includes('ROLE_DOCTOR') && 
-             <div>
-              <MyClinicsDoctor/>
-              +Aqui solo dejar un boton y ClinicReg en /clinic/new
-
-             <ClinicRegistration />
-       
-             </div>}
+     
 
     </div>
   );

@@ -35,11 +35,15 @@ function Sidebar() {
               )}
 
           {userRoles.includes('ROLE_DOCTOR') && (
-            <li className="nav-item">
-              <Link to="/clinic-appointments" className="nav-link">
-                Administración de citas: DOCTORS
-              </Link>
-            </li>
+            <><li className="nav-item">
+                  <Link to="/clinic-appointments" className="nav-link">
+                    Administración de citas: DOCTORS
+                  </Link>
+                </li><li className="nav-item">
+                    <Link to="/admin-clinic" className="nav-link">
+                      Administración de clínica: DOCTORS
+                    </Link>
+                  </li></>
           )}
         </>
       )}
