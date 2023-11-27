@@ -67,7 +67,6 @@
 .user-info-form .form-control.editing {
   border: 2px solid #4caf50; /* Bordes verdes para indicar edición */
   background-color: #f8fff5; /* Fondo ligeramente diferente para indicar edición */
-  pointer-events: none; /* Desactiva el comportamiento de los eventos del puntero durante la edición */
   /* Otros estilos adicionales según sea necesario */
 }
 

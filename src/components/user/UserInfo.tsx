@@ -108,7 +108,7 @@ const UserInfo: React.FC = () => {
     value={isEditing ? editedUserInfo?.username : userInfoFromContext.username}
     onChange={(e) => handleInputChange(e, 'username')}
     placeholder="Nombre de usuario"
-    className={`mb-3 form-control ${isEditing ? 'editing' : ''}`}
+    className={`mb-3 form-control `}
   />
 </div>
 
