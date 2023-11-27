@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import axios from 'axios';
 import { useAuth } from '../Auth/AuthContext'; // Import the appropriate authentication context
-import { Clinic } from '../appointments/interfaces/IAppointment';
+import Swal from 'sweetalert2';
+import { successMessage, errorMessage } from '../../notifications/messages';
+import { IClinic } from './IClinic';
 
 const MyClinicsDoctor = () => {
   const { userInfo } = useAuth(); // Replace with your context hook
@@ -9,15 +11,10 @@ const MyClinicsDoctor = () => {
   const [selectedClinic, setSelectedClinic] = useState(null);
   const [specialities, setSpecialities] = useState([]); // Estado para almacenar las especialidades
   const [isEditing, setIsEditing] = useState(false);
-  const [editedClinic, setEditedClinic] = useState<Clinic>(null);
+  const [editedClinic, setEditedClinic] = useState<IClinic>(null);
 
-  const initialClinicData = {
-    clinic_name: '',
-    clinic_description: '',
-    clinic_phone_number: '',
-    speciality: '',
-  };
-  const [clinicData, setClinicData] = useState(initialClinicData);
+
+  const [clinicData, setClinicData] = useState<IClinic>(null);
 
   useEffect(() => {
     axios.get('http://localhost:8081/admin/api/v1/specialities')
@@ -51,14 +48,13 @@ const MyClinicsDoctor = () => {
   const handleCancelEdit = () => {
     // Clear the selected clinic for editing
     setSelectedClinic(null);
+    setIsEditing(false);
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setClinicData({
-      ...clinicData,
-      [name]: value,
-    });
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: keyof IClinic) => {
+    const updatedEditedClinic = { ...editedClinic, [field]: event.target.value };
+    setClinicData(updatedEditedClinic);
   };
 
   const handleTextAreaChange = (e) => {
@@ -77,39 +73,68 @@ const MyClinicsDoctor = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSaveClick = async (e: FormEvent) => {
     e.preventDefault();
-    // Enviar la solicitud para registrar la clínica con los datos de clinicData
-    axios
-      .post('http://localhost:8081/api/v1/clinic', clinicData)
-      .then((response) => {
-        // Manejar la respuesta si es necesario
-        console.log('Clínica registrada:', response.data);
-        // Puedes actualizar la lista de clínicas si es necesario
-        setClinicData(initialClinicData);
-      })
-      .catch((error) => {
-        console.error('Error registrando clínica:', error);
-      });
+  
+    // Verifica si editedUserInfo no es nulo
+    if (editedClinic) {
+      try {
+        console.log(editedClinic);
+        // Realiza una solicitud PUT a la API para actualizar los datos del usuario
+        const response = await axios.put(`http://localhost:8081/api/v1/clinic/1`, editedClinic);
+  
+        Swal.fire({
+          icon: 'success',
+          ...successMessage,
+        });
+        
+        if (response.status === 200) {
+          // Actualización exitosa, puedes realizar acciones adicionales si es necesario
+          setClinicData(response.data);
+          setIsEditing(false);
+          console.log('Clinica actualizada correctamente');
+        } else {
+          // Maneja cualquier otro caso según tus necesidades
+          console.error('Error al actualizar los datos ');
+        }
+      } catch (error) {
+        // Maneja errores de la solicitud, por ejemplo, problemas de red o errores en la API
+        console.error('Error en la solicitud de actualización:', error);
+        Swal.fire({
+          icon: 'error',
+          ...errorMessage,
+        });
+      }
+    }
+  
+    setIsEditing(false);
   };
+
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <h2>Clinicas de este doctor {userInfo?.user_id}</h2>
+      <form>
+        <h2>Clinicas del doctor {userInfo?.user_id}</h2>
          <ul>
         {clinics.map((clinic) => (
           <li key={clinic.clinic_id}>
             {clinic.clinic_name}
             <div className="mb-3">
   <label htmlFor="username">Clinica:</label>
- 
+  <div className="mb-3">
+  <label htmlFor="clinicName">Nombre</label>
+   
+</div>
 </div>
 
             {selectedClinic === clinic.clinic_id ? (
-              <button onClick={handleCancelEdit}>Cancel Edit</button>
+              <><button className="btn btn-primary" onClick={handleCancelEdit}>Cancelar</button>
+              <button className="btn btn-primary" onClick={handleSaveClick}>Guardar cambios</button>
+              </>
+
             ) : (
-                <button className="btn btn-primary" onClick={() =>  handleEditClinic(clinic.clinic_id)}>Editar(Abrir clinic en /clinic/clinicId nueva pagina)</button>
+                <button className="btn btn-primary" onClick={() =>  handleEditClinic(clinic.clinic_id)}>
+                  Editar</button>
             )}
 
 
@@ -121,7 +146,8 @@ const MyClinicsDoctor = () => {
           {/* Render the form for editing the clinic data */}
           <h3>Edit Clinic Data</h3>
           {/* You can use a form or other components for editing */}
-          <button onClick={() => handleEditClinic(null)}>Save Changes</button>
+          <button className="btn btn-primary" onClick={handleSaveClick}>Guardar cambios</button>
+
         </div>
       )}
       </form>

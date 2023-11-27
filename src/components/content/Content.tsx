@@ -12,6 +12,7 @@ import RegisterDoctor from '../user/RegisterDoctor';
 import UserAppointments from '../appointments/UserAppointments';
 import ForgotPassword from '../Auth/ForgotPassword';
 import ClinicRegistration from '../clinic/ClinicRegistration';
+import MyClinicsDoctor from '../clinic/MyClinicsDoctor';
 
 function ServerDown() {
   return (
@@ -59,7 +60,7 @@ const Content: React.FC = () => {
           <Route path="/account" element={<UserInfo />} />
           <Route path="/create-appointment/:selectedDate" element={<CreateAppointment clinicIdFromClinic={0} doctors={[]} />} />
           <Route path="/clinic-appointments" element={<DoctorAppointments />} />
-          <Route path="/admin-clinic" element={<ClinicRegistration />} />
+          <Route path="/admin-clinic" element={<MyClinicsDoctor />} />
 
             </>
       ) : (
