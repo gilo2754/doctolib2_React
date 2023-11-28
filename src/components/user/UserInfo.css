@@ -63,17 +63,3 @@
     padding: 5px;
   }
 
- /* Estilos para cuando está en modo de edición */
-.user-info-form .form-control.editing {
-  border: 2px solid #4caf50; /* Bordes verdes para indicar edición */
-  background-color: #f8fff5; /* Fondo ligeramente diferente para indicar edición */
-  /* Otros estilos adicionales según sea necesario */
-}
-
-/* Estilos para cuando no está en modo de edición */
-.user-info-form .form-control:not(.editing) {
-  pointer-events: none;
-  background-color: #f0f0f0; /* Opcional: Cambia el color de fondo para indicar que el campo está deshabilitado */
-  opacity: 0.7; /* Opcional: Ajusta la opacidad según tus preferencias */
-  cursor: not-allowed; /* Opcional: Cambia el cursor para indicar que el campo está deshabilitado */
-}

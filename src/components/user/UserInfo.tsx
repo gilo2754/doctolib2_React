@@ -3,6 +3,8 @@ import { useAuth } from '../Auth/AuthContext';
 import { User } from '../appointments/interfaces/IAppointment';
 import axios from 'axios';
 import './UserInfo.css';
+import '../style-common/stylesCommon.css';
+
 import Swal from 'sweetalert2';
 import { errorMessage, successMessage } from '../../notifications/messages';
 
@@ -40,7 +42,7 @@ const UserInfo: React.FC = () => {
         
         if (response.status === 200) {
           // Actualización exitosa, puedes realizar acciones adicionales si es necesario
-          setUserInfo(response.data);
+          setUserInfo(response?.data);
           setIsEditing(false);
           console.log('Datos del usuario actualizados correctamente');
         } else {
