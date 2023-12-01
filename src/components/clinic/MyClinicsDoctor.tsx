@@ -3,17 +3,15 @@ import axios from 'axios';
 import { useAuth } from '../Auth/AuthContext'; // Import the appropriate authentication context
 import Swal from 'sweetalert2';
 import { successMessage, errorMessage } from '../../notifications/messages';
-import { IClinic } from './IClinic';
+import { IClinic, IClinicNoDoctors } from './IClinic';
 
 const MyClinicsDoctor = () => {
   const { userInfo } = useAuth(); // Replace with your context hook
   const [selectedClinic, setSelectedClinic] = useState(null);
   const [specialities, setSpecialities] = useState([]); // Estado para almacenar las especialidades
   const [isEditing, setIsEditing] = useState(false);
-  const [editedClinic, setEditedClinic] = useState<IClinic>(null);
-  const [clinicsThisDoctor, setClinicsThisDoctor] = useState<IClinic[]>([]);
-
-
+  const [editedClinic, setEditedClinic] = useState<IClinicNoDoctors>(null);
+  const [clinicsThisDoctor, setClinicsThisDoctor] = useState<IClinicNoDoctors[]>([]);
 
   useEffect(() => {
     axios.get('http://localhost:8081/admin/api/v1/specialities')
@@ -23,6 +21,11 @@ const MyClinicsDoctor = () => {
     .catch((error) => {
       console.error('Error al obtener las especialidades:', error);
     });
+
+    if (clinicsThisDoctor.length > 0) {
+      setSelectedClinic(clinicsThisDoctor[0]);
+    }
+    
   }, []);
 
   useEffect(() => {
@@ -31,8 +34,13 @@ const MyClinicsDoctor = () => {
       axios
         .get(`http://localhost:8081/api/v1/clinicsByUser/${userInfo.user_id}`)
         .then((response) => {
+          //Get all Clinics
           setClinicsThisDoctor(response.data);
-          console.log(clinicsThisDoctor);
+        
+          //Use the for now the firtst clinic of the array
+          setEditedClinic(clinicsThisDoctor[0]);
+
+          console.log(editedClinic.clinic_name);
         })
         .catch((error) => {
           console.error('Error fetching clinics:', error);
@@ -40,12 +48,20 @@ const MyClinicsDoctor = () => {
     }
   }, []);
 
+  //TODO: need this?
+  
+  useEffect(() => {
+    setEditedClinic(clinicsThisDoctor[0]);
+  }, [clinicsThisDoctor]);
+
   const handleSaveClick = async (e: FormEvent) => {
     e.preventDefault();
   
     if (editedClinic) {
+      console.log(selectedClinic.clinic_id);
+
       try {
-        console.log(editedClinic);
+        console.log(editedClinic.clinic_id);
         const response = await axios.put(`http://localhost:8081/api/v1/clinic/${editedClinic?.clinic_id}`, editedClinic);
   
         Swal.fire({
@@ -53,8 +69,18 @@ const MyClinicsDoctor = () => {
           ...successMessage,
         });
         
-        if (response.status === 200) {
-          setClinicsThisDoctor(response.data);
+          if (response.status === 200) {
+            // Update the specific clinic in the clinicsThisDoctor array
+            setClinicsThisDoctor(prevClinics => {
+              const updatedClinics = prevClinics.map(clinic => {
+                if (clinic.clinic_id === editedClinic.clinic_id) {
+                  return editedClinic;
+                }
+                return clinic;
+              });
+              return updatedClinics;
+            });
+
           setIsEditing(false);
           console.log('Clinica actualizada correctamente');
         } else {
@@ -67,6 +93,7 @@ const MyClinicsDoctor = () => {
           ...errorMessage,
         });
       }
+      
     }
   
     setIsEditing(false);
@@ -75,6 +102,8 @@ const MyClinicsDoctor = () => {
   const handleEditClinic = (clinicId) => {
     // Set the selected clinic for editing
     setSelectedClinic(clinicId);
+    setIsEditing(true);
+
   };
 
   const handleCancelEdit = () => {
@@ -85,19 +114,18 @@ const MyClinicsDoctor = () => {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: keyof IClinic) => {
     const updatedEditedClinic = { ...editedClinic, [field]: event.target.value };
-    setClinicsThisDoctor(updatedEditedClinic);
+    setEditedClinic(updatedEditedClinic);
   };
 
-  const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setClinicsThisDoctor({ ...clinicsThisDoctor, [name]: value });
+  const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>, field: keyof IClinic) => {
+    const updatedEditedClinic = { ...editedClinic, [field]: e.target.value };
+    setEditedClinic(updatedEditedClinic);
   };
-
 
   const handleSelectChange = (e) => {
     const { name, value } = e.target;
-    setClinicsThisDoctor({
-      ...clinicsThisDoctor,
+    selectedClinic({
+      ...editedClinic,
       [name]: value,
     });
   };
@@ -130,7 +158,7 @@ const MyClinicsDoctor = () => {
           <textarea
             className={`mb-3 form-control ${isEditing ? 'editing' : ''}`}
             value={isEditing ? editedClinic?.clinic_description : clinic?.clinic_description}
-            onChange={handleTextAreaChange}
+            onChange={(e) => handleInputChange(e, 'clinic_description')}
             placeholder="Descripción de la clínica"
             readOnly={!isEditing}
           />
@@ -193,7 +221,8 @@ const MyClinicsDoctor = () => {
 
 </div>
 
-            {selectedClinic === clinic.clinic_id ? (
+            {selectedClinic === clinic.clinic_id &&
+            isEditing ? (
               <><button className="btn btn-primary" onClick={handleCancelEdit}>Cancelar</button>
               <button className="btn btn-primary" onClick={handleSaveClick}>Guardar cambios</button>
               </>

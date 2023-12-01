@@ -74,8 +74,13 @@ const DoctorAppointments: React.FC = () => {
 
   return (
     <div>
-      <h1>Mis próximas citas: DOCTOR</h1>
-      {appointments.map(appointment => (
+         <h1>Mis próximas citas: DOCTOR</h1>
+      
+      {appointments.length === 0 ? (
+        <p>No hay citas disponibles en este momento.</p>
+      ) : (
+        
+      appointments.map(appointment => (
         <div key={appointment.appointment_id} className="appointment-box">
           <h2>Appointment ID: {appointment.appointment_id}</h2>
           <p>Clinic ID: {appointment.clinic.clinic_id}</p>
@@ -84,16 +89,23 @@ const DoctorAppointments: React.FC = () => {
           <p>Start Time: {appointment.startTime}</p>
           <p>Doctor: {appointment.doctor.firstName} {appointment.doctor.lastName}</p>
           <p>Status: {appointment.appointment_status}</p>
+          
           {appointment.appointment_status !== 'CANCELLED_BY_DOCTOR' &&
             appointment.appointment_status !== 'CANCELLED_BY_PATIENT' && (
               <button onClick={() => openModal(appointment)}>Cancelar</button>
             )}
+         
           {appointment.appointment_status !== 'COMPLETED' &&
             appointment.appointment_status !== 'CONFIRMED' && (
               <button onClick={() => openModal(appointment)}>Confirmar</button>
             )}
+
         </div>
+      ) 
       ))}
+      
+    
+      
 
       <Modal
         isOpen={isModalOpen}

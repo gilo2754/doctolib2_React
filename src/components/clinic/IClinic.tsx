@@ -12,3 +12,15 @@ export interface IClinic {
   closingTime: string | null;
   doctors?: User[];
 }
+
+export interface IClinicNoDoctors {
+  clinic_id?: number;
+  clinic_name: string | null;
+  clinic_description: string;
+  clinic_address: string | null;
+  clinic_phone_number: string;
+  clinic_state: string;
+  speciality?: string;
+  openingTime: string | null;
+  closingTime: string | null;
+}
