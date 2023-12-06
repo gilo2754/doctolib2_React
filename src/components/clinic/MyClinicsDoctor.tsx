@@ -39,7 +39,7 @@ const MyClinicsDoctor = () => {
           //Use the for now the firtst clinic of the array
           setEditedClinic(clinicsThisDoctor[0]);
 
-          console.log(editedClinic.clinic_name);
+         // console.log(editedClinic.clinic_name);
         })
         .catch((error) => {
           console.error('Error fetching clinics:', error);
@@ -136,7 +136,7 @@ const MyClinicsDoctor = () => {
           <input
           className={`mb-3 form-control ${isEditing ? 'editing' : ''}`}
             type="text"
-            value={isEditing ? editedClinic?.clinic_name : clinic?.clinic_name}
+            value={isEditing ? editedClinic?.clinic_name : clinic?.clinic_name || ''}
             onChange={(e) => handleInputAndTextAreaChange(e, 'clinic_name')}
             placeholder="Nombre clinica"
             readOnly={!isEditing}
