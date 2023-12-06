@@ -9,8 +9,8 @@ interface AuthContextType {
   jwtToken: string | null;
   setJwtToken: (token: string | null) => void;
   logout: () => void;
-  userInfo: User;
-  setUserInfo: () => void;
+  userInfo: User | null; // Change the type to User | null
+  setUserInfo: (userInfo: User | null) => void; // Add the parameter type
 }
 interface DecodedToken {
   role: string[];
