@@ -30,7 +30,6 @@ const MyClinicsDoctor = () => {
 
   useEffect(() => {
     if (userInfo && userInfo.user_id) {
-      // Fetch clinics for the current user using user_id
       axios
         .get(`http://localhost:8081/api/v1/clinicsByUser/${userInfo.user_id}`)
         .then((response) => {
@@ -70,7 +69,6 @@ const MyClinicsDoctor = () => {
         });
         
           if (response.status === 200) {
-            // Update the specific clinic in the clinicsThisDoctor array
             setClinicsThisDoctor(prevClinics => {
               const updatedClinics = prevClinics.map(clinic => {
                 if (clinic.clinic_id === editedClinic.clinic_id) {
@@ -100,25 +98,17 @@ const MyClinicsDoctor = () => {
   };
 
   const handleEditClinic = (clinicId) => {
-    // Set the selected clinic for editing
     setSelectedClinic(clinicId);
     setIsEditing(true);
-
   };
 
   const handleCancelEdit = () => {
-    // Clear the selected clinic for editing
     setSelectedClinic(null);
     setIsEditing(false);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: keyof IClinic) => {
     const updatedEditedClinic = { ...editedClinic, [field]: event.target.value };
-    setEditedClinic(updatedEditedClinic);
-  };
-
-  const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>, field: keyof IClinic) => {
-    const updatedEditedClinic = { ...editedClinic, [field]: e.target.value };
     setEditedClinic(updatedEditedClinic);
   };
 
