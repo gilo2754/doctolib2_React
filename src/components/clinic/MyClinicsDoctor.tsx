@@ -107,7 +107,7 @@ const MyClinicsDoctor = () => {
     setIsEditing(false);
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: keyof IClinic) => {
+  const handleInputAndTextAreaChange = (event: React.ChangeEvent<HTMLInputElement| HTMLTextAreaElement>, field: keyof IClinic) => {
     const updatedEditedClinic = { ...editedClinic, [field]: event.target.value };
     setEditedClinic(updatedEditedClinic);
   };
@@ -137,7 +137,7 @@ const MyClinicsDoctor = () => {
           className={`mb-3 form-control ${isEditing ? 'editing' : ''}`}
             type="text"
             value={isEditing ? editedClinic?.clinic_name : clinic?.clinic_name}
-            onChange={(e) => handleInputChange(e, 'clinic_name')}
+            onChange={(e) => handleInputAndTextAreaChange(e, 'clinic_name')}
             placeholder="Nombre clinica"
             readOnly={!isEditing}
             />
@@ -148,7 +148,7 @@ const MyClinicsDoctor = () => {
           <textarea
             className={`mb-3 form-control ${isEditing ? 'editing' : ''}`}
             value={isEditing ? editedClinic?.clinic_description : clinic?.clinic_description}
-            onChange={(e) => handleInputChange(e, 'clinic_description')}
+            onChange={(e) => handleInputAndTextAreaChange(e, 'clinic_description')}
             placeholder="Descripción de la clínica"
             readOnly={!isEditing}
           />
@@ -160,7 +160,7 @@ const MyClinicsDoctor = () => {
             className={`mb-3 form-control ${isEditing ? 'editing' : ''}`}
             type="text"
             value={isEditing ? editedClinic?.clinic_address : clinic?.clinic_address}
-            onChange={(e) => handleInputChange(e, 'clinic_address')}
+            onChange={(e) => handleInputAndTextAreaChange(e, 'clinic_address')}
             placeholder="Dirección de la clínica"
             readOnly={!isEditing}
           />
@@ -172,7 +172,7 @@ const MyClinicsDoctor = () => {
             className={`mb-3 form-control ${isEditing ? 'editing' : ''}`}
             type="text"
             value={isEditing ? editedClinic?.clinic_phone_number : clinic?.clinic_phone_number}
-            onChange={(e) => handleInputChange(e, 'clinic_phone_number')}
+            onChange={(e) => handleInputAndTextAreaChange(e, 'clinic_phone_number')}
             placeholder="Número de teléfono de la clínica"
             readOnly={!isEditing}
           />
